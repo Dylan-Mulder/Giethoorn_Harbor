@@ -5,8 +5,8 @@ import { ClientProxy } from '@nestjs/microservices';
 export class AppController {
   constructor(
     @Inject('AUTH_SERVICE') private authService: ClientProxy,
-    // @Inject('SHIP_SERVICE') private shipService: ClientProxy,
-    // @Inject('CUSTOMER_SERVICE') private customerService: ClientProxy
+    @Inject('SHIP_SERVICE') private shipService: ClientProxy,
+    @Inject('CUSTOMER_SERVICE') private customerService: ClientProxy
   ) { }
 
   @Get()
@@ -19,23 +19,23 @@ export class AppController {
     )
   }
 
-  // @Get()
-  // async getShip() {
-  //   return this.shipService.send(
-  //     {
-  //       cmd: 'get-ship'
-  //     },
-  //     {}
-  //   )
-  // }
+  @Get()
+  async getShip() {
+    return this.shipService.send(
+      {
+        cmd: 'get-ship'
+      },
+      {}
+    )
+  }
 
-  // @Get()
-  // async getCustomer() {
-  //   return this.customerService.send(
-  //     {
-  //       cmd: 'get-customer'
-  //     },
-  //     {}
-  //   )
-  // }
+  @Get()
+  async getCustomer() {
+    return this.customerService.send(
+      {
+        cmd: 'get-customer'
+      },
+      {}
+    )
+  }
 }
