@@ -9,7 +9,7 @@ async function bootstrap() {
   const configService = app.get(ConfigService);
 
   const USER = configService.get('RABBITMQ_USER');
-  const PASSWORD = configService.get('RABBITMQ_PASSWORD');
+  const PASSWORD = configService.get('RABBITMQ_PASS');
   const HOST = configService.get('RABBITMQ_HOST');
   const QUEUE = configService.get('RABBITMQ_AUTH_QUEUE');
 

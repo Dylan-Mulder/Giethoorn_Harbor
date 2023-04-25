@@ -2,6 +2,7 @@ import { Controller, Get } from '@nestjs/common';
 import { ShipService } from './ship.service';
 import { MessagePattern, Ctx, RmqContext } from '@nestjs/microservices';
 
+
 @Controller()
 export class ShipController {
   constructor(private readonly shipService: ShipService) { }

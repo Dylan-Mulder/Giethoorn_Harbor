@@ -3,9 +3,10 @@ import { ClientProxy } from '@nestjs/microservices';
 
 @Controller()
 export class AppController {
-  constructor(@Inject('AUTH_SERVICE') private authService: ClientProxy,
-    //    @Inject('SHIP_SERVICE') private shipService: ClientProxy,
-    //  @Inject('CUSTOMER_SERVICE') private customerService: ClientProxy
+  constructor(
+    @Inject('AUTH_SERVICE') private authService: ClientProxy,
+    // @Inject('SHIP_SERVICE') private shipService: ClientProxy,
+    // @Inject('CUSTOMER_SERVICE') private customerService: ClientProxy
   ) { }
 
   @Get()
