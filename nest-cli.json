@@ -45,6 +45,87 @@
       "compilerOptions": {
         "tsConfigPath": "libs/shared/tsconfig.lib.json"
       }
+    },
+    "traffic-control": {
+      "type": "application",
+      "root": "apps/traffic-control",
+      "entryFile": "main",
+      "sourceRoot": "apps/traffic-control/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/traffic-control/tsconfig.app.json"
+      }
+    },
+    "publications": {
+      "type": "application",
+      "root": "apps/publications",
+      "entryFile": "main",
+      "sourceRoot": "apps/publications/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/publications/tsconfig.app.json"
+      }
+    },
+    "ecosystem": {
+      "type": "application",
+      "root": "apps/ecosystem",
+      "entryFile": "main",
+      "sourceRoot": "apps/ecosystem/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/ecosystem/tsconfig.app.json"
+      }
+    },
+    "security": {
+      "type": "application",
+      "root": "apps/security",
+      "entryFile": "main",
+      "sourceRoot": "apps/security/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/security/tsconfig.app.json"
+      }
+    },
+    "dock-rental": {
+      "type": "application",
+      "root": "apps/dock-rental",
+      "entryFile": "main",
+      "sourceRoot": "apps/dock-rental/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/dock-rental/tsconfig.app.json"
+      }
+    },
+    "billing": {
+      "type": "application",
+      "root": "apps/billing",
+      "entryFile": "main",
+      "sourceRoot": "apps/billing/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/billing/tsconfig.app.json"
+      }
+    },
+    "messaging": {
+      "type": "application",
+      "root": "apps/messaging",
+      "entryFile": "main",
+      "sourceRoot": "apps/messaging/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/messaging/tsconfig.app.json"
+      }
+    },
+    "refilling": {
+      "type": "application",
+      "root": "apps/refilling",
+      "entryFile": "main",
+      "sourceRoot": "apps/refilling/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/refilling/tsconfig.app.json"
+      }
+    },
+    "cargo-management": {
+      "type": "application",
+      "root": "apps/cargo-management",
+      "entryFile": "main",
+      "sourceRoot": "apps/cargo-management/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/cargo-management/tsconfig.app.json"
+      }
     }
   }
 }
