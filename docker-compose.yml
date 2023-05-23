@@ -1,0 +1,89 @@
+version: '3.6'
+services:
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    hostname: rabbitmq
+    volumes:
+      - /var/lib/rabbitmq
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    env_file:
+      - .env
+
+  # db:
+  #   container_name: PostgresSQL-DB
+  #   image: postgres:10.16
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: password
+  #     POSTGRES_DB: postgres
+  #   ports:
+  #     - 5432:5432
+  #   volumes:
+  #     - db-data:/var/lib/postgresql/data
+
+  db:
+    container_name: PostgreSQL
+    image: postgres:latest
+    restart: always
+    ports:
+      - '5432:5432'
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: postgres
+    volumes:
+      - ./pgdata:/var/lib/postgresql/data
+
+  solarch:
+    container_name: SolArch-API
+    build:
+      context: ./
+      dockerfile: ./apps/solarch/Dockerfile
+    ports:
+      - '4000:5000'
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev solarch
+
+  ship:
+    container_name: Ship-Service
+    build:
+      context: ./
+      dockerfile: ./apps/ship/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - solarch
+      - db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev ship
+
+  customer:
+    container_name: Customer-Service
+    build:
+      context: ./
+      dockerfile: ./apps/customer/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - solarch
+      - db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev customer

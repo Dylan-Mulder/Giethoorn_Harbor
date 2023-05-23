@@ -1,0 +1,50 @@
+{
+  "$schema": "https://json.schemastore.org/nest-cli",
+  "collection": "@nestjs/schematics",
+  "sourceRoot": "apps/solarch/src",
+  "compilerOptions": {
+    "deleteOutDir": true,
+    "webpack": true,
+    "tsConfigPath": "apps/solarch/tsconfig.app.json"
+  },
+  "monorepo": true,
+  "root": "apps/solarch",
+  "projects": {
+    "solarch": {
+      "type": "application",
+      "root": "apps/solarch",
+      "entryFile": "main",
+      "sourceRoot": "apps/solarch/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/solarch/tsconfig.app.json"
+      }
+    },
+    "customer": {
+      "type": "application",
+      "root": "apps/customer",
+      "entryFile": "main",
+      "sourceRoot": "apps/customer/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/customer/tsconfig.app.json"
+      }
+    },
+    "ship": {
+      "type": "application",
+      "root": "apps/ship",
+      "entryFile": "main",
+      "sourceRoot": "apps/ship/src",
+      "compilerOptions": {
+        "tsConfigPath": "apps/ship/tsconfig.app.json"
+      }
+    },
+    "shared": {
+      "type": "library",
+      "root": "libs/shared",
+      "entryFile": "index",
+      "sourceRoot": "libs/shared/src",
+      "compilerOptions": {
+        "tsConfigPath": "libs/shared/tsconfig.lib.json"
+      }
+    }
+  }
+}
