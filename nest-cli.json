@@ -37,15 +37,6 @@
         "tsConfigPath": "apps/ship/tsconfig.app.json"
       }
     },
-    "auth": {
-      "type": "application",
-      "root": "apps/auth",
-      "entryFile": "main",
-      "sourceRoot": "apps/auth/src",
-      "compilerOptions": {
-        "tsConfigPath": "apps/auth/tsconfig.app.json"
-      }
-    },
     "shared": {
       "type": "library",
       "root": "libs/shared",
