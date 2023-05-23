@@ -1,5 +1,5 @@
 {
-  "name": "solarch",
+  "name": "Giethoorn Solution Architecture",
   "version": "0.0.1",
   "description": "",
   "author": "",
@@ -11,13 +11,13 @@
     "start": "nest start",
     "start:dev": "nest start --watch",
     "start:debug": "nest start --debug --watch",
-    "start:prod": "node dist/apps/solarch/main",
+    "start:prod": "node dist/apps/traffic_control_api/main",
     "lint": "eslint \"{src,apps,libs,test}/**/*.ts\" --fix",
     "test": "jest",
     "test:watch": "jest --watch",
     "test:cov": "jest --coverage",
     "test:debug": "node --inspect-brk -r tsconfig-paths/register -r ts-node/register node_modules/.bin/jest --runInBand",
-    "test:e2e": "jest --config ./apps/solarch/test/jest-e2e.json"
+    "test:e2e": "jest --config ./apps/traffic_control_api/test/jest-e2e.json"
   },
   "dependencies": {
     "@nestjs/common": "^9.0.0",

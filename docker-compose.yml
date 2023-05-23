@@ -12,18 +12,6 @@ services:
     env_file:
       - .env
 
-  # db:
-  #   container_name: PostgresSQL-DB
-  #   image: postgres:10.16
-  #   environment:
-  #     POSTGRES_USER: postgres
-  #     POSTGRES_PASSWORD: password
-  #     POSTGRES_DB: postgres
-  #   ports:
-  #     - 5432:5432
-  #   volumes:
-  #     - db-data:/var/lib/postgresql/data
-
   db:
     container_name: PostgreSQL
     image: postgres:latest
@@ -32,20 +20,16 @@ services:
       - '5432:5432'
     env_file:
       - .env
-    environment:
-      POSTGRES_USER: root
-      POSTGRES_PASSWORD: root
-      POSTGRES_DB: postgres
     volumes:
       - ./pgdata:/var/lib/postgresql/data
 
-  solarch:
-    container_name: SolArch-API
+  traffic_control_api:
+    container_name: Traffic-Control-API
     build:
       context: ./
-      dockerfile: ./apps/solarch/Dockerfile
+      dockerfile: ./apps/traffic_control_api/Dockerfile
     ports:
-      - '4000:5000'
+      - '4200:5000'
     env_file:
       - .env
     depends_on:
@@ -54,36 +38,167 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
-    command: npm run start:dev solarch
+    command: npm run start:dev traffic_control_api
 
-  ship:
-    container_name: Ship-Service
+  dock_rental_api:
+    container_name: Dock-Rental-API
     build:
       context: ./
-      dockerfile: ./apps/ship/Dockerfile
+      dockerfile: ./apps/dock_rental_api/Dockerfile
+    ports:
+      - '4100:5001'
     env_file:
       - .env
     depends_on:
       - rabbitmq
-      - solarch
       - db
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
-    command: npm run start:dev ship
+    command: npm run start:dev dock_rental_api
 
-  customer:
-    container_name: Customer-Service
+  traffic_control:
+    container_name: Traffic-Control
     build:
       context: ./
-      dockerfile: ./apps/customer/Dockerfile
+      dockerfile: ./apps/traffic_control/Dockerfile
     env_file:
       - .env
     depends_on:
       - rabbitmq
-      - solarch
+      - traffic_control_api
       - db
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
-    command: npm run start:dev customer
+    command: npm run start:dev traffic_control
+
+  dock_rental:
+    container_name: Dock-Rental
+    build:
+      context: ./
+      dockerfile: ./apps/dock_rental/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - dock_rental_api
+      - db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev dock_rental
+
+  ecosystem:
+    container_name: Ecosystem
+    build:
+      context: ./
+      dockerfile: ./apps/ecosystem/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev ecosystem
+
+  security:
+    container_name: Security
+    build:
+      context: ./
+      dockerfile: ./apps/security/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - traffic_control
+      - db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev security
+
+  refilling:
+    container_name: Refilling
+    build:
+      context: ./
+      dockerfile: ./apps/refilling/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - traffic_control
+      - db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev refilling
+
+  cargo_management:
+    container_name: Cargo-Management
+    build:
+      context: ./
+      dockerfile: ./apps/cargo_management/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - traffic_control
+      - db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev cargo_management
+
+  publications:
+    container_name: Publications
+    build:
+      context: ./
+      dockerfile: ./apps/publications/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - traffic_control
+      - ecosystem
+      - db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev publications
+
+  billing:
+    container_name: Billing
+    build:
+      context: ./
+      dockerfile: ./apps/billing/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - refilling
+      - cargo_management
+      - dock_rental
+      - db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev billing
+
+  messaging:
+    container_name: Messaging
+    build:
+      context: ./
+      dockerfile: ./apps/messaging/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - billing
+      - db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev messaging
