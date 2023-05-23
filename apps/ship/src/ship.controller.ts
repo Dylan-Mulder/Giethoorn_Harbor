@@ -18,6 +18,6 @@ export class ShipController {
     const message = context.getMessage();
     channel.ack(message);
 
-    return { user: 'SHIP!' };
+    return { ship: 'SHIP!' };
   }
 }

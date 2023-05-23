@@ -13,63 +13,63 @@ services:
     env_file:
       - .env
 
-  auth:
-    container_name: Authentication
-    build:
-      context: ./
-      dockerfile: ./apps/auth/Dockerfile
-    env_file:
-      - .env
-    depends_on:
-      - rabbitmq
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    command: npm run start:dev auth
+  # auth:
+  #   container_name: Authentication
+  #   build:
+  #     context: ./
+  #     dockerfile: ./apps/auth/Dockerfile
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     - rabbitmq
+  #   volumes:
+  #     - .:/usr/src/app
+  #     - /usr/src/app/node_modules
+  #   command: npm run start:dev auth
 
-  solarch:
-    container_name: SolArch-API
-    build:
-      context: ./
-      dockerfile: ./apps/solarch/Dockerfile
-    ports:
-      - '4000:5000'
-    env_file:
-      - .env
-    depends_on:
-      - rabbitmq
-      - auth
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    command: npm run start:dev solarch
+  # solarch:
+  #   container_name: SolArch-API
+  #   build:
+  #     context: ./
+  #     dockerfile: ./apps/solarch/Dockerfile
+  #   ports:
+  #     - '4000:5000'
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     - rabbitmq
+  #     - auth
+  #   volumes:
+  #     - .:/usr/src/app
+  #     - /usr/src/app/node_modules
+  #   command: npm run start:dev solarch
 
-  ship:
-    container_name: Ship-Service
-    build:
-      context: ./
-      dockerfile: ./apps/ship/Dockerfile
-    env_file:
-      - .env
-    depends_on:
-      - rabbitmq
-      - solarch
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    command: npm run start:dev ship
+  # ship:
+  #   container_name: Ship-Service
+  #   build:
+  #     context: ./
+  #     dockerfile: ./apps/ship/Dockerfile
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     - rabbitmq
+  #     - solarch
+  #   volumes:
+  #     - .:/usr/src/app
+  #     - /usr/src/app/node_modules
+  #   command: npm run start:dev ship
 
-  customer:
-    container_name: Customer-Service
-    build:
-      context: ./
-      dockerfile: ./apps/customer/Dockerfile
-    env_file:
-      - .env
-    depends_on:
-      - rabbitmq
-      - solarch
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    command: npm run start:dev customer
+  # customer:
+  #   container_name: Customer-Service
+  #   build:
+  #     context: ./
+  #     dockerfile: ./apps/customer/Dockerfile
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     - rabbitmq
+  #     - solarch
+  #   volumes:
+  #     - .:/usr/src/app
+  #     - /usr/src/app/node_modules
+  #   command: npm run start:dev customer

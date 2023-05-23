@@ -40,7 +40,7 @@ import { ClientProxyFactory, Transport } from '@nestjs/microservices';
       useFactory: (configService: ConfigService) => {
         const USER = configService.get('RABBITMQ_USER');
         const PASSWORD = configService.get('RABBITMQ_PASSWORD');
-        const HOST = configService.get('SHIP_HOST');
+        const HOST = configService.get('RABBITMQ_HOST');
         const QUEUE = configService.get('RABBITMQ_SHIP_QUEUE');
 
         return ClientProxyFactory.create({
@@ -61,7 +61,7 @@ import { ClientProxyFactory, Transport } from '@nestjs/microservices';
       useFactory: (configService: ConfigService) => {
         const USER = configService.get('RABBITMQ_USER');
         const PASSWORD = configService.get('RABBITMQ_PASSWORD');
-        const HOST = configService.get('CUSTOMER_HOST');
+        const HOST = configService.get('RABBITMQ_HOST');
         const QUEUE = configService.get('RABBITMQ_CUSTOMER_QUEUE');
 
         return ClientProxyFactory.create({

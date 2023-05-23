@@ -17,6 +17,6 @@ export class CustomerController {
     const message = context.getMessage();
     channel.ack(message);
 
-    return { user: 'CUSTOMER!' };
+    return { customer: 'CUSTOMER!' };
   }
 }
