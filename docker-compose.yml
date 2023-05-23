@@ -12,17 +12,32 @@ services:
     env_file:
       - .env
 
+  # db:
+  #   container_name: PostgresSQL-DB
+  #   image: postgres:10.16
+  #   environment:
+  #     POSTGRES_USER: postgres
+  #     POSTGRES_PASSWORD: password
+  #     POSTGRES_DB: postgres
+  #   ports:
+  #     - 5432:5432
+  #   volumes:
+  #     - db-data:/var/lib/postgresql/data
+
   db:
-    container_name: PostgresSQL-DB
-    image: postgres:10.16
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: postgres
+    container_name: PostgreSQL
+    image: postgres:latest
+    restart: always
     ports:
-      - 5432:5432
+      - '5432:5432'
+    env_file:
+      - .env
+    environment:
+      POSTGRES_USER: root
+      POSTGRES_PASSWORD: root
+      POSTGRES_DB: postgres
     volumes:
-      - db-data:/var/lib/postgresql/data
+      - ./pgdata:/var/lib/postgresql/data
 
   solarch:
     container_name: SolArch-API
@@ -72,6 +87,3 @@ services:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     command: npm run start:dev customer
-
-volumes:
-  db-data:
