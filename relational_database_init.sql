@@ -1,0 +1,6 @@
+CREATE USER test WITH PASSWORD 'test' CREATEDB;
+CREATE DATABASE test
+    WITH 
+    OWNER = test
+    ENCODING = 'UTF8'
+    TABLESPACE = pg_default

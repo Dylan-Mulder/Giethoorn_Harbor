@@ -13,16 +13,28 @@ services:
     env_file:
       - .env
 
-  db:
-    container_name: PostgreSQL
+  relational_database:
+    container_name: relational-database
     image: postgres:latest
 
     ports:
       - '5432:5432'
+    environment:
+      - POSTGRES_PASSWORD=bg76619hG^91
+    volumes:
+      # - /relational_database:/var/lib/postgresql/data
+      - ./relational_database_init.sql:/docker-entrypoint-initdb.d/relational_database_init.sql
+
+  event_store:
+    container_name: event-store
+    image: postgres:latest
+
+    ports:
+      - '5433:5432'
     env_file:
       - .env
     volumes:
-      - ./pgdata:/var/lib/postgresql/data
+      - /event_store:/var/lib/postgresql/data
 
   traffic_control_api:
     container_name: Traffic-Control-API
@@ -36,7 +48,8 @@ services:
       - .env
     depends_on:
       - rabbitmq
-      - db
+      - relational_database
+      - event_store
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -54,7 +67,8 @@ services:
       - .env
     depends_on:
       - rabbitmq
-      - db
+      - relational_database
+      - event_store
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -71,7 +85,8 @@ services:
     depends_on:
       - rabbitmq
       - traffic_control_api
-      - db
+      - relational_database
+      - event_store
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -88,7 +103,8 @@ services:
     depends_on:
       - rabbitmq
       - dock_rental_api
-      - db
+      - relational_database
+      - event_store
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -104,7 +120,8 @@ services:
       - .env
     depends_on:
       - rabbitmq
-      - db
+      - relational_database
+      - event_store
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -121,7 +138,8 @@ services:
     depends_on:
       - rabbitmq
       - traffic_control
-      - db
+      - relational_database
+      - event_store
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -138,7 +156,8 @@ services:
     depends_on:
       - rabbitmq
       - traffic_control
-      - db
+      - relational_database
+      - event_store
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -155,7 +174,8 @@ services:
     depends_on:
       - rabbitmq
       - traffic_control
-      - db
+      - relational_database
+      - event_store
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -173,7 +193,8 @@ services:
       - rabbitmq
       - traffic_control
       - ecosystem
-      - db
+      - relational_database
+      - event_store
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -192,7 +213,8 @@ services:
       - refilling
       - cargo_management
       - dock_rental
-      - db
+      - relational_database
+      - event_store
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -209,7 +231,8 @@ services:
     depends_on:
       - rabbitmq
       - billing
-      - db
+      - relational_database
+      - event_store
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
