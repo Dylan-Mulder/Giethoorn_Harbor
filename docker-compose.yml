@@ -2,7 +2,6 @@ version: '3.6'
 services:
   rabbitmq:
     image: rabbitmq:3-management
-
     container_name: rabbitmq
     hostname: rabbitmq
     volumes:
@@ -16,17 +15,18 @@ services:
   db:
     container_name: PostgreSQL
     image: postgres:latest
-
+    restart: always
     ports:
       - '5432:5432'
-    env_file:
-      - .env
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres
     volumes:
-      - ./pgdata:/var/lib/postgresql/data
+      - /var/lib/postgresql
 
   traffic_control_api:
     container_name: Traffic-Control-API
-
     build:
       context: ./
       dockerfile: ./apps/traffic_control_api/Dockerfile
@@ -44,7 +44,6 @@ services:
 
   dock_rental_api:
     container_name: Dock-Rental-API
-
     build:
       context: ./
       dockerfile: ./apps/dock_rental_api/Dockerfile
@@ -62,7 +61,6 @@ services:
 
   traffic_control:
     container_name: Traffic-Control
-
     build:
       context: ./
       dockerfile: ./apps/traffic_control/Dockerfile
@@ -79,7 +77,6 @@ services:
 
   dock_rental:
     container_name: Dock-Rental
-
     build:
       context: ./
       dockerfile: ./apps/dock_rental/Dockerfile
@@ -96,7 +93,6 @@ services:
 
   ecosystem:
     container_name: Ecosystem
-
     build:
       context: ./
       dockerfile: ./apps/ecosystem/Dockerfile
@@ -112,7 +108,6 @@ services:
 
   security:
     container_name: Security
-
     build:
       context: ./
       dockerfile: ./apps/security/Dockerfile
@@ -120,7 +115,7 @@ services:
       - .env
     depends_on:
       - rabbitmq
-      - traffic_control
+      - traffic_control_api
       - db
     volumes:
       - .:/usr/src/app
@@ -129,7 +124,6 @@ services:
 
   refilling:
     container_name: Refilling
-
     build:
       context: ./
       dockerfile: ./apps/refilling/Dockerfile
@@ -137,7 +131,7 @@ services:
       - .env
     depends_on:
       - rabbitmq
-      - traffic_control
+      - traffic_control_api
       - db
     volumes:
       - .:/usr/src/app
@@ -146,7 +140,6 @@ services:
 
   cargo_management:
     container_name: Cargo-Management
-
     build:
       context: ./
       dockerfile: ./apps/cargo_management/Dockerfile
@@ -154,7 +147,7 @@ services:
       - .env
     depends_on:
       - rabbitmq
-      - traffic_control
+      - traffic_control_api
       - db
     volumes:
       - .:/usr/src/app
@@ -171,7 +164,7 @@ services:
       - .env
     depends_on:
       - rabbitmq
-      - traffic_control
+      - traffic_control_api
       - ecosystem
       - db
     volumes:
@@ -191,7 +184,7 @@ services:
       - rabbitmq
       - refilling
       - cargo_management
-      - dock_rental
+      - dock_rental_api
       - db
     volumes:
       - .:/usr/src/app
