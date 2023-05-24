@@ -11,14 +11,26 @@ services:
       - '15672:15672'
     env_file:
       - .env
+  # db:
+  #   container_name: PostgreSQL
+  #   image: postgres:latest
+  #   ports:
+  #     - '5432:5432'
+  #   env_file:
+  #     - .env
+  #   volumes:
+  #     - ./pgdata:/var/lib/postgresql/data
 
   db:
     container_name: PostgreSQL
     image: postgres:latest
+    restart: always
     ports:
       - '5432:5432'
-    env_file:
-      - .env
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres
     volumes:
       - ./pgdata:/var/lib/postgresql/data
 
