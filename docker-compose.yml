@@ -181,7 +181,7 @@ services:
       - rabbitmq
       - refilling
       - cargo_management
-      - dock_rental
+      - dock_rental_api
       - db
     volumes:
       - .:/usr/src/app
