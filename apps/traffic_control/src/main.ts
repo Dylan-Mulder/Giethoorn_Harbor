@@ -25,6 +25,6 @@ async function bootstrap() {
     }
   })
 
-  await app.startAllMicroservices();
+  app.startAllMicroservices();
 }
-bootstrap().catch(err => { console.error(err) });
+bootstrap();
