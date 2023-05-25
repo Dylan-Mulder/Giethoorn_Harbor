@@ -1,16 +1,16 @@
 version: '3.6'
 services:
-  # rabbitmq:
-  #   image: rabbitmq:3-management
-  #   container_name: rabbitmq
-  #   hostname: rabbitmq
-  #   volumes:
-  #     - /var/lib/rabbitmq
-  #   ports:
-  #     - '5672:5672'
-  #     - '15672:15672'
-  #   env_file:
-  #     - .env
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    hostname: rabbitmq
+    volumes:
+      - /var/lib/rabbitmq
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    env_file:
+      - .env
 
   db:
     container_name: PostgreSQL
@@ -24,23 +24,22 @@ services:
       POSTGRES_DB: postgres
     volumes:
       - /var/lib/postgresql
-  # traffic_control_api:
-  #   container_name: Traffic-Control-API
-  #   build:
-  #     context: ./
-  #     dockerfile: ./apps/traffic_control_api/Dockerfile
-  #   ports:
-  #     - '4200:5000'
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     - rabbitmq
-  #     - db
-  #   volumes:
-  #     - .:/usr/src/app
-  #     - /usr/src/app/node_modules
-  #   command: npm run start:dev traffic_control_api
-
+  traffic_control_api:
+    container_name: Traffic-Control-API
+    build:
+      context: ./
+      dockerfile: ./apps/traffic_control_api/Dockerfile
+    ports:
+      - '4200:5000'
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev traffic_control_api
   # dock_rental_api:
   #   container_name: Dock-Rental-API
   #   build:

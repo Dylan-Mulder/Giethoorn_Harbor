@@ -1,4 +1,4 @@
-import { Tugboat } from "../models/Tugboat.model";
+import { Tugboat } from "../models/tugboat.model";
 
 export interface ITugboatService {
   createTugboat(Tugboat: Tugboat): void;
