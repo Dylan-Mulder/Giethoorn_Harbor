@@ -13,10 +13,4 @@ describe('RefillingController', () => {
 
     refillingController = app.get<RefillingController>(RefillingController);
   });
-
-  describe('root', () => {
-    it('should return "Hello World!"', () => {
-      expect(refillingController.getHello()).toBe('Hello World!');
-    });
-  });
 });

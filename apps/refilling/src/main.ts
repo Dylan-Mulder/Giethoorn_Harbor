@@ -1,7 +1,9 @@
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
+import { Transport, MicroserviceOptions } from '@nestjs/microservices';
 import { RefillingModule } from './refilling.module';
+import { RefillingService } from './refilling.service';
+import * as amqp from 'amqplib';
 
 async function bootstrap() {
   const app = await NestFactory.create(RefillingModule);
@@ -17,14 +19,40 @@ async function bootstrap() {
     transport: Transport.RMQ,
     options: {
       urls: [`amqp://${USER}:${PASSWORD}@${HOST}`],
-      noAck: false,
       queue: QUEUE,
       queueOptions: {
-        durable: true
-      }
+        durable: true,
+      },
+    },
+  });
+
+  const channel = await amqp.connect(`amqp://${USER}:${PASSWORD}@${HOST}`);
+  const queue = await channel.createChannel();
+
+  await queue.assertQueue(QUEUE, { durable: true });
+  await queue.prefetch(1);
+
+  queue.consume(QUEUE, async (message) => {
+
+    // Acknowledge the message
+    queue.ack(message);
+
+    if (message) {
+      const data = JSON.parse(message.content.toString());
+
+        // Create a new ship
+        const refillingService = app.get(RefillingService);
+        await refillingService.createShip(data);
+      
     }
-  })
+  });
 
   app.startAllMicroservices();
+  await app.listen(5672);
+
+  process.on('exit', () => {
+    channel.close();
+  });
 }
+
 bootstrap();

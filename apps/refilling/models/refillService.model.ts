@@ -1,10 +1,10 @@
-import { ship } from "./ship.model";
+import { Ship } from "./ship.model";
 import { TrafficPlanning } from "./trafficPlanning.model";
 
 export class RefillService {
   id: number;
   trafficPlanning: TrafficPlanning;
-  ship: ship;
+  ship: Ship;
   needsRefuelling: boolean;
   needsRecharging: boolean;
 }
