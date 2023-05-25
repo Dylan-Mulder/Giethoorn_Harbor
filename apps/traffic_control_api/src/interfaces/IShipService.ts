@@ -1,4 +1,4 @@
-import { Ship } from "../models/ship.model";
+import { Ship } from "../modules/ship/ship.model";
 
 export interface IShipService {
   createShip(Ship: Ship): void;

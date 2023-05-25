@@ -1,4 +1,4 @@
-import { Dock } from "../models/dock.model";
+import { Dock } from "../modules/dock/dock.model";
 
 export interface IDockService {
   createDock(dock: Dock): void;
