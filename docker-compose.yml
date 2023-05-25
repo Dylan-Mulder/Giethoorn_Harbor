@@ -19,10 +19,10 @@ services:
 
     ports:
       - '5432:5432'
-    environment:
-      - POSTGRES_PASSWORD=bg76619hG^91
+    env_file:
+      - .env
     volumes:
-      # - /relational_database:/var/lib/postgresql/data
+      - /relational_database:/var/lib/postgresql/data
       - ./relational_database_init.sql:/docker-entrypoint-initdb.d/relational_database_init.sql
 
   event_store:
