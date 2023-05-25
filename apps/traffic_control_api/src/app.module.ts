@@ -3,13 +3,17 @@ import { AppController } from './app.controller';
 import { AppService } from './app.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientProxyFactory, Transport } from '@nestjs/microservices';
+import { DataSource } from 'typeorm';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       envFilePath: './.env'
-    })
+    }),
+    TypeOrmModule.forRoot()
   ],
   controllers: [AppController],
   providers: [
@@ -121,4 +125,6 @@ import { ClientProxyFactory, Transport } from '@nestjs/microservices';
     }
   ],
 })
-export class AppModule { }
+export class AppModule {
+  constructor(private dataSource: DataSource) { }
+}
