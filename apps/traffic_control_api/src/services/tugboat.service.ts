@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Tugboat } from '../models/Tugboat.model';
+import { Tugboat } from '../models/tugboat.model';
 import { ITugboatService } from '../interfaces/ITugboatService';
 
 @Injectable()

@@ -13,7 +13,18 @@ import { TypeOrmModule } from '@nestjs/typeorm';
       isGlobal: true,
       envFilePath: './.env'
     }),
-    TypeOrmModule.forRoot()
+    TypeOrmModule.forRoot({
+      "type": "postgres",
+      "host": "localhost",
+      "port": 5342,
+      "username": "test",
+      "password": "test",
+      "database": "test",
+      "synchronize": true,
+      "entities": [
+        "src/models/**/*.ts"
+      ],
+    })
   ],
   controllers: [AppController],
   providers: [

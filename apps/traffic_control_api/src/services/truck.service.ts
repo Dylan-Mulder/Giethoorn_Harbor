@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Truck } from '../models/Truck.model';
+import { Truck } from '../models/truck.model';
 import { ITruckService } from '../interfaces/ITruckService';
 
 @Injectable()

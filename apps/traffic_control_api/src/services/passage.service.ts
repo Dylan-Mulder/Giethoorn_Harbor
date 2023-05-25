@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Passage } from '../models/Passage.model';
+import { Passage } from '../models/passage.model';
 import { IPassageService } from '../interfaces/IPassageService';
 
 @Injectable()
