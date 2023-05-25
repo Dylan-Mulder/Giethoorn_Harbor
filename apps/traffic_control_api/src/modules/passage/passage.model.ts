@@ -1,9 +1,8 @@
 import { IsObject, IsArray, IsNumber, IsDate } from 'class-validator';
-
-import { Dock } from "./dock.model";
-import { Ship } from "./ship.model";
-import { Truck } from "./truck.model";
-import { Tugboat } from "./tugboat.model";
+import { Dock } from '../dock/dock.model';
+import { Ship } from '../ship/ship.model';
+import { Truck } from '../truck/truck.model';
+import { Tugboat } from '../tugboat/tugboat.model';
 
 export class Passage {
   @IsNumber()

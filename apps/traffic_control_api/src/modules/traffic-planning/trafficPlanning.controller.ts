@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Post, Body, Delete, Patch } from '@nestjs/common';
-import { ITrafficPlanningService } from '../interfaces/ITrafficPlanning';
-import { TrafficPlanning } from '../models/trafficPlanning.model';
+import { TrafficPlanning } from './trafficPlanning.model';
+import { ITrafficPlanningService } from '../../interfaces/ITrafficPlanning';
 
 @Controller('api/TrafficPlanning')
 export class TrafficPlanningController {

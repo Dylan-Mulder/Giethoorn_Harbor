@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { Dock } from '../models/dock.model';
-import { IDockService } from '../interfaces/IDockService';
+import { IDockService } from '../../interfaces/IDockService';
+import { Dock } from './dock.model';
 
 @Injectable()
 export class DockService implements IDockService {

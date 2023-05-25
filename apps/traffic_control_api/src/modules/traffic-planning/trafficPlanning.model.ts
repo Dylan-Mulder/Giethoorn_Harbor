@@ -1,5 +1,5 @@
 import { IsArray, IsNumber, IsDate } from 'class-validator';
-import { Passage } from "./passage.model";
+import { Passage } from '../passage/passage.model';
 
 export class TrafficPlanning {
 

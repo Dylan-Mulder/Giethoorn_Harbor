@@ -1,7 +1,7 @@
 import { Ship } from "apps/security/models/ship.model";
 import { Truck } from "apps/security/models/truck.model";
 import { Dock } from "apps/traffic_control_api/src/models/dock.model";
-import { Tugboat } from "apps/traffic_control_api/src/models/tugboat.model";
+import { Tugboat } from "apps/traffic_control_api/src/tugboat/tugboat.model";
 
 export class CreatePassageDTO {
   public id: number;

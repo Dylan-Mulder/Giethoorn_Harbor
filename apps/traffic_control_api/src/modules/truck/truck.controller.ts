@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Post, Body, Delete, Patch } from '@nestjs/common';
-import { ITruckService } from '../interfaces/ITruckService';
-import { Truck } from '../models/truck.model';
+import { Truck } from './truck.model';
+import { ITruckService } from '../../interfaces/ITruckService';
 
 @Controller('api/Truck')
 export class TruckController {
