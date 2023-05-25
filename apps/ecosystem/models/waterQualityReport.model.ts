@@ -6,5 +6,5 @@ export class WaterQualityReport {
   chlorine: number;
   dateStartMeasurement: Date;
   turbidity: number;
-  declofenacUgL: number;
+  diclofenacUgL: number;
 }
