@@ -1,18 +1,18 @@
 version: '3.6'
 services:
-  # rabbitmq:
-  #   image: rabbitmq:3-management
-  #   container_name: rabbitmq
-  #   hostname: rabbitmq
-  #   volumes:
-  #     - /var/lib/rabbitmq
-  #   ports:
-  #     - '5672:5672'
-  #     - '15672:15672'
-  #   env_file:
-  #     - .env
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    hostname: rabbitmq
+    volumes:
+      - /var/lib/rabbitmq
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    env_file:
+      - .env
 
-  db:
+  postgres_database:
     container_name: PostgreSQL
     image: postgres:latest
     restart: always
@@ -24,39 +24,40 @@ services:
       POSTGRES_DB: postgres
     volumes:
       - /var/lib/postgresql
-  # traffic_control_api:
-  #   container_name: Traffic-Control-API
-  #   build:
-  #     context: ./
-  #     dockerfile: ./apps/traffic_control_api/Dockerfile
-  #   ports:
-  #     - '4200:5000'
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     - rabbitmq
-  #     - db
-  #   volumes:
-  #     - .:/usr/src/app
-  #     - /usr/src/app/node_modules
-  #   command: npm run start:dev traffic_control_api
-  # dock_rental_api:
-  #   container_name: Dock-Rental-API
-  #   build:
-  #     context: ./
-  #     dockerfile: ./apps/dock_rental_api/Dockerfile
-  #   ports:
-  #     - '4100:5001'
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     - rabbitmq
-  #     - db
-  #   volumes:
-  #     - .:/usr/src/app
-  #     - /usr/src/app/node_modules
-  #   command: npm run start:dev dock_rental_api
 
+  traffic_control_api:
+    container_name: Traffic-Control-API
+    build:
+      context: ./
+      dockerfile: ./apps/traffic_control_api/Dockerfile
+    ports:
+      - '4200:5000'
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - postgres_database
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev traffic_control_api
+
+  dock_rental_api:
+    container_name: Dock-Rental-API
+    build:
+      context: ./
+      dockerfile: ./apps/dock_rental_api/Dockerfile
+    ports:
+      - '4100:5001'
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - postgres_database
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev dock_rental_api
   # traffic_control:
   #   container_name: Traffic-Control
   #   build:
@@ -67,7 +68,7 @@ services:
   #   depends_on:
   #     - rabbitmq
   #     - traffic_control_api
-  #     - db
+  #     - postgres_database
   #   volumes:
   #     - .:/usr/src/app
   #     - /usr/src/app/node_modules
@@ -83,7 +84,7 @@ services:
   #   depends_on:
   #     - rabbitmq
   #     - dock_rental_api
-  #     - db
+  #     - postgres_database
   #   volumes:
   #     - .:/usr/src/app
   #     - /usr/src/app/node_modules
@@ -98,7 +99,7 @@ services:
   #     - .env
   #   depends_on:
   #     - rabbitmq
-  #     - db
+  #     - postgres_database
   #   volumes:
   #     - .:/usr/src/app
   #     - /usr/src/app/node_modules
@@ -114,7 +115,7 @@ services:
   #   depends_on:
   #     - rabbitmq
   #     - traffic_control_api
-  #     - db
+  #     - postgres_database
   #   volumes:
   #     - .:/usr/src/app
   #     - /usr/src/app/node_modules
@@ -130,7 +131,7 @@ services:
   #   depends_on:
   #     - rabbitmq
   #     - traffic_control_api
-  #     - db
+  #     - postgres_database
   #   volumes:
   #     - .:/usr/src/app
   #     - /usr/src/app/node_modules
@@ -146,7 +147,7 @@ services:
   #   depends_on:
   #     - rabbitmq
   #     - traffic_control_api
-  #     - db
+  #     - postgres_database
   #   volumes:
   #     - .:/usr/src/app
   #     - /usr/src/app/node_modules
@@ -164,7 +165,7 @@ services:
   #     - rabbitmq
   #     - traffic_control_api
   #     - ecosystem
-  #     - db
+  #     - postgres_database
   #   volumes:
   #     - .:/usr/src/app
   #     - /usr/src/app/node_modules
@@ -183,7 +184,7 @@ services:
   #     - refilling
   #     - cargo_management
   #     - dock_rental_api
-  #     - db
+  #     - postgres_database
   #   volumes:
   #     - .:/usr/src/app
   #     - /usr/src/app/node_modules
@@ -200,7 +201,7 @@ services:
   #   depends_on:
   #     - rabbitmq
   #     - billing
-  #     - db
+  #     - postgres_database
   #   volumes:
   #     - .:/usr/src/app
   #     - /usr/src/app/node_modules
