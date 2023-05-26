@@ -2,6 +2,7 @@ import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { EcosystemModule } from './ecosystem.module';
+import { EcosystemService } from './ecosystem.service';
 
 async function bootstrap() {
   const app = await NestFactory.create(EcosystemModule);
