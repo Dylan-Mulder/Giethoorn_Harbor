@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { ShipController } from './ship.controller';
 import { ShipService } from './ship.service';
-import { Ship } from 'apps/security/models/ship.model';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { IShipService } from '../interfaces/IShipService';
+import { Ship } from './ship.model';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Ship])],

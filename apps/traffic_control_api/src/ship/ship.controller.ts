@@ -1,7 +1,6 @@
 import { Controller, Get, Param, Post, Body, Delete, Patch } from '@nestjs/common';
 import { IShipService } from '../interfaces/IShipService';
 import { Ship } from './ship.model';
-import { DeleteResult } from 'typeorm';
 
 @Controller('ship')
 export class ShipController {
