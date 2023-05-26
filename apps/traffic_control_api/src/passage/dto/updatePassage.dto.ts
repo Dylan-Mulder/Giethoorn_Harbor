@@ -4,7 +4,7 @@ import { Ship } from "../../ship/ship.model";
 import { Truck } from "../../truck/truck.model";
 import { Tugboat } from "../../tugboat/tugboat.model";
 
-export class CreatePassageDTO {
+export class UpdatePassageDTO {
 
   @IsNotEmpty()
   public readonly id: number
