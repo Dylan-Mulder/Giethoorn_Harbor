@@ -1,9 +1,10 @@
-import { Truck } from "../models/truck.model";
+import { DeleteResult } from "typeorm";
+import { Truck } from "../truck/truck.model";
 
-export interface ITruckService {
-  createTruck(Truck: Truck): void;
-  getTruckById(id: number): Truck;
-  getAllTrucks(): Array<Truck>;
-  updateTruckById(id: number, updateTruck: Truck): void;
-  deleteTruckById(id: number): void;
+export abstract class ITruckService {
+  abstract createTruck(Truck: Truck): Promise<Truck>;
+  abstract getTruckById(id: number): Promise<Truck>;
+  abstract getAllTrucks(): Promise<Array<Truck>>;
+  abstract updateTruckById(id: number, updateTruck: Truck): Promise<Truck>;
+  abstract deleteTruckById(id: number): Promise<DeleteResult>;
 }

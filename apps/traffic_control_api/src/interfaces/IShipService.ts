@@ -1,9 +1,10 @@
-import { Ship } from "../models/ship.model";
+import { DeleteResult } from "typeorm";
+import { Ship } from "../ship/ship.model";
 
-export interface IShipService {
-  createShip(Ship: Ship): void;
-  getShipById(id: number): Ship;
-  getAllShips(): Array<Ship>;
-  updateShipById(id: number, updateShip: Ship): void;
-  deleteShipById(id: number): void;
+export abstract class IShipService {
+  abstract createShip(Ship: Ship): Promise<Ship>;
+  abstract getShipById(id: number): Promise<Ship>;
+  abstract getAllShips(): Promise<Array<Ship>>;
+  abstract updateShipById(id: number, updateShip: Ship): Promise<Ship>;
+  abstract deleteShipById(id: number): Promise<DeleteResult>;
 }

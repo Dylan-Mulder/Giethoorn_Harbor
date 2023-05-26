@@ -1,35 +1,45 @@
 import { Module } from '@nestjs/common';
 import { AppController } from './app.controller';
-import { AppService } from './app.service';
+import { TypeOrmModule } from '@nestjs/typeorm';
+
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientProxyFactory, Transport } from '@nestjs/microservices';
-import { DataSource } from 'typeorm';
-import { TypeOrmModule } from '@nestjs/typeorm';
+
+// Custom modules
+import { DockModule } from './dock/dock.module';
+import { PassageModule } from './passage/passage.module';
+import { ShipModule } from './ship/ship.module';
+import { TrafficPlanningModule } from './traffic-planning/trafficPlanning.module';
+import { TruckModule } from './truck/truck.module';
+import { TugboatModule } from './tugboat/tugboat.module';
 
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true, envFilePath: './.env' }),
+    ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         "type": "postgres",
-        "host": "localhost",
+        "host": "172.19.0.2",
         "port": 5432,
         "username": "postgres",
         "password": "password",
         "database": "postgres",
-        "entities": [
-          "./models/**/*.ts"
-        ],
+        //"entities": ["./**/*.model.ts"],
         "synchronize": true
       }),
       inject: [ConfigService]
     }),
+    DockModule,
+    PassageModule,
+    ShipModule,
+    TrafficPlanningModule,
+    TruckModule,
+    TugboatModule
   ],
   controllers: [AppController],
   providers: [
-    AppService,
     {
       provide: 'TRAFFIC_CONTROL_SERVICE',
       useFactory: (configService: ConfigService) => {
@@ -137,6 +147,4 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     }
   ],
 })
-export class AppModule {
-  constructor(private dataSource: DataSource) { }
-}
+export class AppModule { }

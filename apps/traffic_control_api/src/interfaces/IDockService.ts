@@ -1,9 +1,10 @@
-import { Dock } from "../models/dock.model";
+import { DeleteResult } from "typeorm";
+import { Dock } from "../dock/dock.model";
 
-export interface IDockService {
-  createDock(dock: Dock): void;
-  getDockById(id: number): Dock;
-  getAllDocks(): Array<Dock>;
-  updateDockById(id: number, updateDock: Dock): void;
-  deleteDockById(id: number): void;
+export abstract class IDockService {
+  abstract createDock(dock: Dock): Promise<Dock>;
+  abstract getDockById(id: number): Promise<Dock>;
+  abstract getAllDocks(): Promise<Array<Dock>>;
+  abstract updateDockById(id: number, updateDock: Dock): Promise<Dock>;
+  abstract deleteDockById(id: number): Promise<DeleteResult>;
 }

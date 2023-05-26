@@ -1,9 +1,10 @@
-import { Tugboat } from "../models/tugboat.model";
+import { DeleteResult } from "typeorm";
+import { Tugboat } from "../tugboat/tugboat.model";
 
-export interface ITugboatService {
-  createTugboat(Tugboat: Tugboat): void;
-  getTugboatById(id: number): Tugboat;
-  getAllTugboats(): Array<Tugboat>;
-  updateTugboatById(id: number, updateTugboat: Tugboat): void;
-  deleteTugboatById(id: number): void;
+export abstract class ITugboatService {
+  abstract createTugboat(Tugboat: Tugboat): Promise<Tugboat>;
+  abstract getTugboatById(id: number): Promise<Tugboat>;
+  abstract getAllTugboats(): Promise<Array<Tugboat>>;
+  abstract updateTugboatById(id: number, updateTugboat: Tugboat): Promise<Tugboat>;
+  abstract deleteTugboatById(id: number): Promise<DeleteResult>;
 }

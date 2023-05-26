@@ -12,7 +12,7 @@ services:
     env_file:
       - .env
 
-  db:
+  postgres_database:
     container_name: PostgreSQL
     image: postgres:latest
     restart: always
@@ -24,6 +24,7 @@ services:
       POSTGRES_DB: postgres
     volumes:
       - /var/lib/postgresql
+
   traffic_control_api:
     container_name: Traffic-Control-API
     build:
@@ -35,7 +36,7 @@ services:
       - .env
     depends_on:
       - rabbitmq
-      - db
+      - postgres_database
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
