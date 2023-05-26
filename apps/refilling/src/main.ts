@@ -2,7 +2,6 @@ import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { Transport, MicroserviceOptions } from '@nestjs/microservices';
 import { RefillingModule } from './refilling.module';
-import { RefillingService } from './refilling.service';
 import * as amqp from 'amqplib';
 
 async function bootstrap() {
@@ -37,12 +36,14 @@ async function bootstrap() {
     // Acknowledge the message
     queue.ack(message);
 
+    console.log('I GOT MESSAGE: ' + message.content.toString())
+
     if (message) {
       const data = JSON.parse(message.content.toString());
 
         // Create a new ship
-        const refillingService = app.get(RefillingService);
-        await refillingService.createShip(data);
+        // const refillingService = app.get(RefillingService);
+        // await refillingService.createShip(data);
       
     }
   });
