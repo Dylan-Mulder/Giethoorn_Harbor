@@ -1,4 +1,4 @@
-import { Truck } from "../modules/truck/truck.model";
+import { Truck } from "../truck/truck.model";
 
 export interface ITruckService {
   createTruck(Truck: Truck): void;

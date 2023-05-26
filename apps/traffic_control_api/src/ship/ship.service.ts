@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Ship } from './ship.model';
-import { IShipService } from '../../interfaces/IShipService';
+import { IShipService } from '../interfaces/IShipService';
 
 @Injectable()
 export class ShipService implements IShipService {

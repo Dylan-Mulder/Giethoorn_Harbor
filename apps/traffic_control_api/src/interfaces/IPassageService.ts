@@ -1,4 +1,4 @@
-import { Passage } from "../modules/passage/passage.model";
+import { Passage } from "../passage/passage.model";
 
 export interface IPassageService {
   createPassage(Passage: Passage): void;

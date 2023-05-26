@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
-import { IPassageService } from '../../interfaces/IPassageService';
 import { Passage } from './passage.model';
+import { IPassageService } from '../interfaces/IPassageService';
 
 @Injectable()
 export class PassageService implements IPassageService {

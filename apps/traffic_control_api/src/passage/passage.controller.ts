@@ -1,5 +1,5 @@
 import { Controller, Get, Param, Post, Body, Delete, Patch } from '@nestjs/common';
-import { IPassageService } from '../../interfaces/IPassageService';
+import { IPassageService } from '../interfaces/IPassageService';
 import { Passage } from './passage.model';
 
 @Controller('api/Passage')

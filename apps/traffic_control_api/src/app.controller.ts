@@ -1,4 +1,4 @@
-import { Controller, Inject } from '@nestjs/common';
+import { Controller, Get, Inject } from '@nestjs/common';
 import { ClientProxy } from '@nestjs/microservices';
 
 @Controller()
@@ -10,4 +10,9 @@ export class AppController {
     @Inject('CARGO_MANAGEMENT_SERVICE') private cargoService: ClientProxy,
     @Inject('PUBLICATION_SERVICE') private publicationService: ClientProxy,
   ) { }
+
+  @Get()
+  root(): string {
+    return 'Hello World!';
+  }
 }

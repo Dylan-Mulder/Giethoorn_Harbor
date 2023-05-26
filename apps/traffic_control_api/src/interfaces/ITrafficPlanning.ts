@@ -1,4 +1,4 @@
-import { TrafficPlanning } from "../modules/traffic-planning/trafficPlanning.model";
+import { TrafficPlanning } from "../traffic-planning/trafficPlanning.model";
 
 export interface ITrafficPlanningService {
   createTrafficPlanning(TrafficPlanning: TrafficPlanning): void;

@@ -1,18 +1,25 @@
+import { IsNotEmpty } from "class-validator";
+
 export class CreateDockDTO {
-  public id: number;
-  public name: string;
-  public description: string;
-  public amountOfShipSpots: number;
-  public amountOfTruckSpots: number;
+
+  @IsNotEmpty()
+  public readonly name: string;
+
+  @IsNotEmpty()
+  public readonly description: string;
+
+  @IsNotEmpty()
+  public readonly amountOfShipSpots: number;
+
+  @IsNotEmpty()
+  public readonly amountOfTruckSpots: number;
 
   constructor(
-    id: number,
     name?: string,
     description?: string,
     amountOfShipSpots?: number,
     amountOfTruckSpots?: number
   ) {
-    this.id = id;
     this.name = name;
     this.description = description;
     this.amountOfShipSpots = amountOfShipSpots;

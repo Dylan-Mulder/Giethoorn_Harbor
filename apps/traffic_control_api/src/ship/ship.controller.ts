@@ -1,5 +1,5 @@
 import { Controller, Get, Param, Post, Body, Delete, Patch } from '@nestjs/common';
-import { IShipService } from '../../interfaces/IShipService';
+import { IShipService } from '../interfaces/IShipService';
 import { Ship } from './ship.model';
 
 @Controller('api/Ship')

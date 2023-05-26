@@ -1,5 +1,5 @@
 import { Controller, Get, Param, Post, Body, Delete, Patch } from '@nestjs/common';
-import { IDockService } from '../../interfaces/IDockService';
+import { IDockService } from '../interfaces/IDockService';
 import { Dock } from './dock.model';
 
 @Controller('api/dock')

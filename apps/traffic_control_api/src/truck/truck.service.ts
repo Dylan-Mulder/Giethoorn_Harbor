@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Truck } from './truck.model';
-import { ITruckService } from '../../interfaces/ITruckService';
+import { ITruckService } from '../interfaces/ITruckService';
 
 @Injectable()
 export class TruckService implements ITruckService {
