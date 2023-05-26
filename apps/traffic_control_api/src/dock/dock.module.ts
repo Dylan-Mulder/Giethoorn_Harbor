@@ -7,8 +7,7 @@ import { DockService } from './dock.service';
 @Module({
   imports: [TypeOrmModule.forFeature([Dock])],
   providers: [DockService],
-  controllers: [DockController],
-  exports: [DockService]
+  controllers: [DockController]
 })
 
 export class DockModule {

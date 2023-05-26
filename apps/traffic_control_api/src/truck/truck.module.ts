@@ -8,6 +8,5 @@ import { Truck } from './truck.model';
   imports: [TypeOrmModule.forFeature([Truck])],
   controllers: [TruckController],
   providers: [TruckService],
-  // exports: [TruckService]
 })
 export class TruckModule { }

@@ -31,12 +31,12 @@ import { TugboatModule } from './tugboat/tugboat.module';
       }),
       inject: [ConfigService]
     }),
-    DockModule,
-    PassageModule,
-    ShipModule,
-    TrafficPlanningModule,
-    TruckModule,
-    TugboatModule
+    // DockModule,
+    // PassageModule,
+    // ShipModule,
+    // TrafficPlanningModule,
+    // TruckModule,
+    // TugboatModule
   ],
   controllers: [AppController],
   providers: [

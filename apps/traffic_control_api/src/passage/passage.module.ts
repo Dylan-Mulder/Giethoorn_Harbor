@@ -8,6 +8,5 @@ import { Passage } from './passage.model';
   imports: [TypeOrmModule.forFeature([Passage])],
   providers: [PassageService],
   controllers: [PassageController],
-  // exports: [PassageService]
 })
 export class PassageModule { }

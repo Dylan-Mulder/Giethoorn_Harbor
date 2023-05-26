@@ -8,6 +8,5 @@ import { TypeOrmModule } from '@nestjs/typeorm';
   imports: [TypeOrmModule.forFeature([TrafficPlanning])],
   controllers: [TrafficPlanningController],
   providers: [TrafficPlanningService],
-  // exports: [TrafficPlanningService]
 })
 export class TrafficPlanningModule { }
