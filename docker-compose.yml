@@ -40,168 +40,169 @@ services:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     command: npm run start:dev traffic_control_api
-  # dock_rental_api:
-  #   container_name: Dock-Rental-API
-  #   build:
-  #     context: ./
-  #     dockerfile: ./apps/dock_rental_api/Dockerfile
-  #   ports:
-  #     - '4100:5001'
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     - rabbitmq
-  #     - db
-  #   volumes:
-  #     - .:/usr/src/app
-  #     - /usr/src/app/node_modules
-  #   command: npm run start:dev dock_rental_api
+    
+  dock_rental_api:
+    container_name: Dock-Rental-API
+    build:
+      context: ./
+      dockerfile: ./apps/dock_rental_api/Dockerfile
+    ports:
+      - '4100:5001'
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev dock_rental_api
 
-  # traffic_control:
-  #   container_name: Traffic-Control
-  #   build:
-  #     context: ./
-  #     dockerfile: ./apps/traffic_control/Dockerfile
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     - rabbitmq
-  #     - traffic_control_api
-  #     - db
-  #   volumes:
-  #     - .:/usr/src/app
-  #     - /usr/src/app/node_modules
-  #   command: npm run start:dev traffic_control
+  traffic_control:
+    container_name: Traffic-Control
+    build:
+      context: ./
+      dockerfile: ./apps/traffic_control/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - traffic_control_api
+      - db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev traffic_control
 
-  # dock_rental:
-  #   container_name: Dock-Rental
-  #   build:
-  #     context: ./
-  #     dockerfile: ./apps/dock_rental/Dockerfile
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     - rabbitmq
-  #     - dock_rental_api
-  #     - db
-  #   volumes:
-  #     - .:/usr/src/app
-  #     - /usr/src/app/node_modules
-  #   command: npm run start:dev dock_rental
+  dock_rental:
+    container_name: Dock-Rental
+    build:
+      context: ./
+      dockerfile: ./apps/dock_rental/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - dock_rental_api
+      - db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev dock_rental
 
-  # ecosystem:
-  #   container_name: Ecosystem
-  #   build:
-  #     context: ./
-  #     dockerfile: ./apps/ecosystem/Dockerfile
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     - rabbitmq
-  #     - db
-  #   volumes:
-  #     - .:/usr/src/app
-  #     - /usr/src/app/node_modules
-  #   command: npm run start:dev ecosystem
+  ecosystem:
+    container_name: Ecosystem
+    build:
+      context: ./
+      dockerfile: ./apps/ecosystem/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev ecosystem
 
-  # security:
-  #   container_name: Security
-  #   build:
-  #     context: ./
-  #     dockerfile: ./apps/security/Dockerfile
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     - rabbitmq
-  #     - traffic_control_api
-  #     - db
-  #   volumes:
-  #     - .:/usr/src/app
-  #     - /usr/src/app/node_modules
-  #   command: npm run start:dev security
+  security:
+    container_name: Security
+    build:
+      context: ./
+      dockerfile: ./apps/security/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - traffic_control_api
+      - db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev security
 
-  # refilling:
-  #   container_name: Refilling
-  #   build:
-  #     context: ./
-  #     dockerfile: ./apps/refilling/Dockerfile
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     - rabbitmq
-  #     - traffic_control_api
-  #     - db
-  #   volumes:
-  #     - .:/usr/src/app
-  #     - /usr/src/app/node_modules
-  #   command: npm run start:dev refilling
+  refilling:
+    container_name: Refilling
+    build:
+      context: ./
+      dockerfile: ./apps/refilling/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - traffic_control_api
+      - db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev refilling
 
-  # cargo_management:
-  #   container_name: Cargo-Management
-  #   build:
-  #     context: ./
-  #     dockerfile: ./apps/cargo_management/Dockerfile
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     - rabbitmq
-  #     - traffic_control_api
-  #     - db
-  #   volumes:
-  #     - .:/usr/src/app
-  #     - /usr/src/app/node_modules
-  #   command: npm run start:dev cargo_management
+  cargo_management:
+    container_name: Cargo-Management
+    build:
+      context: ./
+      dockerfile: ./apps/cargo_management/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - traffic_control_api
+      - db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev cargo_management
 
-  # publications:
-  #   container_name: Publications
+  publications:
+    container_name: Publications
 
-  #   build:
-  #     context: ./
-  #     dockerfile: ./apps/publications/Dockerfile
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     - rabbitmq
-  #     - traffic_control_api
-  #     - ecosystem
-  #     - db
-  #   volumes:
-  #     - .:/usr/src/app
-  #     - /usr/src/app/node_modules
-  #   command: npm run start:dev publications
+    build:
+      context: ./
+      dockerfile: ./apps/publications/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - traffic_control_api
+      - ecosystem
+      - db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev publications
 
-  # billing:
-  #   container_name: Billing
+  billing:
+    container_name: Billing
 
-  #   build:
-  #     context: ./
-  #     dockerfile: ./apps/billing/Dockerfile
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     - rabbitmq
-  #     - refilling
-  #     - cargo_management
-  #     - dock_rental_api
-  #     - db
-  #   volumes:
-  #     - .:/usr/src/app
-  #     - /usr/src/app/node_modules
-  #   command: npm run start:dev billing
+    build:
+      context: ./
+      dockerfile: ./apps/billing/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - refilling
+      - cargo_management
+      - dock_rental_api
+      - db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev billing
 
-  # messaging:
-  #   container_name: Messaging
+  messaging:
+    container_name: Messaging
 
-  #   build:
-  #     context: ./
-  #     dockerfile: ./apps/messaging/Dockerfile
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     - rabbitmq
-  #     - billing
-  #     - db
-  #   volumes:
-  #     - .:/usr/src/app
-  #     - /usr/src/app/node_modules
-  #   command: npm run start:dev messaging
+    build:
+      context: ./
+      dockerfile: ./apps/messaging/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - billing
+      - db
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    command: npm run start:dev messaging
