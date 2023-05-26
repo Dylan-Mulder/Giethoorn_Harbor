@@ -22,8 +22,8 @@ services:
     env_file:
       - .env
     volumes:
-      - /relational_database:/var/lib/postgresql/data
-      - ./relational_database_init.sql:/docker-entrypoint-initdb.d/relational_database_init.sql
+      - relational_database:/var/lib/postgresql/data
+      - ./database init scripts/relational_database_init.sql:/docker-entrypoint-initdb.d/relational_database_init.sql
 
   event_store:
     container_name: event-store
@@ -34,7 +34,7 @@ services:
     env_file:
       - .env
     volumes:
-      - /event_store:/var/lib/postgresql/data
+      - event_store:/var/lib/postgresql/data
 
   traffic_control_api:
     container_name: Traffic-Control-API
@@ -237,3 +237,7 @@ services:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     command: npm run start:dev messaging
+
+volumes:
+  relational_database:
+  event_store:
