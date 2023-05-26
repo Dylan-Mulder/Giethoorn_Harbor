@@ -21,7 +21,7 @@ import { TugboatModule } from './tugboat/tugboat.module';
       imports: [ConfigModule],
       useFactory: (configService: ConfigService) => ({
         "type": "postgres",
-        "host": "localhost",
+        "host": "172.19.0.2",
         "port": 5432,
         "username": "postgres",
         "password": "password",
