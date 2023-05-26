@@ -2,32 +2,32 @@ import { Controller, Get, Param, Post, Body, Delete, Patch } from '@nestjs/commo
 import { IDockService } from '../interfaces/IDockService';
 import { Dock } from './dock.model';
 
-@Controller('api/dock')
+@Controller('dock')
 export class DockController {
-  constructor(private dockService: IDockService) { }
+  constructor(private readonly dockService: IDockService) { }
 
   @Post()
   async createDock(@Body() dock: Dock) {
-    return this.dockService.createDock(dock);
+    return await this.dockService.createDock(dock);
   }
 
   @Get()
   async getDockById(@Param() param: { dockId: number }) {
-    return this.dockService.getDockById(param.dockId);
+    return await this.dockService.getDockById(param.dockId);
   }
 
   @Get()
   async getAllDocks() {
-    return this.dockService.getAllDocks();
+    return await this.dockService.getAllDocks();
   }
 
   @Patch()
   async updateDockById(@Param() param: { dockId: number }, @Body() updateDock: Dock) {
-    return this.dockService.updateDockById(param.dockId, updateDock);
+    return await this.dockService.updateDockById(param.dockId, updateDock);
   }
 
   @Delete()
   async deleteDock(@Param() param: { dockId: number }) {
-    return this.dockService.deleteDockById(param.dockId);
+    return await this.dockService.deleteDockById(param.dockId);
   }
 }

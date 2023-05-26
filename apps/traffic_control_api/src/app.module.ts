@@ -9,7 +9,7 @@ import { ClientProxyFactory, Transport } from '@nestjs/microservices';
 import { DockModule } from './dock/dock.module';
 import { PassageModule } from './passage/passage.module';
 import { ShipModule } from './ship/ship.module';
-import { TrafficPlanningModule } from './traffic-planning/traffic-planning.module';
+import { TrafficPlanningModule } from './traffic-planning/trafficPlanning.module';
 import { TruckModule } from './truck/truck.module';
 import { TugboatModule } from './tugboat/tugboat.module';
 
@@ -31,12 +31,12 @@ import { TugboatModule } from './tugboat/tugboat.module';
       }),
       inject: [ConfigService]
     }),
-    // DockModule,
-    // PassageModule,
-    // ShipModule,
-    // TrafficPlanningModule,
-    // TruckModule,
-    // TugboatModule
+    DockModule,
+    PassageModule,
+    ShipModule,
+    TrafficPlanningModule,
+    TruckModule,
+    TugboatModule
   ],
   controllers: [AppController],
   providers: [

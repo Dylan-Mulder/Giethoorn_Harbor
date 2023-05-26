@@ -1,12 +1,18 @@
-import { Module } from '@nestjs/common';
 import { DockController } from './dock.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { Dock } from './dock.model';
 import { DockService } from './dock.service';
+import { Module } from '@nestjs/common';
+import { IDockService } from '../interfaces/IDockService';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Dock])],
-  providers: [DockService],
+  providers: [
+    {
+      provide: IDockService,
+      useClass: DockService
+    }
+  ],
   controllers: [DockController]
 })
 

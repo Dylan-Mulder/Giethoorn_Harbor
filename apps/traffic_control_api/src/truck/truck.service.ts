@@ -1,22 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { Truck } from './truck.model';
 import { ITruckService } from '../interfaces/ITruckService';
+import { DeleteResult } from 'typeorm';
 
 @Injectable()
 export class TruckService implements ITruckService {
-  createTruck(): void {
+  createTruck(Truck: Truck): Promise<Truck> {
     throw new Error('Method not implemented.');
   }
-  getTruckById(id: number): Truck {
+  getTruckById(id: number): Promise<Truck> {
     throw new Error('Method not implemented.');
   }
-  getAllTrucks(): Truck[] {
+  getAllTrucks(): Promise<Truck[]> {
     throw new Error('Method not implemented.');
   }
-  updateTruckById(id: number, updateTruck: Truck): void {
+  updateTruckById(id: number, updateTruck: Truck): Promise<Truck> {
     throw new Error('Method not implemented.');
   }
-  deleteTruckById(id: number): void {
+  deleteTruckById(id: number): Promise<DeleteResult> {
     throw new Error('Method not implemented.');
   }
+
 }

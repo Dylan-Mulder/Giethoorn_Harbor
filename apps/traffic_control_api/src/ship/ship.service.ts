@@ -1,22 +1,24 @@
 import { Injectable } from '@nestjs/common';
 import { Ship } from './ship.model';
 import { IShipService } from '../interfaces/IShipService';
+import { DeleteResult } from 'typeorm';
 
 @Injectable()
 export class ShipService implements IShipService {
-  createShip(): void {
+  createShip(Ship: Ship): Promise<Ship> {
     throw new Error('Method not implemented.');
   }
-  getShipById(id: number): Ship {
+  getShipById(id: number): Promise<Ship> {
     throw new Error('Method not implemented.');
   }
-  getAllShips(): Ship[] {
+  getAllShips(): Promise<Ship[]> {
     throw new Error('Method not implemented.');
   }
-  updateShipById(id: number, updateShip: Ship): void {
+  updateShipById(id: number, updateShip: Ship): Promise<Ship> {
     throw new Error('Method not implemented.');
   }
-  deleteShipById(id: number): void {
+  deleteShipById(id: number): Promise<DeleteResult> {
     throw new Error('Method not implemented.');
   }
+
 }
