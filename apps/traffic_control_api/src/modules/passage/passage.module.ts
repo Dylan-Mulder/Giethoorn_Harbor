@@ -4,6 +4,6 @@ import { PassageService } from './passage.service';
 
 @Module({
   controllers: [PassageController],
-  providers: [PassageService]
+  exports: [PassageService]
 })
-export class PassageModule {}
+export class PassageModule { }

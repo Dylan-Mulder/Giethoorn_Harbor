@@ -4,6 +4,6 @@ import { DockService } from './dock.service';
 
 @Module({
   controllers: [DockController],
-  providers: [DockService]
+  exports: [DockService]
 })
-export class DockModule {}
+export class DockModule { }

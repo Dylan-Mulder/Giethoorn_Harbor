@@ -4,6 +4,6 @@ import { TrafficPlanningController } from './trafficPlanning.controller';
 
 @Module({
   controllers: [TrafficPlanningController],
-  providers: [TrafficPlanningService]
+  exports: [TrafficPlanningService]
 })
 export class TrafficPlanningModule { }

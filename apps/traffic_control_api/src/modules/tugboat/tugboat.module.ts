@@ -4,6 +4,6 @@ import { TugboatService } from './tugboat.service';
 
 @Module({
   controllers: [TugboatController],
-  providers: [TugboatService]
+  exports: [TugboatService]
 })
-export class TugboatModule {}
+export class TugboatModule { }
