@@ -237,7 +237,3 @@ services:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     command: npm run start:dev messaging
-
-volumes:
-  relational_database:
-  event_store:
