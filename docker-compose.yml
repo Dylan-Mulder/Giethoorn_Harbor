@@ -14,7 +14,7 @@ services:
       - .env
 
   relational_database:
-    container_name: relational-database
+    container_name: PostgreSQL-rdb
     image: postgres:latest
 
     ports:
@@ -23,10 +23,10 @@ services:
       - .env
     volumes:
       - relational_database:/var/lib/postgresql/data
-      - ./database init scripts/relational_database_init.sql:/docker-entrypoint-initdb.d/relational_database_init.sql
+      - ./database_scripts/relational_database_init.sql:/docker-entrypoint-initdb.d/relational_database_init.sql
 
   event_store:
-    container_name: event-store
+    container_name: PostgreSQL-ev
     image: postgres:latest
 
     ports:
