@@ -61,7 +61,8 @@ async function bootstrap() {
             async (message) => {
               if (message !== null) {
                 const content = message.content.toString();
-                console.log('Consumer received event:', content);
+                console.log(JSON.parse(message.content));
+                console.log('Consumer received event');
 
                 // Process the event:
                 const rmqContext = new RmqContext([message, channel, null]);
