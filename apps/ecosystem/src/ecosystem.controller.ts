@@ -1,12 +1,14 @@
 import { Controller, Get } from '@nestjs/common';
 import { EcosystemService } from './ecosystem.service';
+import { WaterQualityReport } from '../models/waterQualityReport.model';
 
 @Controller()
 export class EcosystemController {
   constructor(private readonly ecosystemService: EcosystemService) {}
 
   @Get()
-  getHello(): string {
-    return this.ecosystemService.getHello();
+  getWaterQualityReport(): Promise<WaterQualityReport> {
+    return this.ecosystemService.getWaterQualityReport();
   }
+  
 }
