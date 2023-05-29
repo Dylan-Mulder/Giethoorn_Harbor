@@ -13,7 +13,7 @@ services:
       - .env
 
   relational_database:
-    container_name: PostgreSQL-rdb
+    container_name: PostgreSQL-Relational-Database
     image: postgres:latest
     restart: always
     ports:
@@ -26,7 +26,7 @@ services:
       - ./database_scripts/relational_database_insert.sql:/docker-entrypoint-initdb.d/relational_database_insert.sql
 
   event_store:
-    container_name: PostgreSQL-ev
+    container_name: PostgreSQL-Event-Store
     image: postgres:latest
 
     ports:
@@ -35,6 +35,7 @@ services:
       - .env
     volumes:
       - event_store:/var/lib/postgresql/data
+      - ./database_scripts/event_store_init.sql:/docker-entrypoint-initdb.d/event_store_init.sql
 
   traffic_control_api:
     container_name: Traffic-Control-API
