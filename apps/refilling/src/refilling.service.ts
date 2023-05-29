@@ -21,4 +21,8 @@ export class RefillingService {
       client.release();
     }
   }
+
+  async methodTemplate(message){
+    console.log("Refilling Service: Method called with message: "+message);
+  }
 }

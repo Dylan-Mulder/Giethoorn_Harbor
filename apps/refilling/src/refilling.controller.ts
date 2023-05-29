@@ -7,8 +7,23 @@ import { Ship } from '../models/ship.model';
 export class RefillingController {
   constructor(private readonly refillingService: RefillingService) {}
 
-  @MessagePattern('refilling_queue') // Add this decorator to handle messages from the RabbitMQ queue
+  @MessagePattern({ exchange: 'topic_exchange', routingKey: 'event.#' })
   async handleMessage(
+    @Payload() message: string,
+    @Ctx() context: RmqContext, // Context to acknowledge the message
+  ): Promise<void> {
+    try {
+      console.log("Refilling Controller: handleMessage called.")
+      await this.refillingService.methodTemplate(message);
+      context.getChannelRef().ack(context.getMessage()); // Acknowledge the message
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  
+  @MessagePattern({ exchange: 'topic_exchange2', routingKey: 'event.#' })
+  async handleMessageShip(
     @Payload() shipData: Partial<Ship>, // Payload will contain the ship data from the message
     @Ctx() context: RmqContext, // Context to acknowledge the message
   ): Promise<void> {

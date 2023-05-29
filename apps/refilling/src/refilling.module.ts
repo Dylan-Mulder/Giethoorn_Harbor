@@ -22,5 +22,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
     //   inject: [ConfigService]
     // }),
   ],
+  controllers: [RefillingController], // Add the controller here
+  providers: [RefillingService],
 })
 export class RefillingModule {}
