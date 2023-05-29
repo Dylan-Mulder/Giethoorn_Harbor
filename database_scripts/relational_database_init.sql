@@ -69,7 +69,7 @@ CREATE TABLE traffic_control.ship
     name text NOT NULL,
     shipping_company_name text NOT NULL,
     max_load_in_tonnage integer NOT NULL,
-    length integer NOT NULL,
+    length_in_m integer NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     PRIMARY KEY (id)
 );
@@ -165,7 +165,7 @@ CREATE TABLE ecosystem.marine_life_report
     scientific_name text NOT NULL,
     cpue numeric(18, 2) NOT NULL,
     habitat text NOT NULL,
-    season text NOT NULL,
+    season text,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     PRIMARY KEY (id)
 );
@@ -275,11 +275,12 @@ ALTER TABLE IF EXISTS refilling.service
     ADD CONSTRAINT fk_ship FOREIGN KEY(ship_id) REFERENCES refilling.ship(id);
 
 -- Cargo Management
-CREATE TABLE cargo_management.container_range
+CREATE TABLE cargo_management.cargo
 (
     id serial NOT NULL,
-    first_container integer NOT NULL,
-    last_container integer NOT NULL,
+    ship_id integer NOT NULL,
+    amount_of_containers integer NOT NULL,
+    type text NOT NULL,
     gross_tonnage integer NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     PRIMARY KEY (id)
@@ -306,14 +307,15 @@ CREATE TABLE cargo_management.service
     id serial NOT NULL,
     traffic_planning_id integer NOT NULL,
     ship_id integer NOT NULL,
-    container_range_id integer NOT NULL,
+    cargo_id integer NOT NULL,
     is_loading boolean NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     PRIMARY KEY (id)
 );
 
-ALTER TABLE IF EXISTS cargo_management.container_range
-    OWNER to gh_cargo_management;
+ALTER TABLE IF EXISTS cargo_management.cargo
+    OWNER to gh_cargo_management,
+    ADD CONSTRAINT fk_ship FOREIGN KEY(ship_id) REFERENCES cargo_management.ship(id);
 ALTER TABLE IF EXISTS cargo_management.ship
     OWNER to gh_cargo_management;
 ALTER TABLE IF EXISTS cargo_management.traffic_planning
@@ -322,7 +324,7 @@ ALTER TABLE IF EXISTS cargo_management.service
     OWNER to gh_cargo_management,
     ADD CONSTRAINT fk_traffic_planning FOREIGN KEY(traffic_planning_id) REFERENCES cargo_management.traffic_planning(id),
     ADD CONSTRAINT fk_ship FOREIGN KEY(ship_id) REFERENCES cargo_management.ship(id),
-    ADD CONSTRAINT fk_container_range FOREIGN KEY(container_range_id) REFERENCES cargo_management.container_range(id);
+    ADD CONSTRAINT fk_cargo FOREIGN KEY(cargo_id) REFERENCES cargo_management.cargo(id);
 
 -- Publications
 CREATE TABLE publications.traffic_planning
@@ -337,7 +339,7 @@ CREATE TABLE publications.traffic_planning
 CREATE TABLE publications.marine_life_report
 (
     id serial NOT NULL,
-    date date NOT NULL,
+    year integer NOT NULL,
     species text NOT NULL,
     scientific_name text NOT NULL,
     cpue numeric(18, 2) NOT NULL,
@@ -347,11 +349,11 @@ CREATE TABLE publications.marine_life_report
 CREATE TABLE publications.water_quality_report
 (
     id serial NOT NULL,
-    date date NOT NULL,
     ph numeric(18, 2) NOT NULL,
     oxygen_in_mg_per_l numeric(18, 2) NOT NULL,
     temperature_in_celsius numeric(18, 2) NOT NULL,
     chlorine_in_mg_per_l numeric(18, 2) NOT NULL,
+    start_date date NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     PRIMARY KEY (id)
 );
@@ -429,7 +431,7 @@ CREATE TABLE messaging.invoice
 (
     id serial NOT NULL,
     reference text NOT NULL,
-    shipping_company_name integer NOT NULL,
+    shipping_company_name text NOT NULL,
     records jsonb NOT NULL,
     month text NOT NULL,
     total_price numeric(18, 2) NOT NULL,

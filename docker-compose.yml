@@ -18,13 +18,12 @@ services:
     restart: always
     ports:
       - '5432:5432'
-    environment:
-      POSTGRES_USER: postgres
-      POSTGRES_PASSWORD: password
-      POSTGRES_DB: postgres
+    env_file:
+      - .env
     volumes:
       - relational_database:/var/lib/postgresql/data
       - ./database_scripts/relational_database_init.sql:/docker-entrypoint-initdb.d/relational_database_init.sql
+      - ./database_scripts/relational_database_insert.sql:/docker-entrypoint-initdb.d/relational_database_insert.sql
 
   event_store:
     container_name: PostgreSQL-ev
