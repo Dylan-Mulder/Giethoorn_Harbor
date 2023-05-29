@@ -25,7 +25,8 @@ import { ShippingCompany } from './modules/shipping-company/entity/shipping-comp
         password: configService.get('POSTGRES_PASSWORD'),
         database: configService.get('POSTGRES_DB'),
         entities: [Dock, LeaseAgreement, ShippingCompany],
-        synchronize: true,
+        synchronize: false,
+        migrationsRun: false
       }),
     }),
     LeaseAgreementModule,
