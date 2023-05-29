@@ -26,7 +26,6 @@ import { TugboatModule } from './tugboat/tugboat.module';
         "username": "postgres",
         "password": "password",
         "database": "postgres",
-        //"entities": ["./**/*.model.ts"],
         "synchronize": true
       }),
       inject: [ConfigService]

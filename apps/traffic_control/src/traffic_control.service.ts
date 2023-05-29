@@ -1,8 +1,19 @@
 import { Injectable } from '@nestjs/common';
+import { RabbitMQService } from './Rabbitmq.Service';
+
 
 @Injectable()
 export class TrafficControlService {
-  getHello(): string {
-    return 'Hello World!';
+  constructor(private readonly rabbitmqService: RabbitMQService) {}
+
+  async createShip(ship: any): Promise<void> {
+    try {
+      this.rabbitmqService.connectPublishClose(ship);
+    } 
+    catch (error) {
+      console.error('Error creating new ship:', error);
+    } finally {
+      await this.rabbitmqService.close();
+    }
   }
 }

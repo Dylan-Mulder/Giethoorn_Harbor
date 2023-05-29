@@ -13,10 +13,4 @@ describe('EcosystemController', () => {
 
     ecosystemController = app.get<EcosystemController>(EcosystemController);
   });
-
-  // describe('root', () => {
-  //   it('should return "Hello World!"', () => {
-  //     expect(ecosystemController.getHello()).toBe('Hello World!');
-  //   });
-  // });
 });

@@ -1,30 +1,22 @@
 import { NestFactory } from '@nestjs/core';
-import { ConfigService } from '@nestjs/config';
-import { MicroserviceOptions, Transport } from '@nestjs/microservices';
 import { TrafficControlModule } from './traffic_control.module';
+import { TrafficControlService } from './traffic_control.service'; // Import the TrafficControlService
 
 async function bootstrap() {
   const app = await NestFactory.create(TrafficControlModule);
 
-  const configService = app.get(ConfigService);
+  // Create new ship from TrafficControlService
+  const trafficControlService = app.get(TrafficControlService); // Use the imported TrafficControlService
 
-  const USER = configService.get('RABBITMQ_USER');
-  const PASSWORD = configService.get('RABBITMQ_PASS');
-  const HOST = configService.get('RABBITMQ_HOST');
-  const QUEUE = configService.get('RABBITMQ_TRAFFIC_CONTROL_QUEUE');
+  async function createNewShip(shipData: any) {
+      const newShip = await trafficControlService.createShip(shipData);
+  }
 
-  app.connectMicroservice<MicroserviceOptions>({
-    transport: Transport.RMQ,
-    options: {
-      urls: [`amqp://${USER}:${PASSWORD}@${HOST}`],
-      noAck: false,
-      queue: QUEUE,
-      queueOptions: {
-        durable: true
-      }
-    }
-  })
+  const exampleShipData = {
+    name: 'My Ship',
+  };
 
-  app.startAllMicroservices();
+  await createNewShip(exampleShipData);
 }
+
 bootstrap();
