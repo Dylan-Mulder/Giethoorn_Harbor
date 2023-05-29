@@ -40,10 +40,6 @@ async function bootstrap() {
 
     if (message) {
       const data = JSON.parse(message.content.toString());
-
-        // Create a new ship
-        // const refillingService = app.get(RefillingService);
-        // await refillingService.createShip(data);
       
     }
   });
