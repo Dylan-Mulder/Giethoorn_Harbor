@@ -19,14 +19,29 @@ async function bootstrap() {
 
   const consumerConfigs = [
     {
-      exchange: 'topic_exchange',
-      routingKeyPattern: 'event.type.#',
-      methodToCall:refillingController.handleMessage
+      exchange: 'ship-registered',
+      routingKeyPattern: 'event.ship-registered',
+      methodToCall:refillingController.handleShipRegistered
     },
     {
-      exchange: 'topic_exchange2',
-      routingKeyPattern: 'topic2.#',
-      methodToCall:refillingController.handleMessageShip
+      exchange: 'ship-has-docked',
+      routingKeyPattern: 'event.ship-has-docked',
+      methodToCall:refillingController.handleShipHasDocked
+    },
+    {
+      exchange: 'planning-has-updated',
+      routingKeyPattern: 'event.planning-has-updated',
+      methodToCall:refillingController.handlePlanningHasUpdated
+    },
+    {
+      exchange: 'ship-has-recharged',
+      routingKeyPattern: 'event.ship-has-recharged',
+      methodToCall:refillingController.handleShipHasRecharged
+    },
+    {
+      exchange: 'ship-has-refuelled',
+      routingKeyPattern: 'event.ship-has-refuelled',
+      methodToCall:refillingController.handleShipHasRefuelled
     },
     // Add more consumer configurations as needed
   ];
@@ -46,11 +61,11 @@ async function bootstrap() {
             async (message) => {
               if (message !== null) {
                 const content = message.content.toString();
-                console.log('Consumer 1 received event:', content);
-                // Process the event...
+                console.log('Consumer received event:', content);
+
+                // Process the event:
                 const rmqContext = new RmqContext([message, channel, null]);
                 await methodToCall.call(refillingController, content, rmqContext);
-                //channel.ack(message); // Acknowledge the event
               }
             },
       );
