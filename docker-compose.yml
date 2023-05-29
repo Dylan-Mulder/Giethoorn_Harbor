@@ -35,23 +35,23 @@ services:
       - ./database_scripts/relational_database_insert.sql:/docker-entrypoint-initdb.d/relational_database_insert.sql
 
   # EVENT SOURCE DATABASE
-  event_store:
-    container_name: PostgreSQL-Event-Store
-    image: postgres:latest
-    restart: always
-    networks:
-      - network
-    ports:
-      - '5433:5432'
-    logging:
-      options:
-        max-size: 10m
-        max-file: "3"
-    env_file:
-      - .env
-    volumes:
-      - event_store:/var/lib/postgresql/data
-      - ./database_scripts/event_store_init.sql:/docker-entrypoint-initdb.d/event_store_init.sql
+  # event_store:
+  #   container_name: PostgreSQL-Event-Store
+  #   image: postgres:latest
+  #   restart: always
+  #   networks:
+  #     - network
+  #   ports:
+  #     - '5433:5432'
+  #   logging:
+  #     options:
+  #       max-size: 10m
+  #       max-file: "3"
+  #   env_file:
+  #     - .env
+  #   volumes:
+  #     - event_store:/var/lib/postgresql/data
+  #     - ./database_scripts/event_store_init.sql:/docker-entrypoint-initdb.d/event_store_init.sql
 
   # DOCK RENTAL API
   dock_rental_api:
@@ -65,7 +65,7 @@ services:
       - .env
     depends_on:
       - relational_database
-      - event_store
+      # - event_store
       # - rabbitmq
     volumes:
       - .:/usr/src/app

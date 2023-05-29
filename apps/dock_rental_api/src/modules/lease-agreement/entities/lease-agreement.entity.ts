@@ -2,7 +2,7 @@ import { ShippingCompany } from '../../shipping-company/entity/shipping-company.
 import { Dock } from '../../dock/entities/dock.entity';
 import { Column, Entity, Generated, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity({ name: 'lease_agreement' })
+@Entity({ name: 'lease_agreement', schema: 'dock_rental' })
 export class LeaseAgreement {
 
   @PrimaryGeneratedColumn('increment', { type: "int" })
@@ -15,19 +15,17 @@ export class LeaseAgreement {
   @Column({ type: 'varchar', length: 100, nullable: false })
   public reference: string;
 
-  @OneToOne(() => Dock)
-  @JoinColumn()
-  public dock: Dock;
+  @Column("int", { nullable: false })
+  public dock_id: number;
 
-  @OneToOne(() => ShippingCompany)
-  @JoinColumn()
-  public shippingCompany: ShippingCompany;
+  @Column("int", { nullable: false })
+  public shipping_company_id: number;
 
-  @Column({ type: 'timestamptz' })
-  public signDate: Date;
+  @Column({ type: 'timestamptz', nullable: false })
+  public sign_date: Date;
 
-  @Column({ type: 'timestamptz' })
-  public validUntil: Date;
+  @Column({ type: 'timestamptz', nullable: false })
+  public valid_until: Date;
 
   @Column("int", { nullable: false })
   public price: number;

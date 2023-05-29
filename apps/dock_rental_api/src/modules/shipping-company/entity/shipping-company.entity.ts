@@ -1,6 +1,6 @@
 import { Column, Entity, Generated, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity({ name: 'shippingCompany' })
+@Entity({ name: 'shipping_company', schema: 'dock_rental' })
 export class ShippingCompany {
 
   @PrimaryGeneratedColumn('increment', { type: "int" })
@@ -10,13 +10,13 @@ export class ShippingCompany {
   @Generated('uuid')
   public stream_id: string;
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ type: 'varchar', length: 100, nullable: false })
   public reference: string;
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ type: 'varchar', length: 100, nullable: false })
   public name: string;
 
-  @Column({ type: 'varchar', length: 100 })
+  @Column({ type: 'varchar', length: 100, nullable: false })
   public country: string;
 
   @Column({ type: 'timestamptz', nullable: false })

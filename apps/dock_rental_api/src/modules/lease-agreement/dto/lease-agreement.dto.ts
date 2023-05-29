@@ -16,24 +16,25 @@ export class LeaseAgreementDTO implements Readonly<LeaseAgreementDTO> {
   @ApiProperty({ required: true })
   public stream_id: string;
 
-  @Column({ type: 'varchar', length: 100, nullable: false })
+  @IsString()
+  @ApiProperty({ required: true })
   public reference: string;
 
-  @OneToOne(() => Dock)
-  @JoinColumn()
-  public dock: Dock;
+  @IsNumber()
+  @ApiProperty({ required: true })
+  public dock_id: number;
 
-  @OneToOne(() => ShippingCompany)
-  @JoinColumn()
-  public shippingCompany: ShippingCompany;
+  @IsNumber()
+  @ApiProperty({ required: true })
+  public shipping_company_id: number;
 
   @IsDate()
   @ApiProperty({ required: true })
-  public signDate: Date;
+  public sign_date: Date;
 
   @IsDate()
   @ApiProperty({ required: true })
-  public validUntil: Date;
+  public valid_until: Date;
 
   @IsNumber()
   @ApiProperty({ required: true })
@@ -49,10 +50,10 @@ export class LeaseAgreementDTO implements Readonly<LeaseAgreementDTO> {
     it.id = dto.id;
     it.stream_id = dto.stream_id;
     it.reference = dto.reference;
-    it.dock = dto.dock;
-    it.shippingCompany = dto.shippingCompany;
-    it.signDate = dto.signDate;
-    it.validUntil = dto.validUntil;
+    it.dock_id = dto.dock_id;
+    it.shipping_company_id = dto.shipping_company_id;
+    it.sign_date = dto.sign_date;
+    it.valid_until = dto.valid_until;
     it.price = dto.price;
     it.created_at = dto.created_at;
     return it;
@@ -63,10 +64,10 @@ export class LeaseAgreementDTO implements Readonly<LeaseAgreementDTO> {
       id: entity.id,
       stream_id: entity.stream_id,
       reference: entity.reference,
-      dock: entity.dock,
-      shippingCompany: entity.shippingCompany,
-      signDate: entity.signDate,
-      validUntil: entity.validUntil,
+      dock_id: entity.dock_id,
+      shipping_company_id: entity.shipping_company_id,
+      sign_date: entity.sign_date,
+      valid_until: entity.valid_until,
       price: entity.price,
       created_at: entity.created_at
     });
@@ -77,10 +78,10 @@ export class LeaseAgreementDTO implements Readonly<LeaseAgreementDTO> {
     it.id = this.id;
     it.stream_id = this.stream_id;
     it.reference = this.reference;
-    it.dock = this.dock;
-    it.shippingCompany = this.shippingCompany;
-    it.signDate = this.signDate;
-    it.validUntil = this.validUntil;
+    it.dock_id = this.dock_id;
+    it.shipping_company_id = this.shipping_company_id;
+    it.sign_date = this.sign_date;
+    it.valid_until = this.valid_until;
     it.price = this.price;
     it.created_at = this.created_at;
     return it;

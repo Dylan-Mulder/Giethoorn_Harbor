@@ -1,6 +1,6 @@
 import { Column, Entity, Generated, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity({ name: 'dock' })
+@Entity({ name: 'dock', schema: 'dock_rental' })
 export class Dock {
   @PrimaryGeneratedColumn('increment', { type: "int" })
   public id: number;
