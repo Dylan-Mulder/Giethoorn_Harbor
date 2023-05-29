@@ -45,6 +45,7 @@ ALTER SCHEMA messaging
 CREATE TABLE traffic_control.traffic_planning
 (
     id serial NOT NULL,
+    stream_id uuid NOT NULL,
     passages jsonb NOT NULL,
     start_date date NOT NULL,
     end_date date NOT NULL,
@@ -54,6 +55,7 @@ CREATE TABLE traffic_control.traffic_planning
 CREATE TABLE traffic_control.passage
 (
     id serial NOT NULL,
+    stream_id uuid NOT NULL,
     dock_id integer NOT NULL,
     ship_id integer,
     truck_id integer,
@@ -66,6 +68,7 @@ CREATE TABLE traffic_control.passage
 CREATE TABLE traffic_control.ship
 (
     id serial NOT NULL,
+    stream_id uuid NOT NULL,
     name text NOT NULL,
     shipping_company_name text NOT NULL,
     max_load_in_tonnage integer NOT NULL,
@@ -76,6 +79,7 @@ CREATE TABLE traffic_control.ship
 CREATE TABLE traffic_control.truck
 (
     id serial NOT NULL,
+    stream_id uuid NOT NULL,
     name text NOT NULL,
     shipping_company_name text NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
@@ -84,6 +88,7 @@ CREATE TABLE traffic_control.truck
 CREATE TABLE traffic_control.dock
 (
     id serial NOT NULL,
+    stream_id uuid NOT NULL,
     name text NOT NULL,
     description text DEFAULT 'No description provided',
     amount_of_ship_spots integer DEFAULT 1,
@@ -94,6 +99,7 @@ CREATE TABLE traffic_control.dock
 CREATE TABLE traffic_control.tugboat
 (
     id serial NOT NULL,
+    stream_id uuid NOT NULL,
     name text NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     PRIMARY KEY (id)
@@ -119,6 +125,7 @@ ALTER TABLE IF EXISTS traffic_control.tugboat
 CREATE TABLE dock_rental.dock
 (
     id serial NOT NULL,
+    stream_id uuid NOT NULL,
     name text NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     PRIMARY KEY (id)
@@ -126,6 +133,7 @@ CREATE TABLE dock_rental.dock
 CREATE TABLE dock_rental.shipping_company
 (
     id serial NOT NULL,
+    stream_id uuid NOT NULL,
     reference text NOT NULL,
     name text NOT NULL,
     country text NOT NULL,
@@ -136,6 +144,7 @@ CREATE TABLE dock_rental.shipping_company
 CREATE TABLE dock_rental.lease_agreement
 (
     id serial NOT NULL,
+    stream_id uuid NOT NULL,
     reference text NOT NULL,
     dock_id integer NOT NULL,
     shipping_company_id integer NOT NULL,
@@ -160,6 +169,7 @@ ALTER TABLE IF EXISTS dock_rental.lease_agreement
 CREATE TABLE ecosystem.marine_life_report
 (
     id serial NOT NULL,
+    stream_id uuid NOT NULL,
     year integer NOT NULL,
     species text NOT NULL,
     scientific_name text NOT NULL,
@@ -172,6 +182,7 @@ CREATE TABLE ecosystem.marine_life_report
 CREATE TABLE ecosystem.water_quality_report
 (
     id serial NOT NULL,
+    stream_id uuid NOT NULL,
     ph numeric(18, 2) NOT NULL,
     oxygen_in_mg_per_l numeric(18, 2) NOT NULL,
     temperature_in_celsius numeric(18, 2) NOT NULL,
@@ -192,6 +203,7 @@ ALTER TABLE IF EXISTS ecosystem.water_quality_report
 CREATE TABLE security.truck
 (
     id serial NOT NULL,
+    stream_id uuid NOT NULL,
     name text NOT NULL,
     expected_cargo text NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
@@ -200,6 +212,7 @@ CREATE TABLE security.truck
 CREATE TABLE security.ship
 (
     id serial NOT NULL,
+    stream_id uuid NOT NULL,
     name text NOT NULL,
     expected_cargo text NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
@@ -208,6 +221,7 @@ CREATE TABLE security.ship
 CREATE TABLE security.traffic_planning
 (
     id serial NOT NULL,
+    stream_id uuid NOT NULL,
     dock_name text NOT NULL,
     arrival timestamp with time zone NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
@@ -216,6 +230,7 @@ CREATE TABLE security.traffic_planning
 CREATE TABLE security.inspection
 (
     id serial NOT NULL,
+    stream_id uuid NOT NULL,
     traffic_planning_id integer NOT NULL,
     ship_id integer,
     truck_id integer,
@@ -241,6 +256,7 @@ ALTER TABLE IF EXISTS security.inspection
 CREATE TABLE refilling.ship
 (
     id serial NOT NULL,
+    stream_id uuid NOT NULL,
     name text NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     PRIMARY KEY (id)
@@ -248,6 +264,7 @@ CREATE TABLE refilling.ship
 CREATE TABLE refilling.traffic_planning
 (
     id serial NOT NULL,
+    stream_id uuid NOT NULL,
     dock_name text NOT NULL,
     arrival timestamp with time zone NOT NULL,
     departure timestamp with time zone NOT NULL,
@@ -257,6 +274,7 @@ CREATE TABLE refilling.traffic_planning
 CREATE TABLE refilling.service
 (
     id serial NOT NULL,
+    stream_id uuid NOT NULL,
     traffic_planning_id integer NOT NULL,
     ship_id integer NOT NULL,
     needs_refuelling boolean NOT NULL DEFAULT false,
@@ -278,6 +296,7 @@ ALTER TABLE IF EXISTS refilling.service
 CREATE TABLE cargo_management.cargo
 (
     id serial NOT NULL,
+    stream_id uuid NOT NULL,
     ship_id integer NOT NULL,
     amount_of_containers integer NOT NULL,
     type text NOT NULL,
@@ -288,6 +307,7 @@ CREATE TABLE cargo_management.cargo
 CREATE TABLE cargo_management.ship
 (
     id serial NOT NULL,
+    stream_id uuid NOT NULL,
     name text NOT NULL,
     max_load_in_tonnage integer NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
@@ -296,6 +316,7 @@ CREATE TABLE cargo_management.ship
 CREATE TABLE cargo_management.traffic_planning
 (
     id serial NOT NULL,
+    stream_id uuid NOT NULL,
     dock_name text NOT NULL,
     arrival timestamp with time zone NOT NULL,
     departure timestamp with time zone NOT NULL,
@@ -305,6 +326,7 @@ CREATE TABLE cargo_management.traffic_planning
 CREATE TABLE cargo_management.service
 (
     id serial NOT NULL,
+    stream_id uuid NOT NULL,
     traffic_planning_id integer NOT NULL,
     ship_id integer NOT NULL,
     cargo_id integer NOT NULL,
@@ -330,6 +352,7 @@ ALTER TABLE IF EXISTS cargo_management.service
 CREATE TABLE publications.traffic_planning
 (
     id serial NOT NULL,
+    stream_id uuid NOT NULL,
     passages jsonb NOT NULL,
     start_date date NOT NULL,
     end_date date NOT NULL,
@@ -339,6 +362,7 @@ CREATE TABLE publications.traffic_planning
 CREATE TABLE publications.marine_life_report
 (
     id serial NOT NULL,
+    stream_id uuid NOT NULL,
     year integer NOT NULL,
     species text NOT NULL,
     scientific_name text NOT NULL,
@@ -349,6 +373,7 @@ CREATE TABLE publications.marine_life_report
 CREATE TABLE publications.water_quality_report
 (
     id serial NOT NULL,
+    stream_id uuid NOT NULL,
     ph numeric(18, 2) NOT NULL,
     oxygen_in_mg_per_l numeric(18, 2) NOT NULL,
     temperature_in_celsius numeric(18, 2) NOT NULL,
@@ -369,6 +394,7 @@ ALTER TABLE IF EXISTS publications.water_quality_report
 CREATE TABLE billing.ship_service
 (
     id serial NOT NULL,
+    stream_id uuid NOT NULL,
     reference text NOT NULL,
     shipping_company_id integer NOT NULL,
     service_provided text NOT NULL,
@@ -381,6 +407,7 @@ CREATE TABLE billing.ship_service
 CREATE TABLE billing.shipping_company
 (
     id serial NOT NULL,
+    stream_id uuid NOT NULL,
     reference text NOT NULL,
     name text NOT NULL,
     invoice_address text NOT NULL,
@@ -391,6 +418,7 @@ CREATE TABLE billing.shipping_company
 CREATE TABLE billing.lease_agreement
 (
     id serial NOT NULL,
+    stream_id uuid NOT NULL,
     reference text NOT NULL,
     shipping_company_id integer NOT NULL,
     sign_date date NOT NULL,
@@ -403,6 +431,7 @@ CREATE TABLE billing.lease_agreement
 CREATE TABLE billing.invoice
 (
     id serial NOT NULL,
+    stream_id uuid NOT NULL,
     reference text NOT NULL,
     shipping_company_id integer NOT NULL,
     records jsonb NOT NULL,
@@ -430,6 +459,7 @@ ALTER TABLE IF EXISTS billing.invoice
 CREATE TABLE messaging.invoice
 (
     id serial NOT NULL,
+    stream_id uuid NOT NULL,
     reference text NOT NULL,
     shipping_company_name text NOT NULL,
     records jsonb NOT NULL,
