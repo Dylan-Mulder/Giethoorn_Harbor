@@ -1,4 +1,4 @@
-const amqp = require('amqplib');
+let amqp = require('amqplib');
 const { Client } = require('pg');
 
 // PostgreSQL settings
@@ -13,7 +13,7 @@ const postgresConfig = {
 async function connect() {
   const connection = await amqp.connect('amqp://user:password@localhost:5672'); // Replace with your RabbitMQ connection details
   const channel = await connection.createChannel();
-  const queueName = 'refilling-service'; // Replace with the queue name used by your ShipConsumer
+  const queueName = 'Refilling-Queue'; // Replace with the queue name used by your ShipConsumer
 
   // Assert the queue
   await channel.assertQueue(queueName, { durable: true });
@@ -49,9 +49,10 @@ async function connect() {
         channel.ack(message);
 
         // Create a new ship
-        await createShip(shipData);
+        //await createShip(shipData);
       }
     }
+    { noAck: false }
   });
 }
 

@@ -7,7 +7,7 @@ amqp.connect('amqp://user:password@localhost:5672', (error, connection) => {
     if (error) throw error;
 
     const exchangeName = 'topic_exchange';
-    const routingKey = 'event.type';
+    const routingKey = 'event.type.test';
 
     channel.assertExchange(exchangeName, 'topic', { durable: false });
 
