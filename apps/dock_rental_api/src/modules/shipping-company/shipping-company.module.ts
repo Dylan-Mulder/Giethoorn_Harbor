@@ -3,7 +3,7 @@ import { ShippingCompanyController } from './shipping-company.controller';
 import { ShippingCompanyService } from './shipping-company.service';
 import { IShipCompanyService } from '../../interfaces/IShipCompany.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { ShippingCompany } from './shipping-company.entity';
+import { ShippingCompany } from './entity/shipping-company.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([ShippingCompany])],

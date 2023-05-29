@@ -3,7 +3,7 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { DockService } from './dock.service';
 import { Module } from '@nestjs/common';
 import { IDockService } from '../../interfaces/IDock.service';
-import { Dock } from './dock.entity';
+import { Dock } from './entities/dock.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Dock])],
