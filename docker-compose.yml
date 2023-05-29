@@ -12,18 +12,18 @@ services:
     env_file:
       - .env
 
-  # postgres_database:
-  #   container_name: PostgreSQL
-  #   image: postgres:latest
-  #   restart: always
-  #   ports:
-  #     - '5432:5432'
-  #   environment:
-  #     POSTGRES_USER: postgres
-  #     POSTGRES_PASSWORD: password
-  #     POSTGRES_DB: postgres
-  #   volumes:
-  #     - /var/lib/postgresql
+  postgres_database:
+    container_name: PostgreSQL
+    image: postgres:latest
+    restart: always
+    ports:
+      - '5432:5432'
+    environment:
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: postgres
+    volumes:
+      - /var/lib/postgresql
 
   # traffic_control_api:
   #   container_name: Traffic-Control-API
