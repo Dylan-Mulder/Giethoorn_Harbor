@@ -49,7 +49,7 @@ async function bootstrap() {
   
   for (const consumerConfig of consumerConfigs) {
     const { exchange, routingKeyPattern, methodToCall} = consumerConfig;
-    const connection = await amqp.connect(`amqp://${USER}:${PASSWORD}@172.25.0.2:5672`);
+    const connection = await amqp.connect(`amqp://${USER}:${PASSWORD}@${HOST}`);
     const channel = await connection.createChannel();
     await channel.assertExchange(exchange, 'topic', { durable: false });
     await channel.assertQueue("rf-c-"+exchange, { durable: true });

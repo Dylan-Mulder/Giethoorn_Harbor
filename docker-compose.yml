@@ -8,6 +8,9 @@ services:
     hostname: rabbitmq
     volumes:
       - /var/lib/rabbitmq
+    networks:
+      network:
+        ipv4_address: 10.5.0.69
     ports:
       - '5672:5672'
       - '15672:15672'
