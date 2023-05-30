@@ -2,13 +2,12 @@ import { Entity, Column, CreateDateColumn, Generated, PrimaryGeneratedColumn } f
 
 @Entity({ name: 'dock', schema: 'traffic_control' })
 export class Dock {
-
   @PrimaryGeneratedColumn()
-  public id: number;
+  public id!: number;
 
   @Column()
   @Generated("uuid")
-  public stream_id: string;
+  public stream_id!: string;
 
   @Column({ type: 'varchar', length: 300 })
   public name: string;

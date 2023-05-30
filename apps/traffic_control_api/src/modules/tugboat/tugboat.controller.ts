@@ -1,5 +1,4 @@
 import { Controller, Get, Param, Post, Body, Delete, Patch } from '@nestjs/common';
-import { Tugboat } from './tugboat.entity';
 import { ITugboatService } from '../../interfaces/ITugboat.service';
 
 @Controller('tugboat')
