@@ -269,8 +269,8 @@ CREATE TABLE refilling.traffic_planning
     id serial NOT NULL,
     stream_id uuid NOT NULL DEFAULT gen_random_uuid(),
     dock_name text NOT NULL,
-    arrival timestamp with time zone NOT NULL,
-    departure timestamp with time zone NOT NULL,
+    arrival date zone NOT NULL,
+    departure date zone NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     PRIMARY KEY (id)
 );
@@ -321,8 +321,8 @@ CREATE TABLE cargo_management.traffic_planning
     id serial NOT NULL,
     stream_id uuid NOT NULL DEFAULT gen_random_uuid(),
     dock_name text NOT NULL,
-    arrival timestamp with time zone NOT NULL,
-    departure timestamp with time zone NOT NULL,
+    arrival date zone NOT NULL,
+    departure date zone NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     PRIMARY KEY (id)
 );
