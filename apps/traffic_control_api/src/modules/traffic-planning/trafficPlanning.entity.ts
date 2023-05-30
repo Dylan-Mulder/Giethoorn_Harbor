@@ -15,10 +15,10 @@ export class TrafficPlanning extends BaseEntity {
   public passages: Array<{ id: Passage['id'] }>;
 
   @IsDate()
-  @Column({ type: 'timestamptz' })
+  @Column({ type: 'timestamp' })
   public startDate: Date;
 
   @IsDate()
-  @Column({ type: 'timestamptz' })
+  @Column({ type: 'timestamp' })
   public endDate: Date;
 }

@@ -25,7 +25,7 @@ export class DockService implements IDockService {
     return await this.repo.save(dock);
   }
 
-  public async updateDockById(id: number, updateDock: CreateDockDTO): Promise<UpdateResult> {
+  public async updateDockById(id: number, updateDock: DockDTO): Promise<UpdateResult> {
     return await this.repo.update(id, updateDock)
   }
 

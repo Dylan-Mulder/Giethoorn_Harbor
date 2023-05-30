@@ -1,5 +1,4 @@
 import { DeleteResult, UpdateResult } from "typeorm";
-import { DockDTO } from "../modules/dock/dto/dock.dto";
 import { Dock } from "../modules/dock/entities/dock.entity";
 import { CreateDockDTO } from "../modules/dock/dto/create-dock.dto";
 
