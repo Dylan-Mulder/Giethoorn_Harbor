@@ -2,8 +2,6 @@ import { Injectable } from '@nestjs/common';
 import { WaterQualityReport } from '../models/waterQualityReport.model';
 import axios from 'axios';
 import { MarineLifeReport, MarineLifeReportList } from '../models/marineLifeReport.model';
-import { response } from 'express';
-import { error } from 'console';
 
 @Injectable()
 export class EcosystemService {
@@ -110,6 +108,22 @@ export class EcosystemService {
   
       resolve(reports);
     });
+  }
+  async createWaterQuality(refillServiceData: any) {
+    //const client: PoolClient = await this.pool.connect();
+
+    try {
+      // const query = `INSERT INTO ships (name) VALUES ($1) RETURNING *`;
+      // const values = [shipData.name];
+      
+      // const result = await client.query(query, values);
+      // const insertedShip: Ship = result.rows[0];
+
+      // return insertedShip;
+      
+    } finally {
+      //client.release();
+    }
   }
 
 }
