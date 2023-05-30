@@ -1,33 +1,35 @@
-import { Controller, Get, Param, Post, Body, Delete, Patch } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Delete, Put } from '@nestjs/common';
 import { IShipService } from '../../interfaces/IShip.service';
 import { Ship } from './entities/ship.entity';
+import { CreateShipDTO } from './dto/create-ship.dto';
+import { UpdateResult, DeleteResult } from 'typeorm';
 
-@Controller('ship')
+@Controller('ships')
 export class ShipController {
-  constructor(private ShipService: IShipService) { }
+  constructor(private shipService: IShipService) { }
 
   @Post()
-  async createShip(@Body() Ship: Ship) {
-    return await this.ShipService.createShip(Ship);
+  public async createShip(@Body() createShipDTO: CreateShipDTO): Promise<Ship> {
+    return await this.shipService.createShip(createShipDTO);
+  }
+
+  @Get(':shipId')
+  public async getShipById(@Param() param: { shipId: number }): Promise<Ship> {
+    return await this.shipService.getShipById(Number(param.shipId));
   }
 
   @Get()
-  async getShipById(@Param() param: { ShipId: number }) {
-    return await this.ShipService.getShipById(param.ShipId);
+  public async getAllShips(): Promise<Array<Ship>> {
+    return await this.shipService.getAllShips();
   }
 
-  @Get()
-  async getAllShips() {
-    return await this.ShipService.getAllShips();
+  @Put(':shipId/update')
+  public async updateShipById(@Param() param: { shipId: number }, @Body() updateShip: CreateShipDTO): Promise<UpdateResult> {
+    return await this.shipService.updateShipById(Number(param.shipId), updateShip);
   }
 
-  @Patch()
-  async updateShipById(@Param() param: { ShipId: number }, @Body() updateShip: Ship) {
-    return await this.ShipService.updateShipById(param.ShipId, updateShip);
-  }
-
-  @Delete()
-  async deleteShip(@Param() param: { ShipId: number }) {
-    return await this.ShipService.deleteShipById(param.ShipId);
+  @Delete(':shipId/delete')
+  public async deleteShip(@Param() param: { shipId: number }): Promise<DeleteResult> {
+    return await this.shipService.deleteShipById(Number(param.shipId));
   }
 }

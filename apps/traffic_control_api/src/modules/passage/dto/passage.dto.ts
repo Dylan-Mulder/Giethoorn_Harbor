@@ -71,6 +71,12 @@ export class PassageDTO implements Readonly<PassageDTO> {
     const it = new Passage();
     it.id = this.id;
     it.stream_id = this.stream_id;
+    it.dock_id = this.dock_id;
+    it.ship_id = this.ship_id;
+    it.truck_id = this.truck_id;
+    it.tugboats = this.tugboats;
+    it.arrival_date = this.arrival_date;
+    it.departure_date = this.departure_date;
     it.created_at = this.created_at;
     return it;
   }

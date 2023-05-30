@@ -25,11 +25,11 @@ export class PassageController {
 
   @Put(':passageId/update')
   public async updatePassageById(@Param() param: { passageId: number }, @Body() updateDock: CreatePassageDTO): Promise<UpdateResult> {
-    return await this.passageService.updatePassageById(param.passageId, updateDock);
+    return await this.passageService.updatePassageById(Number(param.passageId), updateDock);
   }
 
   @Delete(':passageId/delete')
   public async deletePassageById(@Param() param: { passageId: number }): Promise<DeleteResult> {
-    return await this.passageService.deletePassageById(param.passageId);
+    return await this.passageService.deletePassageById(Number(param.passageId));
   }
 }
