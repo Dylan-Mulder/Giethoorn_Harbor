@@ -8,14 +8,14 @@ amqp.connect('amqp://user:password@localhost:5672', (error, connection) => {
   connection.createChannel((error, channel) => {
     if (error) throw error;
 
-    const exchangeName = 'ship-has-docked';
-    const routingKey = 'event.ship-has-docked';
+    const exchangeName = 'ship-has-been-cleared';
+    const routingKey = 'event.ship-has-been-cleared';
 
     channel.assertExchange(exchangeName, 'topic', { durable: false });
 
      const jsonData = {
       "data": {
-        "shipData": [
+        "ship": [
           { "id": 1, "name": "Ship 1" },
         ],
         "refillServiceData": [

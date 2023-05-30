@@ -3,6 +3,7 @@ import { ConfigService } from '@nestjs/config';
 import { MicroserviceOptions, RmqContext, Transport } from '@nestjs/microservices';
 import { TrafficControlModule } from './traffic_control.module';
 import { TrafficControlController } from './traffic_control.controller';
+import * as amqp from 'amqplib';
 
 async function bootstrap() {
   const app = await NestFactory.create(TrafficControlModule);
@@ -16,11 +17,47 @@ async function bootstrap() {
   const trafficControlController = app.get(TrafficControlController);
   const consumerConfigs = [
     {
-      exchange: '',
-      routingKeyPattern: 'event.',
-      methodToCall: trafficControlController.getHello
+      exchange: 'ship-has-been-cleared',
+      routingKeyPattern: 'event.ship-has-been-cleared',
+      methodToCall: trafficControlController.handleShipCleared
     },
-  ]
+    {
+      exchange: 'ship-has-been-denied',
+      routingKeyPattern: 'event.ship-has-been-denied',
+      methodToCall: trafficControlController.handleShipDenied
+    },
+    {
+      exchange: 'truck-has-been-cleared',
+      routingKeyPattern: 'event.truck-has-been-cleared',
+      methodToCall: trafficControlController.handleTruckCleared
+    },
+    {
+      exchange: 'truck-has-been-denied',
+      routingKeyPattern: 'event.truck-has-been-denied',
+      methodToCall: trafficControlController.handleTruckDenied
+    },
+    {
+      exchange: 'ship-has-been-unloaded',
+      routingKeyPattern: 'event.ship-has-been-unloaded',
+      methodToCall: trafficControlController.handleShipUnloaded
+    },
+    {
+      exchange: 'ship-has-been-loaded',
+      routingKeyPattern: 'event.ship-has-been-loaded',
+      methodToCall: trafficControlController.handleShipLoaded
+    },
+    {
+      exchange: 'lease-has-started',
+      routingKeyPattern: 'event.lease-has-started',
+      methodToCall: trafficControlController.handleLeaseStarted
+    },
+    {
+      exchange: 'lease-has-expired',
+      routingKeyPattern: 'event.lease-has-expired',
+      methodToCall: trafficControlController.handleLeaseExpired
+    },
+  ];
+
   for (const consumerConfig of consumerConfigs) {
     const { exchange, routingKeyPattern, methodToCall} = consumerConfig;
     const connection = await amqp.connect(`amqp://${USER}:${PASSWORD}@${HOST}`);
