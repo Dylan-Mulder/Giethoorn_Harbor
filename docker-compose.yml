@@ -1,7 +1,7 @@
 version: '3.6'
 services:
 
-  # # RABBITMQ SERVICE
+  # RABBITMQ SERVICE
   # rabbitmq:
   #   image: rabbitmq:3-management
   #   container_name: rabbitmq
@@ -65,7 +65,7 @@ services:
       - .env
     depends_on:
       - relational_database
-      # - event_store
+      - event_store
       # - rabbitmq
     volumes:
       - .:/usr/src/app
@@ -117,7 +117,169 @@ services:
         ipv4_address: 10.5.0.7
     command: npm run start:dev traffic_control
 
-  # CUSTOM DOCKER NETWORK
+  dock_rental:
+    container_name: Dock-Rental
+    build:
+      context: ./
+      dockerfile: ./apps/dock_rental/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      # - rabbitmq
+      - dock_rental_api
+      - relational_database
+      - event_store
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      network:
+        ipv4_address: 10.5.0.8
+    command: npm run start:dev dock_rental
+
+  ecosystem:
+    container_name: Ecosystem
+    build:
+      context: ./
+      dockerfile: ./apps/ecosystem/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      # - rabbitmq
+      - relational_database
+      - event_store
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      network:
+        ipv4_address: 10.5.0.9
+    command: npm run start:dev ecosystem
+
+  security:
+    container_name: Security
+    build:
+      context: ./
+      dockerfile: ./apps/security/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      # - rabbitmq
+      - traffic_control
+      - relational_database
+      - event_store
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      network:
+        ipv4_address: 10.5.0.10
+    command: npm run start:dev security
+
+  refilling:
+    container_name: Refilling
+    build:
+      context: ./
+      dockerfile: ./apps/refilling/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      # - rabbitmq
+      - traffic_control
+      - relational_database
+      - event_store
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      network:
+        ipv4_address: 10.5.0.11
+    command: npm run start:dev refilling
+
+  cargo_management:
+    container_name: Cargo-Management
+    build:
+      context: ./
+      dockerfile: ./apps/cargo_management/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      # - rabbitmq
+      - traffic_control
+      - relational_database
+      - event_store
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      network:
+        ipv4_address: 10.5.0.12
+    command: npm run start:dev cargo_management
+
+  publications:
+    container_name: Publications
+    build:
+      context: ./
+      dockerfile: ./apps/publications/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      # - rabbitmq
+      - traffic_control_api
+      - ecosystem
+      - relational_database
+      - event_store
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      network:
+        ipv4_address: 10.5.0.13
+    command: npm run start:dev publications
+
+  billing:
+    container_name: Billing
+    build:
+      context: ./
+      dockerfile: ./apps/billing/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      # - rabbitmq
+      - refilling
+      - cargo_management
+      - dock_rental
+      - relational_database
+      - event_store
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      network:
+        ipv4_address: 10.5.0.14
+    command: npm run start:dev billing
+
+  messaging:
+    container_name: Messaging
+    build:
+      context: ./
+      dockerfile: ./apps/messaging/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      # - rabbitmq
+      - billing
+      - relational_database
+      - event_store
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      network:
+        ipv4_address: 10.5.0.15
+    command: npm run start:dev messaging
+
+# CUSTOM DOCKER NETWORK
 networks:
   network:
     driver: bridge
@@ -130,146 +292,3 @@ networks:
 volumes:
   relational_database:
   event_store:
-
-    #   dock_rental:
-    #     container_name: Dock-Rental
-    #     build:
-    #       context: ./
-    #       dockerfile: ./apps/dock_rental/Dockerfile
-    #     env_file:
-    #       - .env
-    #     depends_on:
-    #       - rabbitmq
-    #       - dock_rental_api
-    #       - relational_database
-    #       - event_store
-    #     volumes:
-    #       - .:/usr/src/app
-    #       - /usr/src/app/node_modules
-    #     command: npm run start:dev dock_rental
-
-    #   ecosystem:
-    #     container_name: Ecosystem
-    #     build:
-    #       context: ./
-    #       dockerfile: ./apps/ecosystem/Dockerfile
-    #     env_file:
-    #       - .env
-    #     depends_on:
-    #       - rabbitmq
-    #       - relational_database
-    #       - event_store
-    #     volumes:
-    #       - .:/usr/src/app
-    #       - /usr/src/app/node_modules
-    #     command: npm run start:dev ecosystem
-
-    #   security:
-    #     container_name: Security
-    #     build:
-    #       context: ./
-    #       dockerfile: ./apps/security/Dockerfile
-    #     env_file:
-    #       - .env
-    #     depends_on:
-    #       - rabbitmq
-    #       - traffic_control
-    #       - relational_database
-    #       - event_store
-    #     volumes:
-    #       - .:/usr/src/app
-    #       - /usr/src/app/node_modules
-    #     command: npm run start:dev security
-
-    #   refilling:
-    #     container_name: Refilling
-    #     build:
-    #       context: ./
-    #       dockerfile: ./apps/refilling/Dockerfile
-    #     env_file:
-    #       - .env
-    #     depends_on:
-    #       - rabbitmq
-    #       - traffic_control
-    #       - relational_database
-    #       - event_store
-    #     volumes:
-    #       - .:/usr/src/app
-    #       - /usr/src/app/node_modules
-    #     command: npm run start:dev refilling
-
-    #   cargo_management:
-    #     container_name: Cargo-Management
-    #     build:
-    #       context: ./
-    #       dockerfile: ./apps/cargo_management/Dockerfile
-    #     env_file:
-    #       - .env
-    #     depends_on:
-    #       - rabbitmq
-    #       - traffic_control
-    #       - relational_database
-    #       - event_store
-    #     volumes:
-    #       - .:/usr/src/app
-    #       - /usr/src/app/node_modules
-    #     command: npm run start:dev cargo_management
-
-    #   publications:
-    #     container_name: Publications
-
-    #     build:
-    #       context: ./
-    #       dockerfile: ./apps/publications/Dockerfile
-    #     env_file:
-    #       - .env
-    #     depends_on:
-    #       - rabbitmq
-    #       - traffic_control_api
-    #       - ecosystem
-    #       - relational_database
-    #       - event_store
-    #     volumes:
-    #       - .:/usr/src/app
-    #       - /usr/src/app/node_modules
-    #     command: npm run start:dev publications
-
-    #   billing:
-    #     container_name: Billing
-
-    #     build:
-    #       context: ./
-    #       dockerfile: ./apps/billing/Dockerfile
-    #     env_file:
-    #       - .env
-    #     depends_on:
-    #       - rabbitmq
-    #       - refilling
-    #       - cargo_management
-    #       - dock_rental
-    #       - relational_database
-    #       - event_store
-    #     volumes:
-    #       - .:/usr/src/app
-    #       - /usr/src/app/node_modules
-    #     command: npm run start:dev billing
-
-    #   messaging:
-    #     container_name: Messaging
-
-    #     build:
-    #       context: ./
-    #       dockerfile: ./apps/messaging/Dockerfile
-    #     env_file:
-    #       - .env
-    #     depends_on:
-    #       - rabbitmq
-    #       - billing
-    #       - relational_database
-    #       - event_store
-    #     volumes:
-    #       - .:/usr/src/app
-    #       - /usr/src/app/node_modules
-    #     command: npm run start:dev messaging
-
-

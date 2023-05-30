@@ -3,5 +3,5 @@ export default () => ({
     port: process.env.POSTGRES_PORT,
     username: 'gh_messaging',
     password: 'MmMmMQmqnhfy26',
-    database: process.env.POSTGRES_DB
+    database: process.env.POSTGRES_DATABASE
   });
