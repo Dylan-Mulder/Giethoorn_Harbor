@@ -52,18 +52,17 @@ async function bootstrap() {
     const connection = await amqp.connect(`amqp://${USER}:${PASSWORD}@${HOST}`);
     const channel = await connection.createChannel();
     await channel.assertExchange(exchange, 'topic', { durable: false });
-    await channel.assertQueue(QUEUE, { durable: true });
-    await channel.bindQueue(QUEUE, exchange, routingKeyPattern);
+    await channel.assertQueue("rf-c-"+exchange, { durable: true });
+    await channel.bindQueue("rf-c-"+exchange, exchange, routingKeyPattern);
 
     console.log("Consumer listening on: "+exchange);
     await channel.consume(
-            QUEUE,
+        "rf-c-"+exchange,
             async (message) => {
               if (message !== null) {
                 const content = message.content.toString();
-                console.log(JSON.parse(message.content));
+                console.log(JSON.stringify(JSON.parse(message.content)));
                 console.log('Consumer received event');
-
                 // Process the event:
                 const rmqContext = new RmqContext([message, channel, null]);
                 await methodToCall.call(refillingController, content, rmqContext);

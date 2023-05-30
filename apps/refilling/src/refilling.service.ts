@@ -2,10 +2,16 @@ import { Injectable } from '@nestjs/common';
 import { Pool, PoolClient } from 'pg';
 import { Ship } from '../models/ship.model';
 import amqp from 'amqp-connection-manager';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class RefillingService {
   private pool: Pool;
+
+  constructor(private readonly configService: ConfigService){};
+  private  USER = this.configService.get('RABBITMQ_USER');
+  private  PASSWORD = this.configService.get('RABBITMQ_PASS');
+  private  HOST = this.configService.get('RABBITMQ_HOST');
 
   //EP-R-01 ShipRegistered: Add new ship to internal list. 
   async createShip(shipData: any, refillServiceData: any): Promise<Ship> {
@@ -47,13 +53,14 @@ export class RefillingService {
     let fuelPercentage = 0;
     //Refuel ship
     while(fuelPercentage<100){
-      for (let i = 0; i <= 10; i++) {
+      for (let i = 0; i <= 9; i++) {
         fuelPercentage+=10;
         console.log("Fuel Percentage: "+fuelPercentage+"%");
       }
     }
-  console.log("Refilling - Ship has been refilled!");
-    //Todo: send ship on queue.
+    console.log("Refilling - Ship has been refilled!");
+    const messageToSend = this.stringMessageBuilder();
+    this.sendToQueue("ship-has-refuelled", "event.ship-has-refuelled", messageToSend);
   }
 
   async rechargeShip(shipData: Partial<Ship>){
@@ -61,12 +68,14 @@ export class RefillingService {
     let batteryPercentage = 0;
     //Refuel ship
     while(batteryPercentage<100){
-      for (let i = 0; i <= 10; i+10) {
+      for (let i = 0; i <= 9; i++) {
         batteryPercentage+=10;
         //console.log("Battery Percentage: "+batteryPercentage+"%");
       }
     }
   console.log("Refilling - Ship has been recharged!");
+  const messageToSend = this.stringMessageBuilder();
+  this.sendToQueue("ship-has-recharged", "event.ship-has-recharged", messageToSend);
     //Todo: send ship on queue.
   }
 
@@ -89,9 +98,29 @@ export class RefillingService {
   }
 
    stringMessageBuilder(): string{
-    return "";
-   }
+    const jsonData = {
+      "data": {
+        "shipData": [
+          { "poepoe": 1, "fart": "Ship 1" },
+        ],
+        "refillServiceData": [
+          {
+            "id": 1,
+            "trafficPlanning": {},
+            "ship": { "id": 1, "name": "Ship 1" },
+            "needsRefuelling": true,
+            "needsRecharging": false
+          }
+        ]
+      }
+    };
+    return JSON.stringify(jsonData);
+   };
+ 
   async sendToQueue(exchangeName: string, routingKey: string, message: string){
-    
-  }
+    const connection = await amqp.connect(`amqp://${this.USER}:${this.PASSWORD}@${this.HOST}`);
+    const channel = await connection.createChannel();
+    await channel.assertExchange(exchangeName, 'topic', { durable: false });
+    await channel.publish(exchangeName, routingKey, Buffer.from(message));
+  };
 }
