@@ -137,6 +137,4 @@ export class EcosystemService {
     await channel.assertExchange(exchangeName, 'topic', { durable: false });
     await channel.publish(exchangeName, routingKey, Buffer.from(message));
   };
-
-
 }

@@ -27,20 +27,5 @@ export class EcosystemController {
 
   
 //EP-P-02 MarineLifeHasBeenInspected: Add new MarineLifeHas to internal list. 
-// @MessagePattern({ exchange: 'ship-registered', routingKey: 'event.ship-registered' })
-// async handleShipRegistered(
-//   @Payload() content: string,
-//   @Ctx() context: RmqContext, // Context to acknowledge the message
-// ): Promise<void> {
-//   try {
-//     const jsonData = JSON.parse(content);
-//     const shipData = jsonData.data.shipData;
-//     const refillServiceData = jsonData.data.refillServiceData; 
-//     await this.refillingService.createShip(shipData, refillServiceData);
-//     context.getChannelRef().ack(context.getMessage()); // Acknowledge the message
-//   } catch (error) {
-//     console.error(error);
-//   }
-// }
 
 }
