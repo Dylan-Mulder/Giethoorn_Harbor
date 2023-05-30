@@ -2,17 +2,17 @@ version: '3.6'
 services:
 
   # RABBITMQ SERVICE
-  rabbitmq:
-    image: rabbitmq:3-management
-    container_name: rabbitmq
-    hostname: rabbitmq
-    volumes:
-      - /var/lib/rabbitmq
-    ports:
-      - '5672:5672'
-      - '15672:15672'
-    env_file:
-      - .env
+  # rabbitmq:
+  #   image: rabbitmq:3-management
+  #   container_name: rabbitmq
+  #   hostname: rabbitmq
+  #   volumes:
+  #     - /var/lib/rabbitmq
+  #   ports:
+  #     - '5672:5672'
+  #     - '15672:15672'
+  #   env_file:
+  #     - .env
 
   # RELATIONAL DATABASE
   relational_database:
@@ -105,13 +105,16 @@ services:
     env_file:
       - .env
     depends_on:
-      - rabbitmq
+      # - rabbitmq
       - traffic_control_api
       - relational_database
       - event_store
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+    networks:
+      network:
+        ipv4_address: 10.5.0.7
     command: npm run start:dev traffic_control
 
   dock_rental:
@@ -122,13 +125,16 @@ services:
     env_file:
       - .env
     depends_on:
-      - rabbitmq
+      # - rabbitmq
       - dock_rental_api
       - relational_database
       - event_store
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+    networks:
+      network:
+        ipv4_address: 10.5.0.8
     command: npm run start:dev dock_rental
 
   ecosystem:
@@ -139,12 +145,15 @@ services:
     env_file:
       - .env
     depends_on:
-      - rabbitmq
+      # - rabbitmq
       - relational_database
       - event_store
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+    networks:
+      network:
+        ipv4_address: 10.5.0.9
     command: npm run start:dev ecosystem
 
   security:
@@ -155,13 +164,16 @@ services:
     env_file:
       - .env
     depends_on:
-      - rabbitmq
+      # - rabbitmq
       - traffic_control
       - relational_database
       - event_store
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+    networks:
+      network:
+        ipv4_address: 10.5.0.10
     command: npm run start:dev security
 
   refilling:
@@ -172,13 +184,16 @@ services:
     env_file:
       - .env
     depends_on:
-      - rabbitmq
+      # - rabbitmq
       - traffic_control
       - relational_database
       - event_store
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+    networks:
+      network:
+        ipv4_address: 10.5.0.11
     command: npm run start:dev refilling
 
   cargo_management:
@@ -189,25 +204,27 @@ services:
     env_file:
       - .env
     depends_on:
-      - rabbitmq
+      # - rabbitmq
       - traffic_control
       - relational_database
       - event_store
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+    networks:
+      network:
+        ipv4_address: 10.5.0.12
     command: npm run start:dev cargo_management
 
   publications:
     container_name: Publications
-
     build:
       context: ./
       dockerfile: ./apps/publications/Dockerfile
     env_file:
       - .env
     depends_on:
-      - rabbitmq
+      # - rabbitmq
       - traffic_control_api
       - ecosystem
       - relational_database
@@ -215,18 +232,20 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+    networks:
+      network:
+        ipv4_address: 10.5.0.13
     command: npm run start:dev publications
 
   billing:
     container_name: Billing
-
     build:
       context: ./
       dockerfile: ./apps/billing/Dockerfile
     env_file:
       - .env
     depends_on:
-      - rabbitmq
+      # - rabbitmq
       - refilling
       - cargo_management
       - dock_rental
@@ -235,24 +254,29 @@ services:
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+    networks:
+      network:
+        ipv4_address: 10.5.0.14
     command: npm run start:dev billing
 
   messaging:
     container_name: Messaging
-
     build:
       context: ./
       dockerfile: ./apps/messaging/Dockerfile
     env_file:
       - .env
     depends_on:
-      - rabbitmq
+      # - rabbitmq
       - billing
       - relational_database
       - event_store
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
+    networks:
+      network:
+        ipv4_address: 10.5.0.15
     command: npm run start:dev messaging
 
 # CUSTOM DOCKER NETWORK

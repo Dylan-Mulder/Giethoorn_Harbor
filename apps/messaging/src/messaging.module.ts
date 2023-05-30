@@ -1,13 +1,31 @@
 import { Module } from '@nestjs/common';
 import { MessagingController } from './messaging.controller';
 import { MessagingService } from './messaging.service';
-import { ConfigModule } from '@nestjs/config';
+import { TypeOrmModule } from '@nestjs/typeorm';
+import { ConfigModule, ConfigService } from '@nestjs/config';
+import configuration from './config/configuration';
+import { Invoice } from './entities/invoice.entity';
 
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
-      envFilePath: './.env'
+      load: [configuration]
+    }),
+    TypeOrmModule.forRootAsync({
+      imports: [ConfigModule],
+      inject: [ConfigService],
+      useFactory: (configService: ConfigService) => ({
+        type: 'postgres',
+        host: configService.get('host'),
+        port: configService.get('port'),
+        username: configService.get('username'),
+        password: configService.get('password'),
+        database: configService.get('database'),
+        entities: [Invoice],
+        synchronize: false,
+        migrationsRun: false
+      }),
     })
   ],
   controllers: [MessagingController],

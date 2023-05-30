@@ -6,26 +6,31 @@ import { DockModule } from './modules/dock/dock.module';
 import { LeaseAgreementModule } from './modules/lease-agreement/lease-agreement.module';
 import { ShippingCompanyModule } from './modules/shipping-company/shipping-company.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Dock } from './modules/dock/dock.entity';
-import { LeaseAgreement } from './modules/lease-agreement/lease-agreement.entity';
-import { ShippingCompany } from './modules/shipping-company/shipping-company.entity';
+import { Dock } from './modules/dock/entities/dock.entity';
+import { LeaseAgreement } from './modules/lease-agreement/entities/lease-agreement.entity';
+import { ShippingCompany } from './modules/shipping-company/entity/shipping-company.entity';
+import configuration from './config/configuration';
 
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({ 
+      isGlobal: true,
+      load: [configuration]
+    }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
         type: 'postgres',
-        host: configService.get('POSTGRES_HOST'),
-        port: configService.get('POSTGRES_PORT'),
-        username: configService.get('POSTGRES_USER'),
-        password: configService.get('POSTGRES_PASSWORD'),
-        database: configService.get('POSTGRES_DB'),
+        host: configService.get('host'),
+        port: configService.get('port'),
+        username: configService.get('username'),
+        password: configService.get('password'),
+        database: configService.get('database'),
         entities: [Dock, LeaseAgreement, ShippingCompany],
-        synchronize: true,
+        synchronize: false,
+        migrationsRun: false
       }),
     }),
     LeaseAgreementModule,

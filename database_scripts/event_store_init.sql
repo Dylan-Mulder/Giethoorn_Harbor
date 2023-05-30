@@ -10,7 +10,7 @@ CREATE USER gh_billing WITH PASSWORD 'varwcdy2uFDS';
 CREATE USER gh_messaging WITH PASSWORD 'MmMmMQmqnhfy26';
 
 -- SCHEMA'S
-DROP SCHEMA public;
+DROP SCHEMA public CASCADE;
 CREATE SCHEMA traffic_control;
 CREATE SCHEMA dock_rental;
 CREATE SCHEMA ecosystem;

@@ -24,7 +24,7 @@ async function bootstrap() {
       }
     }
   })
-
+  
   app.startAllMicroservices();
 }
 bootstrap();

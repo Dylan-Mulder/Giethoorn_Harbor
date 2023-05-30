@@ -1,9 +1,10 @@
-import { HttpException, HttpStatus, Injectable } from '@nestjs/common';
-import { Repository, DeleteResult } from 'typeorm';
+import { Injectable } from '@nestjs/common';
 import { IDockService } from '../../interfaces/IDock.service';
-import { Dock } from './dock.entity';
+import { Dock } from './entities/dock.entity';
+import { DockDTO } from './dto/dock.dto';
 import { InjectRepository } from '@nestjs/typeorm';
-import { DockDTO } from './dock.dto';
+import { Repository, DeleteResult, UpdateResult } from 'typeorm';
+import { CreateDockDTO } from './dto/create-dock.dto';
 
 
 @Injectable()
@@ -11,27 +12,24 @@ export class DockService implements IDockService {
 
   constructor(@InjectRepository(Dock) private readonly repo: Repository<Dock>) { }
 
-  public async createDock(dto: DockDTO): Promise<DockDTO> {
-    return await this.repo.save(dto.toEntity()).then(d => DockDTO.fromEntity(d));
-  }
-
-  public async getDockById(id: number): Promise<Dock> {
-    const dock = await this.repo.findOne(Dock[id]);
-    if (dock) {
-      return dock;
-    }
-    throw new HttpException('Dock not found', HttpStatus.NOT_FOUND)
+  public async getDockById(id: number): Promise<DockDTO> {
+    return DockDTO.fromEntity(await this.repo.findOne({ where: { id: id } }));
   }
 
   public async getAllDocks(): Promise<Array<DockDTO>> {
-    return await this.repo.find().then(docks => docks.map(d => DockDTO.fromEntity(d)));
+    return await this.repo.find().then((docks: Array<Dock>) => docks.map(d => DockDTO.fromEntity(d)));
   }
 
-  updateDockById(id: number, updateDock: DockDTO): Promise<DockDTO> {
-    throw new Error('Method not implemented.');
+  public async createDock(dto: CreateDockDTO): Promise<Dock> {
+    const dock = this.repo.create(dto);
+    return await this.repo.save(dock);
   }
 
-  deleteDockById(id: number): Promise<DeleteResult> {
-    throw new Error('Method not implemented.');
+  public async updateDockById(id: number, updateDock: DockDTO): Promise<UpdateResult> {
+    return await this.repo.update(id, updateDock)
+  }
+
+  public async deleteDockById(id: number): Promise<DeleteResult> {
+    return await this.repo.delete(id)
   }
 }
