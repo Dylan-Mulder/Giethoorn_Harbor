@@ -36,19 +36,20 @@ export class RefillingService {
   async notifyShipHasDocked(shipData: any, refillServiceData: any): Promise<any>{
     //Mock communications
     console.log("Refilling - Ship has docked! Refilling team has been notified.");
+    console.log(refillServiceData, shipData);
     if(refillServiceData[0].needsRefuelling==true){
-      this.refuelShip(shipData);
+      this.refuelShip(shipData, refillServiceData);
     }
 
     //Refilling team sets out to work:
     if(refillServiceData[0].needsRecharging==true){
-      this.rechargeShip(shipData);
+      this.rechargeShip(shipData, refillServiceData);
     }
 
     return true;
   }
 
-  async refuelShip(shipData: Partial<Ship>){
+  async refuelShip(shipData: Partial<Ship>, refillingServiceData: Partial<RefillingService>){
     //Add actual fuel level
     let fuelPercentage = 0;
     //Refuel ship
@@ -59,11 +60,25 @@ export class RefillingService {
       }
     }
     console.log("Refilling - Ship has been refilled!");
-    const messageToSend = this.stringMessageBuilder();
+    const jsonShipData = JSON.parse(JSON.stringify(shipData));
+    const updatedRefillingServiceData = {
+      "data":{
+          "shipData":[
+            shipData[0]
+          ],
+          "refillServiceData":[
+            {
+              "id":refillingServiceData[0].id,
+              "needsRefuelling": false
+            }
+          ]
+    }};
+    const jsonRefillingServiceData=JSON.parse(JSON.stringify(updatedRefillingServiceData));
+    const messageToSend = this.stringMessageBuilder(jsonShipData, jsonRefillingServiceData, null);
     this.sendToQueue("ship-has-refuelled", "event.ship-has-refuelled", messageToSend);
   }
 
-  async rechargeShip(shipData: Partial<Ship>){
+  async rechargeShip(shipData: Partial<Ship>,  refillingServiceData: Partial<RefillingService>){
     //Add actual fuel level
     let batteryPercentage = 0;
     //Refuel ship
@@ -74,7 +89,10 @@ export class RefillingService {
       }
     }
   console.log("Refilling - Ship has been recharged!");
-  const messageToSend = this.stringMessageBuilder();
+  const jsonShipData = JSON.parse(JSON.stringify(shipData));
+  const jsonRefillingServiceData = JSON.parse(JSON.stringify(refillingServiceData));
+    jsonRefillingServiceData[0].needsRecharging = false;
+  const messageToSend = this.stringMessageBuilder(jsonShipData, jsonRefillingServiceData, null);
   this.sendToQueue("ship-has-recharged", "event.ship-has-recharged", messageToSend);
     //Todo: send ship on queue.
   }
@@ -97,25 +115,24 @@ export class RefillingService {
     return true;
   }
 
-   stringMessageBuilder(): string{
+  stringMessageBuilder(
+    shipData: object[],
+    refillServiceData: object[],
+    trafficPlanningData: object[]
+  ): string {
+    if(!shipData){shipData= [];}
+    if(!refillServiceData){refillServiceData = [];}
+    if(!trafficPlanningData){trafficPlanningData = [];}
     const jsonData = {
-      "data": {
-        "shipData": [
-          { "poepoe": 1, "fart": "Ship 1" },
-        ],
-        "refillServiceData": [
-          {
-            "id": 1,
-            "trafficPlanning": {},
-            "ship": { "id": 1, "name": "Ship 1" },
-            "needsRefuelling": true,
-            "needsRecharging": false
-          }
-        ]
+      data: {
+        shipData,
+        refillServiceData,
+        trafficPlanningData
       }
     };
+  
     return JSON.stringify(jsonData);
-   };
+  }
  
   async sendToQueue(exchangeName: string, routingKey: string, message: string){
     const connection = await amqp.connect(`amqp://${this.USER}:${this.PASSWORD}@${this.HOST}`);
