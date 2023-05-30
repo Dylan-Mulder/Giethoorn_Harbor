@@ -17,7 +17,7 @@ export class EcosystemController {
   ): Promise<void> {
     try {
       const jsonData = JSON.parse(content);
-      const EcosystemData = jsonData.data.refillServiceData;
+      const EcosystemData = jsonData;
       await this.ecosystemService.createWaterQuality(EcosystemData);
       context.getChannelRef().ack(context.getMessage()); // Acknowledge the message
     } catch (error) {
@@ -34,7 +34,7 @@ export class EcosystemController {
   ): Promise<void> {
     try {
       const jsonData = JSON.parse(content);
-      const EcosystemData = jsonData.data.refillServiceData;
+      const EcosystemData = jsonData;
       await this.ecosystemService.createWaterQuality(EcosystemData);
       context.getChannelRef().ack(context.getMessage()); // Acknowledge the message
     } catch (error) {

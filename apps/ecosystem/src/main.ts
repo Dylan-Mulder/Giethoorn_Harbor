@@ -6,6 +6,7 @@ import { Transport, MicroserviceOptions, RmqContext } from '@nestjs/microservice
 import { EcosystemController } from './ecosystem.controller';
 import * as amqp from 'amqplib';
 import { WaterQualityReport } from './entities/water-quality-report.entity';
+import { MarineLifeReport } from './entities/marine-life-report.entity';
 
 async function bootstrap() {
   const app = await NestFactory.create(EcosystemModule);
@@ -61,10 +62,13 @@ async function bootstrap() {
     );
 
     const report = await eosystemService.getFakeWaterQualityReport(); // Assuming you have a method to get the WaterQualityReport object
+    const reportmarine = await eosystemService.getFakeMarineLifeReport(); // Assuming you have a method to get the WaterQualityReport object
+
     const exchangeName = 'waterquality-inspected';
     const routingKey = 'event.waterquality-inspected';
   
     await addWaterQualityReportToExchange(exchangeName, routingKey, report);
+    await addMarineQualityReportToExchange(exchangeName, routingKey, reportmarine);
 }
 
   app.connectMicroservice<MicroserviceOptions>({
@@ -84,6 +88,24 @@ async function bootstrap() {
 bootstrap();
 
 async function addWaterQualityReportToExchange(exchangeName: string, routingKey: string, report: WaterQualityReport) {
+  const app = await NestFactory.create(EcosystemModule);
+
+  const configService = app.get(ConfigService);
+
+  const USER = configService.get('RABBITMQ_USER');
+  const PASSWORD = configService.get('RABBITMQ_PASS');
+  const HOST = configService.get('RABBITMQ_HOST');
+  const QUEUE = configService.get('RABBITMQ_ECOSYSTEM_QUEUE');
+
+  const connection = await amqp.connect(`amqp://${USER}:${PASSWORD}@${HOST}`);
+  const channel = await connection.createChannel();
+  await channel.assertExchange(exchangeName, 'topic', { durable: false });
+  
+  const reportData = JSON.stringify(report); // Convert report object to JSON string
+  await channel.publish(exchangeName, routingKey, Buffer.from(reportData));
+}
+
+async function addMarineQualityReportToExchange(exchangeName: string, routingKey: string, report: MarineLifeReport) {
   const app = await NestFactory.create(EcosystemModule);
 
   const configService = app.get(ConfigService);
