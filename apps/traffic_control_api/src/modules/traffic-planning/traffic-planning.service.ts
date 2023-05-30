@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
-import { TrafficPlanning } from './trafficPlanning.entity';
 import { ITrafficPlanningService } from '../../interfaces/ITrafficPlanning.service';
 import { DeleteResult } from 'typeorm';
+import { TrafficPlanning } from './entities/traffic-planning.entity';
 
 @Injectable()
 export class TrafficPlanningService implements ITrafficPlanningService {

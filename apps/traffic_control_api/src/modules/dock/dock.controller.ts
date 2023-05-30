@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Post, Body, Delete, Patch } from '@nestjs/common';
 import { IDockService } from '../../interfaces/IDock.service';
-import { Dock } from './dock.entity';
+import { Dock } from './entities/dock.entity';
 
 @Controller('dock')
 export class DockController {

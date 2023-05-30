@@ -1,10 +1,11 @@
-import { DeleteResult } from "typeorm";
+import { DeleteResult, UpdateResult } from "typeorm";
 import { Truck } from "../modules/truck/truck.entity";
+import { CreateTruckDTO } from "../modules/truck/dto/create-truck.dto";
 
 export abstract class ITruckService {
-  abstract createTruck(Truck: Truck): Promise<Truck>;
+  abstract createTruck(dto: CreateTruckDTO): Promise<Truck>;
   abstract getTruckById(id: number): Promise<Truck>;
   abstract getAllTrucks(): Promise<Array<Truck>>;
-  abstract updateTruckById(id: number, updateTruck: Truck): Promise<Truck>;
+  abstract updateTruckById(id: number, dto: CreateTruckDTO): Promise<UpdateResult>;
   abstract deleteTruckById(id: number): Promise<DeleteResult>;
 }

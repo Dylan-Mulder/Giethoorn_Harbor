@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Ship } from './ship.entity';
+import { Ship } from './entities/ship.entity';
 import { IShipService } from '../../interfaces/IShip.service';
 import { DeleteResult } from 'typeorm';
 

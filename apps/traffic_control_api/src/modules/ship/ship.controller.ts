@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Post, Body, Delete, Patch } from '@nestjs/common';
 import { IShipService } from '../../interfaces/IShip.service';
-import { Ship } from './ship.entity';
+import { Ship } from './entities/ship.entity';
 
 @Controller('ship')
 export class ShipController {

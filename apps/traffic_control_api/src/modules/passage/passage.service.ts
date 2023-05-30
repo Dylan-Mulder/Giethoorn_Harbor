@@ -1,5 +1,5 @@
 import { Injectable } from '@nestjs/common';
-import { Passage } from './passage.entity';
+import { Passage } from './entities/passage.entity';
 import { IPassageService } from '../../interfaces/IPassage.service';
 import { DeleteResult } from 'typeorm';
 

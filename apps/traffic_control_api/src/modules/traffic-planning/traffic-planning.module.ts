@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
-import { TrafficPlanningService } from './trafficPlanning.service';
-import { TrafficPlanningController } from './trafficPlanning.controller';
-import { TrafficPlanning } from './trafficPlanning.entity';
+import { TrafficPlanningService } from './traffic-planning.service';
+import { TrafficPlanningController } from './traffic-planning.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ITrafficPlanningService } from '../../interfaces/ITrafficPlanning.service';
+import { TrafficPlanning } from './entities/traffic-planning.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([TrafficPlanning])],

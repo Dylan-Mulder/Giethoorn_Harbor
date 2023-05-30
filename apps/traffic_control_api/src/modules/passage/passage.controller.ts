@@ -1,6 +1,6 @@
 import { Controller, Get, Param, Post, Body, Delete, Patch } from '@nestjs/common';
 import { IPassageService } from '../../interfaces/IPassage.service';
-import { Passage } from './passage.entity';
+import { Passage } from './entities/passage.entity';
 import { DeleteResult } from 'typeorm';
 
 @Controller('passage')

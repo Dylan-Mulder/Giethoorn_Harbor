@@ -2,7 +2,7 @@ import { Module } from '@nestjs/common';
 import { PassageController } from './passage.controller';
 import { PassageService } from './passage.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Passage } from './passage.entity';
+import { Passage } from './entities/passage.entity';
 import { IPassageService } from '../../interfaces/IPassage.service';
 
 @Module({

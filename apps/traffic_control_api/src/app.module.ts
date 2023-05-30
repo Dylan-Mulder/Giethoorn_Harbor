@@ -9,14 +9,14 @@ import { ClientProxyFactory, Transport } from '@nestjs/microservices';
 import { DockModule } from './modules/dock/dock.module';
 import { PassageModule } from './modules/passage/passage.module';
 import { ShipModule } from './modules/ship/ship.module';
-import { TrafficPlanningModule } from './modules/traffic-planning/trafficPlanning.module';
+import { TrafficPlanningModule } from './modules/traffic-planning/traffic-planning.module';
 import { TruckModule } from './modules/truck/truck.module';
 import { TugboatModule } from './modules/tugboat/tugboat.module';
 
 // Entities
-import { Dock } from './modules/dock/dock.entity';
-import { Passage } from './modules/passage/passage.entity';
-import { Ship } from './modules/ship/ship.entity';
+import { Dock } from './modules/dock/entities/dock.entity';
+import { Passage } from './modules/passage/entities/passage.entity';
+import { Ship } from './modules/ship/entities/ship.entity';
 import { TrafficPlanning } from './modules/traffic-planning/trafficPlanning.entity';
 import { Truck } from './modules/truck/truck.entity';
 import { Tugboat } from './modules/tugboat/tugboat.entity';
