@@ -1,8 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
 import { IsNumber, IsString, IsDate } from "class-validator";
-import { Column, OneToOne, JoinColumn } from "typeorm";
-import { Dock } from "../../dock/entities/dock.entity";
-import { ShippingCompany } from "../../shipping-company/entity/shipping-company.entity";
 import { LeaseAgreement } from "../entities/lease-agreement.entity";
 
 

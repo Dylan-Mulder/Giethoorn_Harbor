@@ -1,10 +1,10 @@
 import { Injectable } from '@nestjs/common';
-import { IDockService } from '../../interfaces/IDock.service';
-import { Dock } from './entities/dock.entity';
-import { DockDTO } from './dto/dock.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DeleteResult, UpdateResult } from 'typeorm';
+import { IDockService } from '../../interfaces/IDock.service';
+import { DockDTO } from './dto/dock.dto';
 import { CreateDockDTO } from './dto/create-dock.dto';
+import { Dock } from './entities/dock.entity';
 
 
 @Injectable()
@@ -25,7 +25,7 @@ export class DockService implements IDockService {
     return await this.repo.save(dock);
   }
 
-  public async updateDockById(id: number, updateDock: DockDTO): Promise<UpdateResult> {
+  public async updateDockById(id: number, updateDock: CreateDockDTO): Promise<UpdateResult> {
     return await this.repo.update(id, updateDock)
   }
 

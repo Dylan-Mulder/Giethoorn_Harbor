@@ -1,9 +1,11 @@
 import { Injectable } from '@nestjs/common';
-import { IShipCompanyService } from '../../interfaces/IShipCompany.service';
-import { DeleteResult, Repository, UpdateResult } from 'typeorm';
-import { ShippingCompany } from './entity/shipping-company.entity';
-import { ShippingCompanyDTO } from './dto/ship-company.dto';
 import { InjectRepository } from '@nestjs/typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { IShipCompanyService } from '../../interfaces/IShipCompany.service';
+import { ShippingCompanyDTO } from './dto/ship-company.dto';
+import { CreateShippingCompanyDTO } from './dto/create-shipping-company.dto';
+import { ShippingCompany } from './entity/shipping-company.entity';
+
 
 @Injectable()
 export class ShippingCompanyService implements IShipCompanyService {
@@ -18,16 +20,16 @@ export class ShippingCompanyService implements IShipCompanyService {
     return await this.repo.find().then((docks: Array<ShippingCompany>) => docks.map(d => ShippingCompanyDTO.fromEntity(d)));
   }
 
-  public async createShipCompany(dto: ShippingCompanyDTO): Promise<ShippingCompanyDTO> {
-    return await this.repo.save(dto.toEntity()).then((d: ShippingCompany) => ShippingCompanyDTO.fromEntity(d));
+  public async createShipCompany(dto: CreateShippingCompanyDTO): Promise<ShippingCompany> {
+    const shipCompany = this.repo.create(dto);
+    return await this.repo.save(shipCompany);
   }
 
-  public async updateShipCompanyById(id: number, updateShipCompany: ShippingCompanyDTO): Promise<UpdateResult> {
+  public async updateShipCompanyById(id: number, updateShipCompany: CreateShippingCompanyDTO): Promise<UpdateResult> {
     return await this.repo.update(id, updateShipCompany)
   }
 
   public async deleteShipCompanyById(id: number): Promise<DeleteResult> {
     return await this.repo.delete(id)
   }
-
 }

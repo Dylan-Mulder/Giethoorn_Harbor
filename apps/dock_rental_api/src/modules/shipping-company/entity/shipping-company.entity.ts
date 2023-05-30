@@ -1,12 +1,12 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, Generated, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'shipping_company', schema: 'dock_rental' })
 export class ShippingCompany {
-
   @PrimaryGeneratedColumn()
   public id!: number;
 
-  @PrimaryGeneratedColumn('uuid')
+  @Column()
+  @Generated("uuid")
   public stream_id!: string;
 
   @Column({ type: 'varchar', length: 100, nullable: false })
