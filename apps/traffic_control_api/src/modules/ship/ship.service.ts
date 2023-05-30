@@ -15,15 +15,19 @@ export class ShipService implements IShipService {
     const ship = this.repo.create(dto);
     return await this.repo.save(ship);
   }
+
   public async getShipById(id: number): Promise<ShipDTO> {
     return ShipDTO.fromEntity(await this.repo.findOne({ where: { id: id } }));
   }
+
   public async getAllShips(): Promise<Array<ShipDTO>> {
     return await this.repo.find().then((docks: Array<Ship>) => docks.map(d => ShipDTO.fromEntity(d)));
   }
+
   public async updateShipById(id: number, updateShip: CreateShipDTO): Promise<UpdateResult> {
     return await this.repo.update(id, updateShip)
   }
+
   public async deleteShipById(id: number): Promise<DeleteResult> {
     return await this.repo.delete(id)
   }

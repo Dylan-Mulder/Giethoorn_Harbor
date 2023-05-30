@@ -1,9 +1,9 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsNotEmpty } from "class-validator";
+import { IsString, IsNotEmpty, IsJSON } from "class-validator";
 
 export class CreateTrafficPlanningDTO implements Readonly<CreateTrafficPlanningDTO> {
 
-  @IsString()
+  @IsJSON()
   @ApiProperty()
   @IsNotEmpty()
   public passages: string;
@@ -11,10 +11,10 @@ export class CreateTrafficPlanningDTO implements Readonly<CreateTrafficPlanningD
   @IsString()
   @ApiProperty()
   @IsNotEmpty()
-  public start_date: string;
+  public start_date: Date;
 
   @IsString()
   @ApiProperty()
   @IsNotEmpty()
-  public end_date: string;
+  public end_date: Date;
 }

@@ -6,7 +6,7 @@ import { DeleteResult, UpdateResult } from 'typeorm';
 
 @Controller('trucks')
 export class TruckController {
-  constructor(private truckService: ITruckService) { }
+  constructor(private readonly truckService: ITruckService) { }
 
   @Post()
   async createTruck(@Body() createTruckDTO: CreateTruckDTO): Promise<Truck> {

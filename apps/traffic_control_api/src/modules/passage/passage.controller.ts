@@ -9,7 +9,7 @@ export class PassageController {
   constructor(private readonly passageService: IPassageService) { }
 
   @Post()
-  public async createPassage(createPassageDTO: CreatePassageDTO): Promise<Passage> {
+  public async createPassage(@Body() createPassageDTO: CreatePassageDTO): Promise<Passage> {
     return await this.passageService.createPassage(createPassageDTO);
   }
 

@@ -19,7 +19,8 @@ export class Passage {
   @Column("int", { nullable: true })
   public truck_id: number;
 
-  @Column({ type: 'varchar', length: 300 })
+  // @Column({ type: 'varchar', length: 300 })
+  @Column('jsonb', { nullable: false, default: {} })
   public tugboats: string;
 
   @Column({ type: 'timestamp', nullable: false })

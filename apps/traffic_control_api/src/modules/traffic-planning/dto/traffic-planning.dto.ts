@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNumber, IsString, IsDate } from "class-validator";
+import { IsNumber, IsString, IsDate, IsJSON } from "class-validator";
 import { TrafficPlanning } from "../entities/traffic-planning.entity";
 
 export class TrafficPlanningDTO implements Readonly<TrafficPlanningDTO> {
@@ -11,7 +11,7 @@ export class TrafficPlanningDTO implements Readonly<TrafficPlanningDTO> {
   @ApiProperty()
   public stream_id: string;
 
-  @IsString()
+  @IsJSON()
   @ApiProperty()
   public passages: string;
 

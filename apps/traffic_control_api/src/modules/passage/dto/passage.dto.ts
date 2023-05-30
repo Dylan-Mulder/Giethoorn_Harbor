@@ -1,5 +1,5 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsNumber, IsString, IsDate } from "class-validator";
+import { IsNumber, IsString, IsDate, IsJSON } from "class-validator";
 import { Passage } from "../entities/passage.entity";
 
 export class PassageDTO implements Readonly<PassageDTO> {
@@ -11,7 +11,7 @@ export class PassageDTO implements Readonly<PassageDTO> {
   @ApiProperty()
   public stream_id: string;
 
-  @IsString()
+  @IsNumber()
   @ApiProperty()
   public dock_id: number;
 
@@ -23,7 +23,7 @@ export class PassageDTO implements Readonly<PassageDTO> {
   @ApiProperty()
   public truck_id: number;
 
-  @IsNumber()
+  @IsJSON()
   @ApiProperty()
   public tugboats: string;
 

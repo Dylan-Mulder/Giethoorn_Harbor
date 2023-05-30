@@ -6,7 +6,7 @@ import { UpdateResult, DeleteResult } from 'typeorm';
 
 @Controller('ships')
 export class ShipController {
-  constructor(private shipService: IShipService) { }
+  constructor(private readonly shipService: IShipService) { }
 
   @Post()
   public async createShip(@Body() createShipDTO: CreateShipDTO): Promise<Ship> {
@@ -23,12 +23,12 @@ export class ShipController {
     return await this.shipService.getAllShips();
   }
 
-  @Get(':shipId/update')
+  @Put(':shipId/update')
   public async updateShipById(@Param() param: { shipId: number }, @Body() updateShip: CreateShipDTO): Promise<UpdateResult> {
     return await this.shipService.updateShipById(Number(param.shipId), updateShip);
   }
 
-  @Get(':shipId/delete')
+  @Delete(':shipId/delete')
   public async deleteShip(@Param() param: { shipId: number }): Promise<DeleteResult> {
     return await this.shipService.deleteShipById(Number(param.shipId));
   }

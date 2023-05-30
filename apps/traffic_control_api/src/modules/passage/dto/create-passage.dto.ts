@@ -1,8 +1,8 @@
 import { ApiProperty } from "@nestjs/swagger";
-import { IsString, IsNotEmpty, IsNumber } from "class-validator";
+import { IsString, IsNotEmpty, IsNumber, IsJSON } from "class-validator";
 
 export class CreatePassageDTO implements Readonly<CreatePassageDTO> {
-  @IsString()
+  @IsNumber()
   @ApiProperty()
   @IsNotEmpty()
   public dock_id: number;
@@ -17,7 +17,7 @@ export class CreatePassageDTO implements Readonly<CreatePassageDTO> {
   @IsNotEmpty()
   public truck_id: number;
 
-  @IsString()
+  @IsJSON()
   @ApiProperty()
   @IsNotEmpty()
   public tugboats: string;

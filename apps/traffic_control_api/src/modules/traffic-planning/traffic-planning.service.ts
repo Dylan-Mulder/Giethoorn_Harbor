@@ -12,6 +12,9 @@ export class TrafficPlanningService implements ITrafficPlanningService {
   constructor(@InjectRepository(TrafficPlanning) private readonly repo: Repository<TrafficPlanning>) { }
 
   public async createTrafficPlanning(dto: CreateTrafficPlanningDTO): Promise<TrafficPlanning> {
+    dto.start_date = new Date(dto.start_date);
+    dto.end_date = new Date(dto.end_date);
+
     const planning = this.repo.create(dto);
     return await this.repo.save(planning);
   }
@@ -25,6 +28,8 @@ export class TrafficPlanningService implements ITrafficPlanningService {
   }
 
   public async updateTrafficPlanningById(id: number, dto: CreateTrafficPlanningDTO): Promise<UpdateResult> {
+    dto.start_date = new Date(dto.start_date);
+    dto.end_date = new Date(dto.end_date);
     return await this.repo.update(id, dto)
   }
 

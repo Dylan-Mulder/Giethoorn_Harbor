@@ -6,7 +6,7 @@ import { DeleteResult, UpdateResult } from 'typeorm';
 
 @Controller('tugboats')
 export class TugboatController {
-  constructor(private tugboatService: ITugboatService) { }
+  constructor(private readonly tugboatService: ITugboatService) { }
 
   @Post()
   async createTugboat(@Body() createTugboatDTO: CreateTugboatDTO): Promise<Tugboat> {

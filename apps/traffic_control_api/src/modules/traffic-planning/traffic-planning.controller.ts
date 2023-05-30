@@ -7,7 +7,7 @@ import { CreateTrafficPlanningDTO } from './dto/create-traffic-planning.dto';
 
 @Controller('traffic-plannings')
 export class TrafficPlanningController {
-  constructor(private trafficPlanningService: ITrafficPlanningService) { }
+  constructor(private readonly trafficPlanningService: ITrafficPlanningService) { }
 
   @Post()
   async createTrafficPlanning(@Body() createTrafficPlanningDTO: CreateTrafficPlanningDTO): Promise<TrafficPlanning> {
