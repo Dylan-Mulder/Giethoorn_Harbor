@@ -34,10 +34,10 @@ export class Passage extends BaseEntity {
   public tugboats: Array<{ id: Tugboat['id'] }>;
 
   @IsDate()
-  @Column({ type: 'timestamptz' })
+  @Column({ type: 'timestamp' })
   public arrival: Date;
 
   @IsDate()
-  @Column({ type: 'timestamptz' })
+  @Column({ type: 'timestamp' })
   public departure: Date;
 }

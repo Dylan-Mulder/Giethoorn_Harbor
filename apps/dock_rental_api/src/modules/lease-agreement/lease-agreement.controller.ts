@@ -9,7 +9,7 @@ export class LeaseAgreementController {
   constructor(private readonly leaseAgreementService: ILeaseAgreementService) { }
 
   @Post()
-  public async createLeaseAgreement(@Body() leaseAgreement: LeaseAgreement): Promise<LeaseAgreementDTO> {
+  public async createLeaseAgreement(@Body() leaseAgreement: LeaseAgreementDTO): Promise<LeaseAgreementDTO> {
     return await this.leaseAgreementService.createLeaseAgreement(leaseAgreement);
   }
 
@@ -24,7 +24,7 @@ export class LeaseAgreementController {
   }
 
   @Put(':leaseAgreementId/update')
-  public async updateLeaseAgreementById(@Param() param: { leaseAgreementId: number }, @Body() updateLeaseAgreement: LeaseAgreement): Promise<UpdateResult> {
+  public async updateLeaseAgreementById(@Param() param: { leaseAgreementId: number }, @Body() updateLeaseAgreement: LeaseAgreementDTO): Promise<UpdateResult> {
     return await this.leaseAgreementService.updateLeaseAgreementById(param.leaseAgreementId, updateLeaseAgreement);
   }
 

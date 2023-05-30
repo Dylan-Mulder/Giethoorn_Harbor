@@ -4,6 +4,7 @@ import { Dock } from './entities/dock.entity';
 import { DockDTO } from './dto/dock.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Repository, DeleteResult, UpdateResult } from 'typeorm';
+import { CreateDockDTO } from './dto/create-dock.dto';
 
 
 @Injectable()
@@ -19,8 +20,9 @@ export class DockService implements IDockService {
     return await this.repo.find().then((docks: Array<Dock>) => docks.map(d => DockDTO.fromEntity(d)));
   }
 
-  public async createDock(dto: DockDTO): Promise<DockDTO> {
-    return await this.repo.save(dto.toEntity()).then((d: Dock) => DockDTO.fromEntity(d));
+  public async createDock(dto: CreateDockDTO): Promise<Dock> {
+    const dock = this.repo.create(dto);
+    return await this.repo.save(dock);
   }
 
   public async updateDockById(id: number, updateDock: DockDTO): Promise<UpdateResult> {

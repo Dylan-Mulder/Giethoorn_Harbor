@@ -1,13 +1,13 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, Generated, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity({ name: 'shipping_company', schema: 'dock_rental' })
+@Entity({ name: 'shipping_company', schema: 'billing' })
 export class ShippingCompany {
-
   @PrimaryGeneratedColumn()
-  public id!: number;
+  public id: number;
 
-  @PrimaryGeneratedColumn('uuid')
-  public stream_id!: string;
+  @Column()
+  @Generated("uuid")
+  public stream_id: string;
 
   @Column({ type: 'varchar', length: 100, nullable: false })
   public reference: string;
@@ -16,8 +16,9 @@ export class ShippingCompany {
   public name: string;
 
   @Column({ type: 'varchar', length: 100, nullable: false })
-  public country: string;
+  public invoice_address: string;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   public created_at: Date;
 }
+
