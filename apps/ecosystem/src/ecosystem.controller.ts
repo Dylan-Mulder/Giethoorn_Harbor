@@ -1,6 +1,6 @@
 import { Controller, Get } from '@nestjs/common';
 import { EcosystemService } from './ecosystem.service';
-import { WaterQualityReport } from '../models/waterQualityReport.model';
+import { WaterQualityReport } from './entities/water-quality-report.entity';
 import { Ctx, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';
 
 
@@ -18,7 +18,7 @@ export class EcosystemController {
     try {
       const jsonData = JSON.parse(content);
       const EcosystemData = jsonData.data.refillServiceData; 
-      await this.EcosystemService.createWaterQuality(EcosystemData);
+      await this.ecosystemService.createWaterQuality(EcosystemData);
       context.getChannelRef().ack(context.getMessage()); // Acknowledge the message
     } catch (error) {
       console.error(error);

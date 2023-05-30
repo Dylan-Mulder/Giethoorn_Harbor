@@ -1,12 +1,17 @@
 import { Injectable } from '@nestjs/common';
 import axios from 'axios';
-import { response } from 'express';
-import { error } from 'console';
 import { WaterQualityReport } from './entities/water-quality-report.entity';
+import amqp from 'amqp-connection-manager';
+import { MarineLifeReport, MarineLifeReportList } from './entities/marine-life-report.entity';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class EcosystemService {
-  
+  constructor(private readonly configService: ConfigService){};
+  private  USER = this.configService.get('RABBITMQ_USER');
+  private  PASSWORD = this.configService.get('RABBITMQ_PASS');
+  private  HOST = this.configService.get('RABBITMQ_HOST');
+
   async getWaterQualityReport(): Promise<WaterQualityReport> {
     const url = 'https://www.aqualarm.nl/apwp/api/substances/bylocation/LOBI?getLatestMeasurements=true&lang=nl';
     const response = await axios.get(url);
@@ -30,7 +35,7 @@ export class EcosystemService {
         }
       }
     }
-    wqr.dateMeasurement= new Date(Date.now());
+    wqr.start_date= new Date(Date.now());
 
     return wqr;
   }
@@ -100,8 +105,8 @@ export class EcosystemService {
         const report = new MarineLifeReport();
         report.year = parseInt(values[0], 10);
         report.species =values[3];
-        report.scientificName = values[4];
-        report.CPUE = values[5] !== '' ? parseFloat(values[5]) : 0;
+        // report.scientificName = values[4];
+        // report.CPUE = values[5] !== '' ? parseFloat(values[5]) : 0;
         report.habitat = values[7];
   
         reports.addReport(report);
@@ -126,5 +131,12 @@ export class EcosystemService {
       //client.release();
     }
   }
+  async sendToQueue(exchangeName: string, routingKey: string, message: string){
+    const connection = await amqp.connect(`amqp://${this.USER}:${this.PASSWORD}@${this.HOST}`);
+    const channel = await connection.createChannel();
+    await channel.assertExchange(exchangeName, 'topic', { durable: false });
+    await channel.publish(exchangeName, routingKey, Buffer.from(message));
+  };
+
 
 }

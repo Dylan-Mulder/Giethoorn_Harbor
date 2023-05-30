@@ -2,17 +2,21 @@ version: '3.6'
 services:
 
   # RABBITMQ SERVICE
-  # rabbitmq:
-  #   image: rabbitmq:3-management
-  #   container_name: rabbitmq
-  #   hostname: rabbitmq
-  #   volumes:
-  #     - /var/lib/rabbitmq
-  #   ports:
-  #     - '5672:5672'
-  #     - '15672:15672'
-  #   env_file:
-  #     - .env
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    hostname: rabbitmq
+    volumes:
+      - /var/lib/rabbitmq
+    networks:
+      network:
+        ipv4_address: 10.5.0.69
+
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    env_file:
+      - .env
 
   # RELATIONAL DATABASE
   relational_database:

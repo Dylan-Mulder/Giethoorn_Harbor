@@ -30,3 +30,15 @@ export class MarineLifeReport {
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   public created_at: Date;
 }
+
+export class MarineLifeReportList {
+  reports: MarineLifeReport[];
+
+  constructor() {
+    this.reports = [];
+  }
+
+  addReport(report: MarineLifeReport) {
+    this.reports.push(report);
+  }
+}
