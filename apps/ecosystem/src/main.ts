@@ -6,7 +6,7 @@ import { Transport, MicroserviceOptions, RmqContext } from '@nestjs/microservice
 import { EcosystemController } from './ecosystem.controller';
 import * as amqp from 'amqplib';
 import { WaterQualityReport } from './entities/water-quality-report.entity';
-import { MarineLifeReport } from './entities/marine-life-report.entity';
+import { MarineLifeReport, MarineLifeReportList } from './entities/marine-life-report.entity';
 
 async function bootstrap() {
   const app = await NestFactory.create(EcosystemModule);
@@ -61,8 +61,8 @@ async function bootstrap() {
           },
     );
 
-    const report = await eosystemService.getFakeWaterQualityReport(); // Assuming you have a method to get the WaterQualityReport object
-    const reportmarine = await eosystemService.getFakeMarineLifeReport(); // Assuming you have a method to get the WaterQualityReport object
+    const report = await eosystemService.getFakeWaterQualityReport(); 
+    const reportmarine = await eosystemService.getFakeMarineLifeReport(); 
 
     const exchangeName = 'waterquality-inspected';
     const routingKey = 'event.waterquality-inspected';
@@ -105,7 +105,7 @@ async function addWaterQualityReportToExchange(exchangeName: string, routingKey:
   await channel.publish(exchangeName, routingKey, Buffer.from(reportData));
 }
 
-async function addMarineQualityReportToExchange(exchangeName: string, routingKey: string, report: MarineLifeReport) {
+async function addMarineQualityReportToExchange(exchangeName: string, routingKey: string, report: MarineLifeReportList) {
   const app = await NestFactory.create(EcosystemModule);
 
   const configService = app.get(ConfigService);

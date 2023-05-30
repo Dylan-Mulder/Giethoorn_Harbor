@@ -1,6 +1,5 @@
 import { Controller, Get } from '@nestjs/common';
 import { EcosystemService } from './ecosystem.service';
-import { WaterQualityReport } from './entities/water-quality-report.entity';
 import { Ctx, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';
 
 
