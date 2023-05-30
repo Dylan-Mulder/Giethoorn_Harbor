@@ -54,13 +54,34 @@ services:
   #     - ./database_scripts/event_store_init.sql:/docker-entrypoint-initdb.d/event_store_init.sql
 
   # DOCK RENTAL API
-  dock_rental_api:
-    container_name: Dock-Rental-API
+  # dock_rental_api:
+  #   container_name: Dock-Rental-API
+  #   build:
+  #     context: ./
+  #     dockerfile: ./apps/dock_rental_api/Dockerfile
+  #   ports:
+  #     - '4100:5001'
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     - relational_database
+  #     # - event_store
+  #     # - rabbitmq
+  #   volumes:
+  #     - .:/usr/src/app
+  #     - /usr/src/app/node_modules
+  #   networks:
+  #     network:
+  #       ipv4_address: 10.5.0.5
+  #   command: npm run start:dev dock_rental_api
+  # TRAFFIC CONTROL API
+  traffic_control_api:
+    container_name: Traffic-Control-API
     build:
       context: ./
-      dockerfile: ./apps/dock_rental_api/Dockerfile
+      dockerfile: ./apps/traffic_control_api/Dockerfile
     ports:
-      - '4100:5001'
+      - '4200:5000'
     env_file:
       - .env
     depends_on:
@@ -72,30 +93,8 @@ services:
       - /usr/src/app/node_modules
     networks:
       network:
-        ipv4_address: 10.5.0.5
-    command: npm run start:dev dock_rental_api
-  # TRAFFIC CONTROL API
-  # traffic_control_api:
-  #   container_name: Traffic-Control-API
-  #   build:
-  #     context: ./
-  #     dockerfile: ./apps/traffic_control_api/Dockerfile
-  #   ports:
-  #     - '4200:5000'
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     - relational_database
-  #     - event_store
-  #     # - rabbitmq
-  #   volumes:
-  #     - .:/usr/src/app
-  #     - /usr/src/app/node_modules
-  #   networks:
-  #     network:
-  #       ipv4_address: 10.5.0.6
-  #   command: npm run start:dev traffic_control_api
-
+        ipv4_address: 10.5.0.6
+    command: npm run start:dev traffic_control_api
   # CUSTOM DOCKER NETWORK
 networks:
   network:

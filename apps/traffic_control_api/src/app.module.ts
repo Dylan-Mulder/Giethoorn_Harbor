@@ -35,7 +35,8 @@ import { Tugboat } from './modules/tugboat/tugboat.entity';
         password: configService.get('POSTGRES_PASSWORD'),
         database: configService.get('POSTGRES_DB'),
         entities: [Dock, Passage, Ship, TrafficPlanning, Truck, Tugboat],
-        synchronize: true,
+        synchronize: false,
+        migrationsRun: false
       }),
     }),
     DockModule,
