@@ -28,6 +28,8 @@ export class LeaseAgreementService implements ILeaseAgreementService {
   }
 
   public async updateLeaseAgreementById(id: number, updateLeaseAgreement: CreateLeaseAgreementDTO): Promise<UpdateResult> {
+    updateLeaseAgreement.sign_date = new Date(updateLeaseAgreement.sign_date);
+    updateLeaseAgreement.valid_until = new Date(updateLeaseAgreement.valid_until);
     return await this.repo.update(id, updateLeaseAgreement)
   }
 
