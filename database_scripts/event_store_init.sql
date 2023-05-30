@@ -1,3 +1,6 @@
+-- UUID EXTENSION
+CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
+
 -- USERS
 CREATE USER gh_traffic_control WITH PASSWORD 'nsg762dsak21';
 CREATE USER gh_dock_rental WITH PASSWORD 'nWiuybw4o2o';
@@ -10,7 +13,7 @@ CREATE USER gh_billing WITH PASSWORD 'varwcdy2uFDS';
 CREATE USER gh_messaging WITH PASSWORD 'MmMmMQmqnhfy26';
 
 -- SCHEMA'S
-DROP SCHEMA public;
+DROP SCHEMA public CASCADE;
 CREATE SCHEMA traffic_control;
 CREATE SCHEMA dock_rental;
 CREATE SCHEMA ecosystem;

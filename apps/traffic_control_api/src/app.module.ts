@@ -6,30 +6,38 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import { ClientProxyFactory, Transport } from '@nestjs/microservices';
 
 // Custom modules
-import { DockModule } from './dock/dock.module';
-import { PassageModule } from './passage/passage.module';
-import { ShipModule } from './ship/ship.module';
-import { TrafficPlanningModule } from './traffic-planning/trafficPlanning.module';
-import { TruckModule } from './truck/truck.module';
-import { TugboatModule } from './tugboat/tugboat.module';
+import { DockModule } from './modules/dock/dock.module';
+import { PassageModule } from './modules/passage/passage.module';
+import { ShipModule } from './modules/ship/ship.module';
+import { TrafficPlanningModule } from './modules/traffic-planning/traffic-planning.module';
+import { TruckModule } from './modules/truck/truck.module';
+import { TugboatModule } from './modules/tugboat/tugboat.module';
 
+// Entities
+import { Dock } from './modules/dock/entities/dock.entity';
+import { Passage } from './modules/passage/entities/passage.entity';
+import { Ship } from './modules/ship/entities/ship.entity';
+import { TrafficPlanning } from './modules/traffic-planning/trafficPlanning.entity';
+import { Truck } from './modules/truck/truck.entity';
+import { Tugboat } from './modules/tugboat/tugboat.entity';
 
 @Module({
   imports: [
     ConfigModule.forRoot({ isGlobal: true }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
+      inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
-        "type": "postgres",
-        "host": "172.19.0.2",
-        "port": 5432,
-        "username": "postgres",
-        "password": "password",
-        "database": "postgres",
-        //"entities": ["./**/*.model.ts"],
-        "synchronize": true
+        type: 'postgres',
+        host: configService.get('POSTGRES_HOST'),
+        port: configService.get('POSTGRES_PORT'),
+        username: configService.get('POSTGRES_USER'),
+        password: configService.get('POSTGRES_PASSWORD'),
+        database: configService.get('POSTGRES_DB'),
+        entities: [Dock, Passage, Ship, TrafficPlanning, Truck, Tugboat],
+        synchronize: false,
+        migrationsRun: false
       }),
-      inject: [ConfigService]
     }),
     DockModule,
     PassageModule,
