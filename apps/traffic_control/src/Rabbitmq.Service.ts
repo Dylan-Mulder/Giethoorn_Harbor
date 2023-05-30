@@ -2,34 +2,11 @@ import { Injectable } from '@nestjs/common';
 import { Transport } from '@nestjs/microservices';
 import { ClientProxy, ClientProxyFactory, RmqOptions } from '@nestjs/microservices';
 import { Ship } from 'apps/refilling/models/ship.model';
-import { ConfigService } from '@nestjs/config';
-
+import * as amqp from 'amqplib';
 
 @Injectable()
 export class RabbitMQService {
   private client: ClientProxy;
-
-  constructor(private readonly configService: ConfigService) {}
-
-  async connect(): Promise<void> {
-    const USER = this.configService.get('RABBITMQ_USER');
-    const PASSWORD = this.configService.get('RABBITMQ_PASS');
-    const HOST = this.configService.get('RABBITMQ_HOST');
-    const QUEUE = this.configService.get('RABBITMQ_REFILLING_QUEUE');
-
-    const microserviceOptions: RmqOptions = {
-      transport: Transport.RMQ,
-      options: {
-        urls: [`amqp://${USER}:${PASSWORD}@${HOST}`],
-        queue: QUEUE,
-        queueOptions: {
-          durable: true,
-        },
-      },
-    };
-
-    this.client = await ClientProxyFactory.create(microserviceOptions).connect();
-  }
 
   async close(): Promise<void> {
     if (this.client) {
@@ -37,6 +14,7 @@ export class RabbitMQService {
     }
   }
 
+  
   async publishShipCreatedEvent(ship: Ship): Promise<void> {
     if (!this.client) {
       throw new Error('RabbitMQ connection not established. Call connect() before publishing events.');
@@ -44,14 +22,21 @@ export class RabbitMQService {
     await this.client.emit('ship_created', ship);
   }
 
-  async connectPublishClose(ship: Ship): Promise<void> {
-    try {
-      await this.connect();
-      await this.publishShipCreatedEvent(ship);
-    } catch (error) {
-      console.error('Failed to connect, publish, or close RabbitMQ connection:', error);
-    } finally {
-      await this.close();
-    }
-  }
+
+  async sendToQueue(cmd: string, data: Ship) {
+    const connection = await amqp.connect('amqp://user:password@rabbitmq:5672');
+    const channel = await connection.createChannel();
+    const exchangeName = 'Refilling-Queue';
+    const routingKey = 'create-ship';
+  
+    await channel.assertExchange(exchangeName, 'topic', { durable: false });
+    
+    const message = JSON.stringify({
+      cmd: cmd,
+      data: data
+    });
+  
+    await channel.publish(exchangeName, routingKey, Buffer.from(message));
+    console.log('Event published:', message);
+  } 
 }

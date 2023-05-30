@@ -7,7 +7,7 @@ import { Ship } from '../models/ship.model';
 export class RefillingController {
   constructor(private readonly refillingService: RefillingService) {}
 
-  @MessagePattern('refilling_queue') // Add this decorator to handle messages from the RabbitMQ queue
+  @MessagePattern('Refilling_Queue') // Add this decorator to handle messages from the RabbitMQ queue
   async handleMessage(
     @Payload() shipData: Partial<Ship>, // Payload will contain the ship data from the message
     @Ctx() context: RmqContext, // Context to acknowledge the message

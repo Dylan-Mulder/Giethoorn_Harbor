@@ -4,6 +4,7 @@ import { Transport, MicroserviceOptions } from '@nestjs/microservices';
 import { RefillingModule } from './refilling.module';
 import * as amqp from 'amqplib';
 
+
 async function bootstrap() {
   const app = await NestFactory.create(RefillingModule);
 
@@ -25,6 +26,12 @@ async function bootstrap() {
     },
   });
 
+  await app.startAllMicroservices();
+
+  process.on('exit', async () => {
+    await app.close();
+  });
+
   const channel = await amqp.connect(`amqp://${USER}:${PASSWORD}@${HOST}`);
   const queue = await channel.createChannel();
 
@@ -32,24 +39,18 @@ async function bootstrap() {
   await queue.prefetch(1);
 
   queue.consume(QUEUE, async (message) => {
-
     // Acknowledge the message
     queue.ack(message);
 
-    console.log('I GOT MESSAGE: ' + message.content.toString())
+    console.log('I GOT MESSAGE: ' + message.content.toString());
 
     if (message) {
       const data = JSON.parse(message.content.toString());
-      
+      // Process the received message data here
     }
   });
 
-  app.startAllMicroservices();
   await app.listen(5672);
-
-  process.on('exit', () => {
-    channel.close();
-  });
 }
 
 bootstrap();
