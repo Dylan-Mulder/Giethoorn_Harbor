@@ -1,14 +1,12 @@
 import { Module } from '@nestjs/common';
+import { RefillingController } from './refilling.controller';
+import { RefillingService } from './refilling.service';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { configService } from './config/config.service';
-import { RefillingController } from './refilling.controller';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
-    TypeOrmModule.forRoot(configService.getTypeOrmConfig()),
+    ConfigModule.forRoot({ isGlobal: true, envFilePath: './.env' }),
   ],
-  controllers: [RefillingController]
 })
-export class RefillingModule { }
+export class RefillingModule {}

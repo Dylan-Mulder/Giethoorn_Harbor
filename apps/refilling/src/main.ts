@@ -2,12 +2,11 @@ import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
 import { Transport, MicroserviceOptions } from '@nestjs/microservices';
 import { RefillingModule } from './refilling.module';
+import { RefillingService } from './refilling.service';
 import * as amqp from 'amqplib';
-
 
 async function bootstrap() {
   const app = await NestFactory.create(RefillingModule);
-
   const configService = app.get(ConfigService);
 
   const USER = configService.get('RABBITMQ_USER');
@@ -26,12 +25,6 @@ async function bootstrap() {
     },
   });
 
-  await app.startAllMicroservices();
-
-  process.on('exit', async () => {
-    await app.close();
-  });
-
   const channel = await amqp.connect(`amqp://${USER}:${PASSWORD}@${HOST}`);
   const queue = await channel.createChannel();
 
@@ -39,18 +32,30 @@ async function bootstrap() {
   await queue.prefetch(1);
 
   queue.consume(QUEUE, async (message) => {
+    
     // Acknowledge the message
+
     queue.ack(message);
 
-    console.log('I GOT MESSAGE: ' + message.content.toString());
+
+    console.log(message.content.toString())
 
     if (message) {
       const data = JSON.parse(message.content.toString());
-      // Process the received message data here
+
+        // Create a new ship
+        const refillingService = app.get(RefillingService); // here it does work
+        await refillingService.createShip(data);
+      
     }
   });
 
+  app.startAllMicroservices();
   await app.listen(5672);
+
+  process.on('exit', () => {
+    channel.close();
+  });
 }
 
-bootstrap();
+bootstrap()
