@@ -186,7 +186,6 @@ services:
       - rabbitmq
       - traffic_control_api
       - ecosystem
-      - db
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
