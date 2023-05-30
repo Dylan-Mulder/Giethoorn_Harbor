@@ -1,9 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { WaterQualityReport } from '../models/waterQualityReport.model';
 import axios from 'axios';
-import { MarineLifeReport, MarineLifeReportList } from '../models/marineLifeReport.model';
 import { response } from 'express';
 import { error } from 'console';
+import { WaterQualityReport } from './entities/water-quality-report.entity';
 
 @Injectable()
 export class EcosystemService {

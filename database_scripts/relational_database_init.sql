@@ -63,8 +63,8 @@ CREATE TABLE traffic_control.passage
     ship_id integer,
     truck_id integer,
     tugboats jsonb NOT NULL,
-    arrival timestamp with time zone NOT NULL,
-    departure timestamp with time zone NOT NULL,
+    arrival date NOT NULL,
+    departure date NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     PRIMARY KEY (id)
 );
@@ -226,7 +226,7 @@ CREATE TABLE security.traffic_planning
     id serial NOT NULL,
     stream_id uuid NOT NULL DEFAULT gen_random_uuid(),
     dock_name text NOT NULL,
-    arrival timestamp with time zone NOT NULL,
+    arrival date NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     PRIMARY KEY (id)
 );
@@ -238,7 +238,7 @@ CREATE TABLE security.inspection
     ship_id integer,
     truck_id integer,
     supervisor text NOT NULL,
-    scheduled_for timestamp with time zone NOT NULL,
+    scheduled_for date NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     PRIMARY KEY (id)
 );
@@ -269,8 +269,8 @@ CREATE TABLE refilling.traffic_planning
     id serial NOT NULL,
     stream_id uuid NOT NULL DEFAULT gen_random_uuid(),
     dock_name text NOT NULL,
-    arrival timestamp with time zone NOT NULL,
-    departure timestamp with time zone NOT NULL,
+    arrival date NOT NULL,
+    departure date NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     PRIMARY KEY (id)
 );
@@ -321,8 +321,8 @@ CREATE TABLE cargo_management.traffic_planning
     id serial NOT NULL,
     stream_id uuid NOT NULL DEFAULT gen_random_uuid(),
     dock_name text NOT NULL,
-    arrival timestamp with time zone NOT NULL,
-    departure timestamp with time zone NOT NULL,
+    arrival date NOT NULL,
+    departure date NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     PRIMARY KEY (id)
 );
