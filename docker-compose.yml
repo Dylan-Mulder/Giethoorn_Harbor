@@ -2,17 +2,17 @@ version: '3.6'
 services:
 
   # # RABBITMQ SERVICE
-  # rabbitmq:
-  #   image: rabbitmq:3-management
-  #   container_name: rabbitmq
-  #   hostname: rabbitmq
-  #   volumes:
-  #     - /var/lib/rabbitmq
-  #   ports:
-  #     - '5672:5672'
-  #     - '15672:15672'
-  #   env_file:
-  #     - .env
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    hostname: rabbitmq
+    volumes:
+      - /var/lib/rabbitmq
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    env_file:
+      - .env
 
   # RELATIONAL DATABASE
   relational_database:
@@ -35,23 +35,23 @@ services:
       - ./database_scripts/relational_database_insert.sql:/docker-entrypoint-initdb.d/relational_database_insert.sql
 
   # EVENT SOURCE DATABASE
-  # event_store:
-  #   container_name: PostgreSQL-Event-Store
-  #   image: postgres:latest
-  #   restart: always
-  #   networks:
-  #     - network
-  #   ports:
-  #     - '5433:5432'
-  #   logging:
-  #     options:
-  #       max-size: 10m
-  #       max-file: "3"
-  #   env_file:
-  #     - .env
-  #   volumes:
-  #     - event_store:/var/lib/postgresql/data
-  #     - ./database_scripts/event_store_init.sql:/docker-entrypoint-initdb.d/event_store_init.sql
+  event_store:
+    container_name: PostgreSQL-Event-Store
+    image: postgres:latest
+    restart: always
+    networks:
+      - network
+    ports:
+      - '5433:5432'
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    env_file:
+      - .env
+    volumes:
+      - event_store:/var/lib/postgresql/data
+      - ./database_scripts/event_store_init.sql:/docker-entrypoint-initdb.d/event_store_init.sql
 
   # DOCK RENTAL API
   # dock_rental_api:
@@ -75,39 +75,27 @@ services:
   #       ipv4_address: 10.5.0.5
   #   command: npm run start:dev dock_rental_api
   # TRAFFIC CONTROL API
-  traffic_control_api:
-    container_name: Traffic-Control-API
-    build:
-      context: ./
-      dockerfile: ./apps/traffic_control_api/Dockerfile
-    ports:
-      - '4200:5000'
-    env_file:
-      - .env
-    depends_on:
-      - relational_database
-      # - event_store
-      # - rabbitmq
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    networks:
-      network:
-        ipv4_address: 10.5.0.6
-    command: npm run start:dev traffic_control_api
-  # CUSTOM DOCKER NETWORK
-networks:
-  network:
-    driver: bridge
-    ipam:
-      config:
-        - subnet: 10.5.0.0/16
-          gateway: 10.5.0.1
+  # traffic_control_api:
+  #   container_name: Traffic-Control-API
+  #   build:
+  #     context: ./
+  #     dockerfile: ./apps/traffic_control_api/Dockerfile
+  #   ports:
+  #     - '4200:5000'
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     - relational_database
+  #     # - event_store
+  #     # - rabbitmq
+  #   volumes:
+  #     - .:/usr/src/app
+  #     - /usr/src/app/node_modules
+  #   networks:
+  #     network:
+  #       ipv4_address: 10.5.0.6
+  #   command: npm run start:dev traffic_control_api
 
-# VOLUMES
-volumes:
-  relational_database:
-  event_store:
 
     #   traffic_control:
     #     container_name: Traffic-Control
@@ -176,22 +164,25 @@ volumes:
     #       - /usr/src/app/node_modules
     #     command: npm run start:dev security
 
-    #   refilling:
-    #     container_name: Refilling
-    #     build:
-    #       context: ./
-    #       dockerfile: ./apps/refilling/Dockerfile
-    #     env_file:
-    #       - .env
-    #     depends_on:
-    #       - rabbitmq
-    #       - traffic_control
-    #       - relational_database
-    #       - event_store
-    #     volumes:
-    #       - .:/usr/src/app
-    #       - /usr/src/app/node_modules
-    #     command: npm run start:dev refilling
+  refilling:
+    container_name: Refilling
+    build:
+      context: ./
+      dockerfile: ./apps/refilling/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      #- traffic_control
+      - relational_database
+      - event_store
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      network:
+        ipv4_address: 10.5.0.10
+    command: npm run start:dev refilling
 
     #   cargo_management:
     #     container_name: Cargo-Management
@@ -268,3 +259,16 @@ volumes:
     #     command: npm run start:dev messaging
 
 
+  # CUSTOM DOCKER NETWORK
+networks:
+  network:
+    driver: bridge
+    ipam:
+      config:
+        - subnet: 10.5.0.0/16
+          gateway: 10.5.0.1
+
+# VOLUMES
+volumes:
+  relational_database:
+  event_store:

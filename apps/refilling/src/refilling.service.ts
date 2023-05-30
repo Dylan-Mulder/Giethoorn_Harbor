@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { Pool, PoolClient } from 'pg';
-import { Ship } from '../models/ship.model';
+import { Ship } from './entities/ship.entity'
 import amqp from 'amqp-connection-manager';
 import { ConfigService } from '@nestjs/config';
 

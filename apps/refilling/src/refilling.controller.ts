@@ -1,7 +1,7 @@
 import { Controller } from '@nestjs/common';
 import { Ctx, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';
 import { RefillingService } from './refilling.service';
-import { Ship } from '../models/ship.model';
+import { Ship } from './entities/ship.entity'
 
 @Controller()
 export class RefillingController {
