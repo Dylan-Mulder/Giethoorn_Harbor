@@ -3,7 +3,7 @@ import { Module } from '@nestjs/common';
 import { ILeaseAgreementService } from '../../interfaces/ILeaseAgreement.service';
 import { LeaseAgreementService } from './lease-agreement.service';
 import { LeaseAgreementController } from './lease-agreement.controller';
-import { LeaseAgreement } from './lease-agreement.entity';
+import { LeaseAgreement } from './entities/lease-agreement.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([LeaseAgreement])],

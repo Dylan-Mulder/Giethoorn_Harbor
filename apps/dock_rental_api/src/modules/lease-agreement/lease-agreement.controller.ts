@@ -1,33 +1,35 @@
-import { Controller, Get, Param, Post, Body, Delete, Patch } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Delete, Put } from '@nestjs/common';
 import { ILeaseAgreementService } from '../../interfaces/ILeaseAgreement.service';
-import { LeaseAgreement } from './lease-agreement.entity';
+import { LeaseAgreement } from './entities/lease-agreement.entity';
+import { UpdateResult, DeleteResult } from 'typeorm';
+import { LeaseAgreementDTO } from './dto/lease-agreement.dto';
 
-@Controller('lease-agreement')
+@Controller('lease-agreements')
 export class LeaseAgreementController {
   constructor(private readonly leaseAgreementService: ILeaseAgreementService) { }
 
   @Post()
-  async createLeaseAgreement(@Body() leaseAgreement: LeaseAgreement) {
+  public async createLeaseAgreement(@Body() leaseAgreement: LeaseAgreement): Promise<LeaseAgreementDTO> {
     return await this.leaseAgreementService.createLeaseAgreement(leaseAgreement);
   }
 
-  @Get()
-  async getLeaseAgreementById(@Param() param: { leaseAgreementId: number }) {
+  @Get(':leaseAgreementId')
+  public async getLeaseAgreementById(@Param() param: { leaseAgreementId: number }): Promise<LeaseAgreementDTO> {
     return await this.leaseAgreementService.getLeaseAgreementById(param.leaseAgreementId);
   }
 
   @Get()
-  async getAllLeaseAgreements() {
+  public async getAllLeaseAgreements(): Promise<Array<LeaseAgreementDTO>> {
     return await this.leaseAgreementService.getAllLeaseAgreements();
   }
 
-  @Patch()
-  async updateLeaseAgreementById(@Param() param: { leaseAgreementId: number }, @Body() updateLeaseAgreement: LeaseAgreement) {
+  @Put(':leaseAgreementId/update')
+  public async updateLeaseAgreementById(@Param() param: { leaseAgreementId: number }, @Body() updateLeaseAgreement: LeaseAgreement): Promise<UpdateResult> {
     return await this.leaseAgreementService.updateLeaseAgreementById(param.leaseAgreementId, updateLeaseAgreement);
   }
 
-  @Delete()
-  async deleteLeaseAgreementById(@Param() param: { leaseAgreementId: number }) {
+  @Delete(':leaseAgreementId/delete')
+  public async deleteLeaseAgreementById(@Param() param: { leaseAgreementId: number }): Promise<DeleteResult> {
     return await this.leaseAgreementService.deleteLeaseAgreementById(param.leaseAgreementId);
   }
 }

@@ -1,10 +1,11 @@
-import { DeleteResult } from "typeorm";
-import { LeaseAgreement } from "../modules/lease-agreement/lease-agreement.entity";
+import { DeleteResult, UpdateResult } from "typeorm";
+import { LeaseAgreement } from "../modules/lease-agreement/entities/lease-agreement.entity";
+import { LeaseAgreementDTO } from "../modules/lease-agreement/dto/lease-agreement.dto";
 
 export abstract class ILeaseAgreementService {
-  abstract createLeaseAgreement(leaseAgreement: LeaseAgreement): Promise<LeaseAgreement>;
-  abstract getLeaseAgreementById(id: number): Promise<LeaseAgreement>;
-  abstract getAllLeaseAgreements(): Promise<Array<LeaseAgreement>>;
-  abstract updateLeaseAgreementById(id: number, updateLeaseAgreement: LeaseAgreement): Promise<LeaseAgreement>;
+  abstract createLeaseAgreement(leaseAgreement: LeaseAgreement): Promise<LeaseAgreementDTO>;
+  abstract getLeaseAgreementById(id: number): Promise<LeaseAgreementDTO>;
+  abstract getAllLeaseAgreements(): Promise<Array<LeaseAgreementDTO>>;
+  abstract updateLeaseAgreementById(id: number, updateLeaseAgreement: LeaseAgreement): Promise<UpdateResult>;
   abstract deleteLeaseAgreementById(id: number): Promise<DeleteResult>;
 }

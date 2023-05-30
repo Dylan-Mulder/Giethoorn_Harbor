@@ -6,9 +6,9 @@ import { DockModule } from './modules/dock/dock.module';
 import { LeaseAgreementModule } from './modules/lease-agreement/lease-agreement.module';
 import { ShippingCompanyModule } from './modules/shipping-company/shipping-company.module';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Dock } from './modules/dock/dock.entity';
-import { LeaseAgreement } from './modules/lease-agreement/lease-agreement.entity';
-import { ShippingCompany } from './modules/shipping-company/shipping-company.entity';
+import { Dock } from './modules/dock/entities/dock.entity';
+import { LeaseAgreement } from './modules/lease-agreement/entities/lease-agreement.entity';
+import { ShippingCompany } from './modules/shipping-company/entity/shipping-company.entity';
 
 
 @Module({
@@ -25,7 +25,8 @@ import { ShippingCompany } from './modules/shipping-company/shipping-company.ent
         password: configService.get('POSTGRES_PASSWORD'),
         database: configService.get('POSTGRES_DB'),
         entities: [Dock, LeaseAgreement, ShippingCompany],
-        synchronize: true,
+        synchronize: false,
+        migrationsRun: false
       }),
     }),
     LeaseAgreementModule,
