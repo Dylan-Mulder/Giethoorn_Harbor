@@ -12,6 +12,43 @@ export class EcosystemService {
   private  PASSWORD = this.configService.get('RABBITMQ_PASS');
   private  HOST = this.configService.get('RABBITMQ_HOST');
 
+  async getFakeWaterQualityReport(): Promise<WaterQualityReport> {
+
+    const report = new WaterQualityReport();
+  
+    // Set the properties of the report with fake data
+    report.ph = Math.random() * 14; // Random value between 0 and 14
+    report.oxygen_in_mg_per_l = Math.random() * 10; // Random value between 0 and 10
+    report.temperature_in_celsius = Math.random() * 30; // Random value between 0 and 30
+    report.chlorine_in_mg_per_l = Math.random() * 5; // Random value between 0 and 5
+    report.start_date = new Date();
+    report.turbidity = Math.random() * 100; // Random value between 0 and 100
+    report.diclofenac_in_ug_per_l = Math.random() * 50; // Random value between 0 and 50
+    
+    return report;
+  }
+
+  async getFakeMarineLifeReport(): Promise<MarineLifeReportList>{
+  // Create a new instance of MarineLifeReportList
+  const reportList = new MarineLifeReportList();
+
+  // Create a new instance of MarineLifeReport
+  const report = new MarineLifeReport();
+  
+  // Set the properties of the report with fake data
+  report.year = Math.floor(Math.random() * 10) + 2010; // Random year between 2010 and 2019
+  report.species = 'Sample Species'; // Replace with your desired value
+  report.scientific_name = 'Sample Scientific Name'; // Replace with your desired value
+  report.cpue = Math.random() * 100; // Random value between 0 and 100
+  report.habitat = 'Sample Habitat'; // Replace with your desired value
+  report.season = 'Sample Season'; // Replace with your desired value
+
+  // Add the report to the reportList
+  reportList.addReport(report);
+  
+  return reportList;
+  }
+
   async getWaterQualityReport(): Promise<WaterQualityReport> {
     const url = 'https://www.aqualarm.nl/apwp/api/substances/bylocation/LOBI?getLatestMeasurements=true&lang=nl';
     const response = await axios.get(url);
