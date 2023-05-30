@@ -15,10 +15,10 @@ export class CreateDockDTO implements Readonly<CreateDockDTO> {
   @IsNumber()
   @ApiProperty()
   @IsNotEmpty()
-  public amountOfShipSpots: number;
+  public amount_of_ship_spots: number;
 
   @IsNumber()
   @ApiProperty()
   @IsNotEmpty()
-  public amountOfTruckSpots: number;
+  public amount_of_truck_spots: number;
 }

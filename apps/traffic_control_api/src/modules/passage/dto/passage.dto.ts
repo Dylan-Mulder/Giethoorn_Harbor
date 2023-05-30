@@ -29,11 +29,11 @@ export class PassageDTO implements Readonly<PassageDTO> {
 
   @IsDate()
   @ApiProperty()
-  public arrival_date: Date;
+  public arrival: Date;
 
   @IsDate()
   @ApiProperty()
-  public departure_date: Date;
+  public departure: Date;
 
   @IsDate()
   @ApiProperty()
@@ -47,8 +47,8 @@ export class PassageDTO implements Readonly<PassageDTO> {
     it.ship_id = dto.ship_id;
     it.truck_id = dto.truck_id;
     it.tugboats = dto.tugboats;
-    it.arrival_date = dto.arrival_date;
-    it.departure_date = dto.departure_date;
+    it.arrival = dto.arrival;
+    it.departure = dto.departure;
     it.created_at = dto.created_at;
     return it;
   }
@@ -61,8 +61,8 @@ export class PassageDTO implements Readonly<PassageDTO> {
       ship_id: entity.ship_id,
       truck_id: entity.truck_id,
       tugboats: entity.tugboats,
-      arrival_date: entity.arrival_date,
-      departure_date: entity.departure_date,
+      arrival: entity.arrival,
+      departure: entity.departure,
       created_at: entity.created_at
     });
   }
@@ -75,8 +75,8 @@ export class PassageDTO implements Readonly<PassageDTO> {
     it.ship_id = this.ship_id;
     it.truck_id = this.truck_id;
     it.tugboats = this.tugboats;
-    it.arrival_date = this.arrival_date;
-    it.departure_date = this.departure_date;
+    it.arrival = this.arrival;
+    it.departure = this.departure;
     it.created_at = this.created_at;
     return it;
   }

@@ -23,10 +23,10 @@ export class Passage {
   public tugboats: string;
 
   @Column({ type: 'timestamp', nullable: false })
-  public arrival_date: Date;
+  public arrival: Date;
 
   @Column({ type: 'timestamp', nullable: false })
-  public departure_date: Date;
+  public departure: Date;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   public created_at: Date;

@@ -16,10 +16,10 @@ export class Dock {
   public description: string;
 
   @Column('int')
-  public amountOfShipSpots: number;
+  public amount_of_ship_spots: number;
 
   @Column('int')
-  public amountOfTruckSpots: number;
+  public amount_of_truck_spots: number;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   public created_at: Date;

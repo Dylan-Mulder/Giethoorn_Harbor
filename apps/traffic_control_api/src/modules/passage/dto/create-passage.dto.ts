@@ -17,7 +17,7 @@ export class CreatePassageDTO implements Readonly<CreatePassageDTO> {
   @IsNotEmpty()
   public truck_id: number;
 
-  @IsNumber()
+  @IsString()
   @ApiProperty()
   @IsNotEmpty()
   public tugboats: string;
@@ -25,10 +25,10 @@ export class CreatePassageDTO implements Readonly<CreatePassageDTO> {
   @IsString()
   @ApiProperty()
   @IsNotEmpty()
-  public arrival_date: string;
+  public arrival: Date;
 
   @IsString()
   @ApiProperty()
   @IsNotEmpty()
-  public departure_date: string;
+  public departure: Date;
 }

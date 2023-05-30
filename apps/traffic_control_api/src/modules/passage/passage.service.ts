@@ -20,11 +20,18 @@ export class PassageService implements IPassageService {
   }
 
   public async createPassage(dto: CreatePassageDTO): Promise<Passage> {
+    console.trace('KAAAANKKKEEERRRR DTO:::: ' + JSON.stringify(dto))
+    dto.arrival = new Date(dto.arrival);
+    dto.departure = new Date(dto.departure);
+
     const passage = this.repo.create(dto);
+    console.trace('KAAAANKKKEEERRRR OBJECTS:::: ' + JSON.stringify(passage))
     return await this.repo.save(passage);
   }
 
   public async updatePassageById(id: number, updatePassage: CreatePassageDTO): Promise<UpdateResult> {
+    updatePassage.arrival = new Date(updatePassage.arrival);
+    updatePassage.departure = new Date(updatePassage.departure);
     return await this.repo.update(id, updatePassage)
   }
 

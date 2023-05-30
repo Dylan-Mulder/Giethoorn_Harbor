@@ -21,11 +21,11 @@ export class DockDTO implements Readonly<DockDTO> {
 
   @IsNumber()
   @ApiProperty()
-  public amountOfShipSpots: number;
+  public amount_of_ship_spots: number;
 
   @IsNumber()
   @ApiProperty()
-  public amountOfTruckSpots: number;
+  public amount_of_truck_spots: number;
 
   @IsDate()
   @ApiProperty()
@@ -37,8 +37,8 @@ export class DockDTO implements Readonly<DockDTO> {
     it.stream_id = dto.stream_id;
     it.name = dto.name;
     it.description = dto.description;
-    it.amountOfShipSpots = dto.amountOfShipSpots;
-    it.amountOfTruckSpots = dto.amountOfTruckSpots;
+    it.amount_of_ship_spots = dto.amount_of_ship_spots;
+    it.amount_of_truck_spots = dto.amount_of_truck_spots;
     it.created_at = dto.created_at;
     return it;
   }
@@ -49,8 +49,8 @@ export class DockDTO implements Readonly<DockDTO> {
       stream_id: entity.stream_id,
       name: entity.name,
       description: entity.description,
-      amountOfShipSpots: entity.amountOfShipSpots,
-      amountOfTruckSpots: entity.amountOfTruckSpots,
+      amount_of_ship_spots: entity.amount_of_ship_spots,
+      amount_of_truck_spots: entity.amount_of_truck_spots,
       created_at: entity.created_at
     });
   }
@@ -61,8 +61,8 @@ export class DockDTO implements Readonly<DockDTO> {
     it.stream_id = this.stream_id;
     it.name = this.name;
     it.description = this.description;
-    it.amountOfShipSpots = this.amountOfShipSpots;
-    it.amountOfTruckSpots = this.amountOfTruckSpots;
+    it.amount_of_ship_spots = this.amount_of_ship_spots;
+    it.amount_of_truck_spots = this.amount_of_truck_spots;
     it.created_at = this.created_at;
     return it;
   }
