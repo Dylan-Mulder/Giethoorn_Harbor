@@ -1,6 +1,6 @@
 import { DeleteResult, UpdateResult } from "typeorm";
-import { Truck } from "../modules/truck/truck.entity";
 import { CreateTruckDTO } from "../modules/truck/dto/create-truck.dto";
+import { Truck } from "../modules/truck/entities/truck.entity";
 
 export abstract class ITruckService {
   abstract createTruck(dto: CreateTruckDTO): Promise<Truck>;

@@ -17,9 +17,9 @@ import { TugboatModule } from './modules/tugboat/tugboat.module';
 import { Dock } from './modules/dock/entities/dock.entity';
 import { Passage } from './modules/passage/entities/passage.entity';
 import { Ship } from './modules/ship/entities/ship.entity';
-import { TrafficPlanning } from './modules/traffic-planning/trafficPlanning.entity';
-import { Truck } from './modules/truck/truck.entity';
-import { Tugboat } from './modules/tugboat/tugboat.entity';
+import { TrafficPlanning } from './modules/traffic-planning/entities/traffic-planning.entity';
+import { Truck } from './modules/truck/entities/truck.entity';
+import { Tugboat } from './modules/tugboat/entities/tugboat.entity';
 
 @Module({
   imports: [

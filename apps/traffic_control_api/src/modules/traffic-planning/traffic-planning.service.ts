@@ -1,24 +1,35 @@
 import { Injectable } from '@nestjs/common';
 import { ITrafficPlanningService } from '../../interfaces/ITrafficPlanning.service';
-import { DeleteResult } from 'typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { TrafficPlanning } from './entities/traffic-planning.entity';
+import { CreateTrafficPlanningDTO } from './dto/create-traffic-planning.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { TrafficPlanningDTO } from './dto/traffic-planning.dto';
 
 @Injectable()
 export class TrafficPlanningService implements ITrafficPlanningService {
-  createTrafficPlanning(TrafficPlanning: TrafficPlanning): Promise<TrafficPlanning> {
-    throw new Error('Method not implemented.');
+
+  constructor(@InjectRepository(TrafficPlanning) private readonly repo: Repository<TrafficPlanning>) { }
+
+  public async createTrafficPlanning(dto: CreateTrafficPlanningDTO): Promise<TrafficPlanning> {
+    const planning = this.repo.create(dto);
+    return await this.repo.save(planning);
   }
-  getTrafficPlanningById(id: number): Promise<TrafficPlanning> {
-    throw new Error('Method not implemented.');
+
+  public async getTrafficPlanningById(id: number): Promise<TrafficPlanningDTO> {
+    return TrafficPlanningDTO.fromEntity(await this.repo.findOne({ where: { id: id } }));
   }
-  getAllTrafficPlannings(): Promise<TrafficPlanning[]> {
-    throw new Error('Method not implemented.');
+
+  public async getAllTrafficPlannings(): Promise<Array<TrafficPlanningDTO>> {
+    return await this.repo.find().then((trafficplannings: Array<TrafficPlanning>) => trafficplannings.map(d => TrafficPlanningDTO.fromEntity(d)));
   }
-  updateTrafficPlanningById(id: number, updateTrafficPlanning: TrafficPlanning): Promise<TrafficPlanning> {
-    throw new Error('Method not implemented.');
+
+  public async updateTrafficPlanningById(id: number, dto: CreateTrafficPlanningDTO): Promise<UpdateResult> {
+    return await this.repo.update(id, dto)
   }
-  deleteTrafficPlanningById(id: number): Promise<DeleteResult> {
-    throw new Error('Method not implemented.');
+
+  public async deleteTrafficPlanningById(id: number): Promise<DeleteResult> {
+    return await this.repo.delete(id)
   }
 
 }

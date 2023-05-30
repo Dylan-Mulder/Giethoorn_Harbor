@@ -23,12 +23,12 @@ export class ShipController {
     return await this.shipService.getAllShips();
   }
 
-  @Put(':shipId/update')
+  @Get(':shipId/update')
   public async updateShipById(@Param() param: { shipId: number }, @Body() updateShip: CreateShipDTO): Promise<UpdateResult> {
     return await this.shipService.updateShipById(Number(param.shipId), updateShip);
   }
 
-  @Delete(':shipId/delete')
+  @Get(':shipId/delete')
   public async deleteShip(@Param() param: { shipId: number }): Promise<DeleteResult> {
     return await this.shipService.deleteShipById(Number(param.shipId));
   }

@@ -2,7 +2,7 @@ import { ApiProperty } from "@nestjs/swagger";
 import { IsNumber, IsNotEmpty, IsString } from "class-validator";
 
 export class CreateShipDTO implements Readonly<CreateShipDTO> {
-  @IsNumber()
+  @IsString()
   @ApiProperty()
   @IsNotEmpty()
   public name: string;

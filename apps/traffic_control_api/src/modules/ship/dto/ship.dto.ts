@@ -11,7 +11,7 @@ export class ShipDTO implements Readonly<ShipDTO> {
   @ApiProperty()
   public stream_id: string;
 
-  @IsNumber()
+  @IsString()
   @ApiProperty()
   public name: string;
 

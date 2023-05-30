@@ -27,5 +27,4 @@ export class ShipService implements IShipService {
   public async deleteShipById(id: number): Promise<DeleteResult> {
     return await this.repo.delete(id)
   }
-
 }
