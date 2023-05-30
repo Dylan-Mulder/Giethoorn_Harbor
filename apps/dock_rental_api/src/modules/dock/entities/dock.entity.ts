@@ -1,22 +1,17 @@
-import { Column, Entity, Generated, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, Generated, PrimaryColumn, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'dock', schema: 'dock_rental' })
 export class Dock {
-  @PrimaryGeneratedColumn('increment', { type: "int" })
+  @PrimaryGeneratedColumn()
   public id: number;
 
-  @Column({ type: 'varchar', unique: true, nullable: false })
-  @Generated('uuid')
+  @Column()
+  @Generated("uuid")
   public stream_id: string;
 
   @Column({ type: 'varchar', length: 100, nullable: false })
   public name: string;
 
-  @Column({ type: 'timestamptz', nullable: false })
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   public created_at: Date;
 }
-
-
-
-
-

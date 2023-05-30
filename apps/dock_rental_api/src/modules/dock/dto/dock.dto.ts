@@ -1,22 +1,23 @@
 import { ApiProperty } from '@nestjs/swagger';
-import { IsDate, IsNumber, IsString, } from 'class-validator';
+import { IsDate, IsNotEmpty, IsNumber, IsString, } from 'class-validator';
 import { Dock } from '../entities/dock.entity';
 
 export class DockDTO implements Readonly<DockDTO> {
   @IsNumber()
-  @ApiProperty({ required: true })
+  @ApiProperty()
   public id: number;
 
   @IsString()
-  @ApiProperty({ required: true })
+  @ApiProperty()
   public stream_id: string;
 
   @IsString()
-  @ApiProperty({ required: true })
+  @ApiProperty()
+  @IsNotEmpty()
   public name: string;
 
   @IsDate()
-  @ApiProperty({ required: true })
+  @ApiProperty()
   public created_at: Date;
 
   public static from(dto: Partial<DockDTO>) {

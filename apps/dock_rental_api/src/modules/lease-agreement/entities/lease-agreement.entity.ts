@@ -1,16 +1,13 @@
-import { ShippingCompany } from '../../shipping-company/entity/shipping-company.entity';
-import { Dock } from '../../dock/entities/dock.entity';
-import { Column, Entity, Generated, JoinColumn, OneToOne, PrimaryGeneratedColumn } from 'typeorm';
+import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
 @Entity({ name: 'lease_agreement', schema: 'dock_rental' })
 export class LeaseAgreement {
 
-  @PrimaryGeneratedColumn('increment', { type: "int" })
-  public id: number;
+  @PrimaryGeneratedColumn()
+  public id!: number;
 
-  @Column({ type: 'varchar', unique: true, nullable: false })
-  @Generated('uuid')
-  public stream_id: string;
+  @PrimaryGeneratedColumn('uuid')
+  public stream_id!: string;
 
   @Column({ type: 'varchar', length: 100, nullable: false })
   public reference: string;
@@ -30,6 +27,6 @@ export class LeaseAgreement {
   @Column("int", { nullable: false })
   public price: number;
 
-  @Column({ type: 'timestamptz', nullable: false })
+  @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   public created_at: Date;
 }
