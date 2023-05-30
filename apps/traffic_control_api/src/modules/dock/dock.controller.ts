@@ -1,33 +1,34 @@
-import { Controller, Get, Param, Post, Body, Delete, Patch } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Delete, Put } from '@nestjs/common';
 import { IDockService } from '../../interfaces/IDock.service';
 import { Dock } from './entities/dock.entity';
+import { UpdateResult, DeleteResult } from 'typeorm';
+import { CreateDockDTO } from './dto/create-dock.dto';
 
-@Controller('dock')
+@Controller('docks')
 export class DockController {
   constructor(private readonly dockService: IDockService) { }
 
   @Post()
-  async createDock(@Body() dock: Dock) {
-    return await this.dockService.createDock(dock);
+  public async createDock(@Body() createDockDTO: CreateDockDTO): Promise<Dock> {
+    return await this.dockService.createDock(createDockDTO);
   }
 
-  @Get()
-  async getDockById(@Param() param: { dockId: number }) {
-    return await this.dockService.getDockById(param.dockId);
+  @Get(':dockId')
+  public async getDockById(@Param() param: { dockId: number }): Promise<Dock> {
+    return await this.dockService.getDockById(Number(param.dockId));
   }
-
   @Get()
-  async getAllDocks() {
+  public async getAllDocks(): Promise<Array<Dock>> {
     return await this.dockService.getAllDocks();
   }
 
-  @Patch()
-  async updateDockById(@Param() param: { dockId: number }, @Body() updateDock: Dock) {
-    return await this.dockService.updateDockById(param.dockId, updateDock);
+  @Put(':dockId/update')
+  public async updateDockById(@Param() param: { dockId: number }, @Body() updateDock: CreateDockDTO): Promise<UpdateResult> {
+    return await this.dockService.updateDockById(Number(param.dockId), updateDock);
   }
 
-  @Delete()
-  async deleteDock(@Param() param: { dockId: number }) {
-    return await this.dockService.deleteDockById(param.dockId);
+  @Delete(':dockId/delete')
+  public async deleteDockById(@Param() param: { dockId: number }): Promise<DeleteResult> {
+    return await this.dockService.deleteDockById(Number(param.dockId));
   }
 }

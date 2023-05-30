@@ -1,9 +1,9 @@
 import { Module } from '@nestjs/common';
 import { TugboatController } from './tugboat.controller';
 import { TugboatService } from './tugboat.service';
-import { Tugboat } from './tugboat.entity';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ITugboatService } from '../../interfaces/ITugboat.service';
+import { Tugboat } from './entities/tugboat.entity';
 
 @Module({
   imports: [TypeOrmModule.forFeature([Tugboat])],

@@ -1,6 +1,6 @@
 import { DeleteResult, UpdateResult } from "typeorm";
-import { Tugboat } from "../modules/tugboat/tugboat.entity";
 import { CreateTugboatDTO } from "../modules/tugboat/dto/create-tugboat.dto";
+import { Tugboat } from "../modules/tugboat/entities/tugboat.entity";
 
 export abstract class ITugboatService {
   abstract createTugboat(dto: CreateTugboatDTO): Promise<Tugboat>;

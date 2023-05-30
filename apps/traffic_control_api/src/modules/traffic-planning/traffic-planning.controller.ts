@@ -1,34 +1,36 @@
-import { Controller, Get, Param, Post, Body, Delete, Patch } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Delete, Put } from '@nestjs/common';
 import { ITrafficPlanningService } from '../../interfaces/ITrafficPlanning.service';
 import { TrafficPlanning } from './entities/traffic-planning.entity';
+import { DeleteResult, UpdateResult } from 'typeorm';
+import { CreateTrafficPlanningDTO } from './dto/create-traffic-planning.dto';
 
 
-@Controller('traffic-planning')
+@Controller('traffic-plannings')
 export class TrafficPlanningController {
-  constructor(private TrafficPlanningService: ITrafficPlanningService) { }
+  constructor(private readonly trafficPlanningService: ITrafficPlanningService) { }
 
   @Post()
-  async createTrafficPlanning(@Body() TrafficPlanning: TrafficPlanning) {
-    return await this.TrafficPlanningService.createTrafficPlanning(TrafficPlanning);
+  async createTrafficPlanning(@Body() createTrafficPlanningDTO: CreateTrafficPlanningDTO): Promise<TrafficPlanning> {
+    return await this.trafficPlanningService.createTrafficPlanning(createTrafficPlanningDTO);
+  }
+
+  @Get(':trafficPlanningId')
+  async getTrafficPlanningById(@Param() param: { trafficPlanningId: number }): Promise<TrafficPlanning> {
+    return await this.trafficPlanningService.getTrafficPlanningById(Number(param.trafficPlanningId));
   }
 
   @Get()
-  async getTrafficPlanningById(@Param() param: { TrafficPlanningId: number }) {
-    return await this.TrafficPlanningService.getTrafficPlanningById(param.TrafficPlanningId);
+  async getAllTrafficPlannings(): Promise<Array<TrafficPlanning>> {
+    return await this.trafficPlanningService.getAllTrafficPlannings();
   }
 
-  @Get()
-  async getAllTrafficPlannings() {
-    return await this.TrafficPlanningService.getAllTrafficPlannings();
+  @Put(':trafficPlanningId/update')
+  async updateTrafficPlanningById(@Param() param: { trafficPlanningId: number }, @Body() updateTrafficPlanning: CreateTrafficPlanningDTO): Promise<UpdateResult> {
+    return await this.trafficPlanningService.updateTrafficPlanningById(Number(param.trafficPlanningId), updateTrafficPlanning);
   }
 
-  @Patch()
-  async updateTrafficPlanningById(@Param() param: { TrafficPlanningId: number }, @Body() updateTrafficPlanning: TrafficPlanning) {
-    return await this.TrafficPlanningService.updateTrafficPlanningById(param.TrafficPlanningId, updateTrafficPlanning);
-  }
-
-  @Delete()
-  async deleteTrafficPlanning(@Param() param: { TrafficPlanningId: number }) {
-    return await this.TrafficPlanningService.deleteTrafficPlanningById(param.TrafficPlanningId);
+  @Delete(':trafficPlanningId/delete')
+  async deleteTrafficPlanning(@Param() param: { trafficPlanningId: number }): Promise<DeleteResult> {
+    return await this.trafficPlanningService.deleteTrafficPlanningById(Number(param.trafficPlanningId));
   }
 }
