@@ -9,11 +9,15 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { Dock } from './modules/dock/entities/dock.entity';
 import { LeaseAgreement } from './modules/lease-agreement/entities/lease-agreement.entity';
 import { ShippingCompany } from './modules/shipping-company/entity/shipping-company.entity';
+import configuration from './config/configuration';
 
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({ 
+      isGlobal: true,
+      load: [configuration]
+    }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

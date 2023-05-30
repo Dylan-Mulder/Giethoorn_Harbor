@@ -19,10 +19,14 @@ import { Ship } from './modules/ship/ship.entity';
 import { TrafficPlanning } from './modules/traffic-planning/trafficPlanning.entity';
 import { Truck } from './modules/truck/truck.entity';
 import { Tugboat } from './modules/tugboat/tugboat.entity';
+import configuration from './config/configuration';
 
 @Module({
   imports: [
-    ConfigModule.forRoot({ isGlobal: true }),
+    ConfigModule.forRoot({ 
+      isGlobal: true,
+      load: [configuration]
+    }),
     TypeOrmModule.forRootAsync({
       imports: [ConfigModule],
       inject: [ConfigService],

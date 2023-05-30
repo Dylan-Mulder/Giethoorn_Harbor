@@ -5,6 +5,12 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from './config/configuration';
 
+// Entities
+import { Inspection } from './entities/inspection.entity';
+import { Ship } from './entities/ship.entity';
+import { TrafficPlanning } from './entities/traffic-planning.entity';
+import { Truck } from './entities/truck.entity';
+
 @Module({
   imports: [
     ConfigModule.forRoot({
@@ -21,7 +27,7 @@ import configuration from './config/configuration';
         username: configService.get('POSTGRES_USER'),
         password: configService.get('POSTGRES_PASSWORD'),
         database: configService.get('POSTGRES_DB'),
-        entities: [Dock, Passage, Ship, TrafficPlanning, Truck, Tugboat],
+        entities: [Inspection, Ship, TrafficPlanning, Truck],
         synchronize: false,
         migrationsRun: false
       }),

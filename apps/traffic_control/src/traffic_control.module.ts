@@ -6,12 +6,12 @@ import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from './config/configuration';
 
 // Entities
-import { Dock } from '../../traffic_control_api/src/modules/dock/dock.entity';
-import { Passage } from '../../traffic_control_api/src/modules/passage/passage.entity';
-import { Ship } from '../../traffic_control_api/src/modules/ship/ship.entity';
-import { TrafficPlanning } from '../../traffic_control_api/src/modules/traffic-planning/trafficPlanning.entity';
-import { Truck } from '../../traffic_control_api/src/modules/truck/truck.entity';
-import { Tugboat } from '../../traffic_control_api/src/modules/tugboat/tugboat.entity';
+import { Dock } from './entities/dock.entity';
+import { Passage } from './entities/passage.entity';
+import { Ship } from './entities/ship.entity';
+import { TrafficPlanning } from './entities/traffic-planning.entity';
+import { Truck } from './entities/truck.entity';
+import { Tugboat } from './entities/tugboat.entity';
 
 @Module({
   imports: [
