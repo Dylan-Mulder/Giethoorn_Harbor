@@ -88,27 +88,27 @@ async function bootstrapTC() {
   ];
 
   for (const consumerConfig of consumerConfigs) {
-    const { exchange, routingKeyPattern, methodToCall} = consumerConfig;
+    const { exchange, routingKeyPattern, methodToCall } = consumerConfig;
     const connection = await amqp.connect(`amqp://${USER}:${PASSWORD}@${HOST}`);
     const channel = await connection.createChannel();
     await channel.assertExchange(exchange, 'topic', { durable: false });
-    await channel.assertQueue("tc-c-"+exchange, { durable: true });
-    await channel.bindQueue("tc-c-"+exchange, exchange, routingKeyPattern);
+    await channel.assertQueue("tc-c-" + exchange, { durable: true });
+    await channel.bindQueue("tc-c-" + exchange, exchange, routingKeyPattern);
 
-    console.log("Consumer listening on: "+exchange);
+    console.log("Consumer listening on: " + exchange);
     await channel.consume(
-        "tc-c-"+exchange,
-            async (message) => {
-              if (message !== null) {
-                const content = message.content.toString();
-                console.log(JSON.stringify(JSON.parse(message.content)));
-                console.log('Consumer received event');
-                // Process the event:
-                const rmqContext = new RmqContext([message, channel, null]);
-                await methodToCall.call(trafficControlController, content, rmqContext);
-              }
-            },
-      );
+      "tc-c-" + exchange,
+      async (message) => {
+        if (message !== null) {
+          const content = message.content.toString();
+          console.log(JSON.stringify(message.content));
+          console.log('Consumer received event');
+          // Process the event:
+          const rmqContext = new RmqContext([message, channel, null]);
+          await methodToCall.call(trafficControlController, content, rmqContext);
+        }
+      },
+    );
   }
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.RMQ,
@@ -121,7 +121,7 @@ async function bootstrapTC() {
       }
     }
   })
-  
+
   app.startAllMicroservices();
 }
 bootstrapTC();

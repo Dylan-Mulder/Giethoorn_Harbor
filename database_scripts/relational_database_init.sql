@@ -112,10 +112,7 @@ CREATE TABLE traffic_control.tugboat
 ALTER TABLE IF EXISTS traffic_control.traffic_planning
     OWNER to gh_traffic_control;
 ALTER TABLE IF EXISTS traffic_control.passage
-    OWNER to gh_traffic_control,
-    ADD CONSTRAINT fk_dock FOREIGN KEY(dock_id) REFERENCES traffic_control.dock(id),
-    ADD CONSTRAINT fk_ship FOREIGN KEY(ship_id) REFERENCES traffic_control.ship(id),
-    ADD CONSTRAINT fk_truck FOREIGN KEY(truck_id) REFERENCES traffic_control.truck(id);
+    OWNER to gh_traffic_control;
 ALTER TABLE IF EXISTS traffic_control.ship
     OWNER to gh_traffic_control;
 ALTER TABLE IF EXISTS traffic_control.truck
