@@ -2,17 +2,20 @@ version: '3.6'
 services:
 
   # RABBITMQ SERVICE
-  # rabbitmq:
-  #   image: rabbitmq:3-management
-  #   container_name: rabbitmq
-  #   hostname: rabbitmq
-  #   volumes:
-  #     - /var/lib/rabbitmq
-  #   ports:
-  #     - '5672:5672'
-  #     - '15672:15672'
-  #   env_file:
-  #     - .env
+  rabbitmq:
+    image: rabbitmq:3-management
+    container_name: rabbitmq
+    hostname: rabbitmq
+    volumes:
+      - /var/lib/rabbitmq
+    networks:
+      network:
+        ipv4_address: 10.5.0.69
+    ports:
+      - '5672:5672'
+      - '15672:15672'
+    env_file:
+      - .env
 
   # RELATIONAL DATABASE
   relational_database:
@@ -42,7 +45,7 @@ services:
     networks:
       - network
     ports:
-      - '5433:5432'
+      - '5433:5433'
     logging:
       options:
         max-size: 10m
@@ -66,7 +69,7 @@ services:
     depends_on:
       - relational_database
       - event_store
-      # - rabbitmq
+      - rabbitmq
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -88,7 +91,7 @@ services:
     depends_on:
       - relational_database
       - event_store
-      # - rabbitmq
+      - rabbitmq
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -105,7 +108,7 @@ services:
     env_file:
       - .env
     depends_on:
-      # - rabbitmq
+      - rabbitmq
       - traffic_control_api
       - relational_database
       - event_store
@@ -125,7 +128,7 @@ services:
     env_file:
       - .env
     depends_on:
-      # - rabbitmq
+      - rabbitmq
       - dock_rental_api
       - relational_database
       - event_store
@@ -145,7 +148,7 @@ services:
     env_file:
       - .env
     depends_on:
-      # - rabbitmq
+      - rabbitmq
       - relational_database
       - event_store
     volumes:
@@ -164,7 +167,7 @@ services:
     env_file:
       - .env
     depends_on:
-      # - rabbitmq
+      - rabbitmq
       - traffic_control
       - relational_database
       - event_store
@@ -184,10 +187,12 @@ services:
     env_file:
       - .env
     depends_on:
-      # - rabbitmq
+      - rabbitmq
       - traffic_control
       - relational_database
       - event_store
+    ports:
+      - '5100:5100'
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -204,7 +209,7 @@ services:
     env_file:
       - .env
     depends_on:
-      # - rabbitmq
+      - rabbitmq
       - traffic_control
       - relational_database
       - event_store
@@ -224,7 +229,7 @@ services:
     env_file:
       - .env
     depends_on:
-      # - rabbitmq
+      - rabbitmq
       - traffic_control_api
       - ecosystem
       - relational_database
@@ -245,7 +250,7 @@ services:
     env_file:
       - .env
     depends_on:
-      # - rabbitmq
+      - rabbitmq
       - refilling
       - cargo_management
       - dock_rental
@@ -267,7 +272,7 @@ services:
     env_file:
       - .env
     depends_on:
-      # - rabbitmq
+      - rabbitmq
       - billing
       - relational_database
       - event_store

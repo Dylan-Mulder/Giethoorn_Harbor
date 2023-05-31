@@ -13,7 +13,7 @@ export class TrafficPlanning {
   public dock_name: string;
 
   @Column({ type: 'timestamp', nullable: false })
-  public arrival_date: Date;
+  public arrival: Date;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   public created_at: Date;
