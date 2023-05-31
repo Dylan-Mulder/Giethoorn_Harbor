@@ -1,4 +1,4 @@
-import { Controller, Get } from '@nestjs/common';
+import { Controller } from '@nestjs/common';
 import { DockRentalService } from './dock_rental.service';
 import { Ctx, MessagePattern, Payload, RmqContext } from '@nestjs/microservices';
 

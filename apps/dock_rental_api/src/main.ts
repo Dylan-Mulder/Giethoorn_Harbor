@@ -44,9 +44,6 @@ async function bootstrapDockRental() {
   const PASSWORD = configService.get('RABBITMQ_PASS');
   const HOST = configService.get('RABBITMQ_HOST');
   const QUEUE = configService.get('RABBITMQ_DOCK_RENTAL_QUEUE');
-  const dockController = app.get(DockController);
-  const leaseAgreementController = app.get(LeaseAgreementController);
-  const shippingCompanyController = app.get(ShippingCompanyController);
   const dockRentalController = app.get(DockRentalController);
   const consumerConfigs = [
     {
@@ -77,14 +74,14 @@ async function bootstrapDockRental() {
     console.log("Consumer listening on: " + exchange);
     await channel.consume(
       "rf-c-" + exchange,
-      async (message) => {
+      (message) => {
         if (message !== null) {
           const content = message.content.toString();
-          console.log(JSON.stringify(JSON.parse(message.content)));
+          console.log(JSON.stringify(message.content));
           console.log('Consumer received event');
           // Process the event:
           const rmqContext = new RmqContext([message, channel, null]);
-          await methodToCall.call(dockRentalController, content, rmqContext);
+          methodToCall.call(dockRentalController, content, rmqContext);
         }
       },
     );

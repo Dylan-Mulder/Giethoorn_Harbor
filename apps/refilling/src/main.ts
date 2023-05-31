@@ -1,10 +1,13 @@
 import { NestFactory } from '@nestjs/core';
 import { ConfigService } from '@nestjs/config';
-import { Transport, MicroserviceOptions, RmqContext } from '@nestjs/microservices';
+import {
+  Transport,
+  MicroserviceOptions,
+  RmqContext,
+} from '@nestjs/microservices';
 import { RefillingModule } from './refilling.module';
 import * as amqp from 'amqplib';
 import { RefillingController } from './refilling.controller';
-
 
 async function bootstrap() {
   // Create App
@@ -22,39 +25,38 @@ async function bootstrap() {
     {
       exchange: 'ship-registered',
       routingKeyPattern: 'event.ship-registered',
-      methodToCall:refillingController.handleShipRegistered
+      methodToCall: refillingController.handleShipRegistered,
     },
     {
       exchange: 'ship-has-docked',
       routingKeyPattern: 'event.ship-has-docked',
-      methodToCall:refillingController.handleShipHasDocked
+      methodToCall: refillingController.handleShipHasDocked,
     },
     {
       exchange: 'planning-has-updated',
       routingKeyPattern: 'event.planning-has-updated',
-      methodToCall:refillingController.handlePlanningHasUpdated
+      methodToCall: refillingController.handlePlanningHasUpdated,
     },
     {
       exchange: 'ship-has-recharged',
       routingKeyPattern: 'event.ship-has-recharged',
-      methodToCall:refillingController.handleShipHasRecharged
+      methodToCall: refillingController.handleShipHasRecharged,
     },
     {
       exchange: 'ship-has-refuelled',
       routingKeyPattern: 'event.ship-has-refuelled',
-      methodToCall:refillingController.handleShipHasRefuelled
+      methodToCall: refillingController.handleShipHasRefuelled,
     },
     // Add more consumer configurations as needed
   ];
 
-  
   for (const consumerConfig of consumerConfigs) {
-    const { exchange, routingKeyPattern, methodToCall} = consumerConfig;
+    const { exchange, routingKeyPattern, methodToCall } = consumerConfig;
     const connection = await amqp.connect(`amqp://${USER}:${PASSWORD}@${HOST}`);
     const channel = await connection.createChannel();
     await channel.assertExchange(exchange, 'topic', { durable: false });
-    await channel.assertQueue("rf-c-"+exchange, { durable: true });
-    await channel.bindQueue("rf-c-"+exchange, exchange, routingKeyPattern);
+    await channel.assertQueue('rf-c-' + exchange, { durable: true });
+    await channel.bindQueue('rf-c-' + exchange, exchange, routingKeyPattern);
 
     console.log("Consumer listening on: "+exchange);
     await channel.consume(
@@ -73,19 +75,18 @@ async function bootstrap() {
       );
   }
 
-
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.RMQ,
     options: {
       urls: [`amqp://${USER}:${PASSWORD}@${HOST}`],
-      noAck:false,
+      noAck: false,
       queue: QUEUE,
       queueOptions: {
         durable: true,
       },
     },
   });
- 
+
   app.startAllMicroservices();
   //await app.listen(5673);
 }
