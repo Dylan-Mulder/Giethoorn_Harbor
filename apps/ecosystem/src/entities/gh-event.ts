@@ -1,6 +1,6 @@
 import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity({ name: 'event', schema: 'refilling' })
+@Entity({ name: 'event', schema: 'ecosystem' })
 export class GHEvent {
   @PrimaryGeneratedColumn()
   public id: number;
