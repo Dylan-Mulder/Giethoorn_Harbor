@@ -35,22 +35,26 @@ export class RefillingService {
   }
 
   //EP-R-01 ShipRegistered: Add new ship to internal list. 
-  async createShip(shipData: any, refillServiceData: any): Promise<Ship> {
-    //const client: PoolClient = await this.pool.connect();
+  async createShip(shipData: any, refillServiceData: any, trafficPlanningData: any): Promise<void> {
+    const ship = new Ship();
+    ship.name=shipData[0].name;
 
-    try {
-      // const query = `INSERT INTO ships (name) VALUES ($1) RETURNING *`;
-      // const values = [shipData.name];
-      
-      // const result = await client.query(query, values);
-      // const insertedShip: Ship = result.rows[0];
+    const refillService = new Service();
+    refillService.needs_recharging=refillServiceData[0].needsRecharging;
+    refillService.needs_refuelling=refillServiceData[0].needsRefuelling;
 
-      // return insertedShip;
-      
-      return shipData;
-    } finally {
-      //client.release();
-    }
+    const trafficPlanning = new TrafficPlanning();
+    trafficPlanning.dock_name=trafficPlanningData[0].dockName;
+    trafficPlanning.arrival=new Date(trafficPlanningData[0].arrival);
+    trafficPlanning.departure=new Date(trafficPlanningData[0].departure);
+
+    await this.trafficPlanningRepo.save(trafficPlanning).then(trafficPlanning => {refillService.traffic_planning_id=trafficPlanning.id})
+    await this.shipRepo.save(ship).then(ship => {refillService.ship_id=ship.id});
+    await this.serviceRepo.save(refillService);
+    console.log("Posting done.");
+    console.log(this.serviceRepo.find());
+    console.log(this.shipRepo.find());
+    console.log(this.trafficPlanningRepo.find());
   }
 
   //EP-R-02	ShipHasDocked:	Notify internal systems of arrived ship, perform relevant refilling activity.
