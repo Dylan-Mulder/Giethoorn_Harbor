@@ -1,6 +1,3 @@
--- UUID EXTENSION
-CREATE EXTENSION IF NOT EXISTS "uuid-ossp";
-
 -- USERS
 CREATE USER gh_traffic_control WITH PASSWORD 'nsg762dsak21';
 CREATE USER gh_dock_rental WITH PASSWORD 'nWiuybw4o2o';

@@ -7,6 +7,7 @@ import { EcosystemController } from './ecosystem.controller';
 import * as amqp from 'amqplib';
 import { WaterQualityReport } from './entities/water-quality-report.entity';
 import { MarineLifeReport, MarineLifeReportList } from './entities/marine-life-report.entity';
+import { datasource } from './config/datasources/relational_datasource';
 
 async function bootstrap() {
   const app = await NestFactory.create(EcosystemModule);
@@ -83,7 +84,9 @@ async function bootstrap() {
     },
   });
  
-  app.startAllMicroservices();
+  await app.startAllMicroservices();
+  const mlr = await datasource.manager.find(MarineLifeReport)
+  console.log("All Marine Life Reports from the db: ", mlr)
 }
 bootstrap();
 
