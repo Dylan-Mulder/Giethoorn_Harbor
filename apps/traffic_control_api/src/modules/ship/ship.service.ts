@@ -7,6 +7,7 @@ import { CreateShipDTO } from './dto/create-ship.dto';
 import { ShipDTO } from './dto/ship.dto';
 import { ConfigService } from '@nestjs/config';
 import * as amqp from 'amqplib';
+import axios from 'axios';
 
 @Injectable()
 export class ShipService implements IShipService {
@@ -17,9 +18,10 @@ export class ShipService implements IShipService {
 
   constructor(@InjectRepository(Ship) private readonly repo: Repository<Ship>, private readonly configService: ConfigService) { }
 
-  public async createShip(dto: CreateShipDTO): Promise<Ship> {
-    const ship = this.repo.create(dto);
-    const returnedObject = await this.repo.save(ship);
+  public async createShip(dto: any): Promise<Ship> {
+    const ship = this.repo.create(dto.data.ship);
+    const returnedObject = await this.repo.save(dto.data);
+
     await this.sendToQueue('ship-registered', 'event.ship-registered', JSON.stringify(returnedObject));
     return returnedObject;
   }
