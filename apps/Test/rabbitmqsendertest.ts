@@ -14,14 +14,26 @@ amqp.connect('amqp://user:password@localhost:5672', (error, connection) => {
     // const exchangeName = 'shipping-company-created';
     // const routingKey = 'event.shipping-company-created';
 
-    const exchangeName= 'ship-has-docked';
-    const routingKey = 'event.ship-has-docked';
+    // const exchangeName= 'ship-has-docked';
+    // const routingKey = 'event.ship-has-docked';
+    const exchangeName= 'ship-registered';
+    const routingKey = 'event.ship-registered';
     channel.assertExchange(exchangeName, 'topic', { durable: false });
 
      const jsonData = {
       "data": {
         "ship": [
-          { "id": 1, "name": "Ship 1", "hasBeenCleared": true },
+          { 
+            "name": "Demo Maersk",
+            "shipping_company_name": "Avans",
+            "max_load_in_tonnage": 2500,
+            "length_in_m": 500,
+            "is_cleared": false,
+            "is_denied": false, 
+            "id": 4,
+            "stream_id": "2f41b667-ac9a-4808-ae41-ebc64d9ae65f",
+            "created_at": "2023-05-31T21:13:27.911Z"
+          },
         ],
         "refillService": [
           {

@@ -62,9 +62,10 @@ async function bootstrap() {
             async (message) => {
               if (message !== null) {
                 const content = message.content.toString();
-                console.log(JSON.stringify(JSON.parse(message.content)));
+                //console.log(JSON.stringify(JSON.parse(message.content)));
                 console.log('Consumer received event');
                 // Process the event:
+                await new Promise(f => setTimeout(f, 5000));
                 const rmqContext = new RmqContext([message, channel, null]);
                 await methodToCall.call(refillingController, content, rmqContext);
               }
