@@ -110,6 +110,23 @@ export class TrafficControlController {
     }
   }
 
+    //DE-D-03	DockWasCreated	A dock was created
+    @MessagePattern({ exchange: 'dock-was-created', routingKey: 'event.dock-was-created' })
+    async dockCreated(
+      @Payload() content: string,
+      @Ctx() context: RmqContext, // Context to acknowledge the message
+    ): Promise<void> {
+      try {
+        const jsonData = JSON.parse(content);
+        const dockData = jsonData.data.dock;
+  
+        await this.trafficControlService.createDock(dockData);
+        context.getChannelRef().ack(context.getMessage()); // Acknowledge the message
+      } catch (error) {
+        console.error(error);
+      }
+    }
+
   //DE-D-02	LeaseHasStarted	A Lease on a dock has started.
   @MessagePattern({ exchange: 'lease-has-started', routingKey: 'event.lease-has-started' })
   async handleLeaseStarted(

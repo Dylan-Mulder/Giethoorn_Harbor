@@ -58,10 +58,17 @@ export class TrafficControlService {
     //TODO: ja verbinden met die db om die Dock up te daten
     //^Returns updated Dock
   }
+  
 
   //EP-T-08	LeaseHasExpired	Update internal dock state to no longer allow ships from company.
   async unassignDock(dock: any){
     console.log("Traffic Control - Dock has been unassigned!");
+    //TODO: ja verbinden met die db om die Dock up te daten
+    //^Returns updated Dock
+  }
+
+  //EP-T-09	New dock has been created
+  async createDock(dock: any){
     //TODO: ja verbinden met die db om die Dock up te daten
     //^Returns updated Dock
   }
