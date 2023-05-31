@@ -1,4 +1,10 @@
-import { Column, CreateDateColumn, Entity, Generated, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  Generated,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({ name: 'ship', schema: 'traffic_control' })
 export class Ship {
@@ -6,7 +12,7 @@ export class Ship {
   public id: number;
 
   @Column()
-  @Generated("uuid")
+  @Generated('uuid')
   public stream_id: string;
 
   @Column({ type: 'varchar', length: 100, nullable: false })
@@ -15,13 +21,15 @@ export class Ship {
   @Column({ type: 'varchar', length: 100, nullable: false })
   public shipping_company_name: string;
 
-  @Column("int", { nullable: false })
+  @Column('int', { nullable: false })
   public max_load_in_tonnage: number;
 
-  @Column("int", { nullable: false })
+  @Column('int', { nullable: false })
   public length_in_m: number;
+
+  @Column('bool', { nullable: false, default: false })
+  public is_cleared: boolean;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   public created_at: Date;
 }
-

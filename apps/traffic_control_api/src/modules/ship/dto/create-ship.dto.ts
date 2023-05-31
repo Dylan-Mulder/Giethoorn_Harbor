@@ -1,5 +1,5 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsNumber, IsNotEmpty, IsString } from "class-validator";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNumber, IsNotEmpty, IsString, IsBoolean } from 'class-validator';
 
 export class CreateShipDTO implements Readonly<CreateShipDTO> {
   @IsString()
@@ -21,4 +21,8 @@ export class CreateShipDTO implements Readonly<CreateShipDTO> {
   @ApiProperty()
   @IsNotEmpty()
   public length_in_m: number;
+
+  @IsBoolean()
+  @ApiProperty()
+  public is_cleared: boolean;
 }

@@ -73,6 +73,7 @@ CREATE TABLE traffic_control.ship
     shipping_company_name text NOT NULL,
     max_load_in_tonnage integer NOT NULL,
     length_in_m integer NOT NULL,
+    is_cleared boolean NOT NULL DEFAULT false,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     PRIMARY KEY (id)
 );
