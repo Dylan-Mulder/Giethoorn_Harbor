@@ -6,6 +6,6 @@ export abstract class ITrafficPlanningService {
   abstract createTrafficPlanning(dto: CreateTrafficPlanningDTO): Promise<TrafficPlanning>;
   abstract getTrafficPlanningById(id: number): Promise<TrafficPlanning>;
   abstract getAllTrafficPlannings(): Promise<Array<TrafficPlanning>>;
-  abstract updateTrafficPlanningById(id: number, dto: CreateTrafficPlanningDTO): Promise<UpdateResult>;
-  abstract deleteTrafficPlanningById(id: number): Promise<DeleteResult>;
+  abstract updateTrafficPlanningById(id: number, dto: CreateTrafficPlanningDTO): Promise<TrafficPlanning>;
+  abstract deleteTrafficPlanningById(id: number): Promise<TrafficPlanning>;
 }

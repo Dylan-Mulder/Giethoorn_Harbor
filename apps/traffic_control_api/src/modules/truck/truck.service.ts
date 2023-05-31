@@ -24,11 +24,14 @@ export class TruckService implements ITruckService {
     return await this.repo.find().then((trucks: Array<Truck>) => trucks.map(d => TruckDTO.fromEntity(d)));
   }
 
-  public async updateTruckById(id: number, updateTruck: CreateTruckDTO): Promise<UpdateResult> {
-    return await this.repo.update(id, updateTruck)
+  public async updateTruckById(id: number, updateTruck: CreateTruckDTO): Promise<Truck> {
+    await this.repo.update(id, updateTruck)
+    return await this.getTruckById(id);
   }
 
-  public async deleteTruckById(id: number): Promise<DeleteResult> {
-    return await this.repo.delete(id)
+  public async deleteTruckById(id: number): Promise<Truck> {
+    const obj = await this.getTruckById(id);
+    await this.repo.delete(id);
+    return obj;
   }
 }

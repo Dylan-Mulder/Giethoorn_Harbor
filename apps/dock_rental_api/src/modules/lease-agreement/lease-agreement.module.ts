@@ -16,10 +16,4 @@ import { LeaseAgreement } from './entities/lease-agreement.entity';
   controllers: [LeaseAgreementController]
 })
 
-export class LeaseAgreementModule {
-  // public configure(consumer: MiddlewareConsumer) {
-  //   consumer
-  //     .apply(AuthMiddleware)
-  //     .forRoutes({ path: 'dock', method: RequestMethod.GET }, { path: 'dock', method: RequestMethod.PUT });
-  // }
-}
+export class LeaseAgreementModule { }

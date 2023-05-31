@@ -1,5 +1,4 @@
 import { Controller, Post, Get, Param, Put, Body, Delete } from "@nestjs/common";
-import { UpdateResult, DeleteResult } from "typeorm";
 import { IPassageService } from "../../interfaces/IPassage.service";
 import { CreatePassageDTO } from "./dto/create-passage.dto";
 import { Passage } from "./entities/passage.entity";
@@ -24,12 +23,12 @@ export class PassageController {
   }
 
   @Put(':passageId/update')
-  public async updatePassageById(@Param() param: { passageId: number }, @Body() updateDock: CreatePassageDTO): Promise<UpdateResult> {
+  public async updatePassageById(@Param() param: { passageId: number }, @Body() updateDock: CreatePassageDTO): Promise<Passage> {
     return await this.passageService.updatePassageById(Number(param.passageId), updateDock);
   }
 
   @Delete(':passageId/delete')
-  public async deletePassageById(@Param() param: { passageId: number }): Promise<DeleteResult> {
+  public async deletePassageById(@Param() param: { passageId: number }): Promise<Passage> {
     return await this.passageService.deletePassageById(Number(param.passageId));
   }
 }

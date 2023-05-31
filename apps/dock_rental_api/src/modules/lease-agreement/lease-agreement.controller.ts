@@ -1,7 +1,6 @@
 import { Controller, Get, Param, Post, Body, Delete, Put } from '@nestjs/common';
 import { ILeaseAgreementService } from '../../interfaces/ILeaseAgreement.service';
 import { LeaseAgreement } from './entities/lease-agreement.entity';
-import { UpdateResult, DeleteResult } from 'typeorm';
 import { CreateLeaseAgreementDTO } from './dto/create-lease-agreement.dto';
 
 @Controller('lease-agreements')
@@ -24,12 +23,12 @@ export class LeaseAgreementController {
   }
 
   @Put(':leaseAgreementId/update')
-  public async updateLeaseAgreementById(@Param() param: { leaseAgreementId: number }, @Body() updateLeaseAgreement: CreateLeaseAgreementDTO): Promise<UpdateResult> {
+  public async updateLeaseAgreementById(@Param() param: { leaseAgreementId: number }, @Body() updateLeaseAgreement: CreateLeaseAgreementDTO): Promise<LeaseAgreement> {
     return await this.leaseAgreementService.updateLeaseAgreementById(param.leaseAgreementId, updateLeaseAgreement);
   }
 
   @Delete(':leaseAgreementId/delete')
-  public async deleteLeaseAgreementById(@Param() param: { leaseAgreementId: number }): Promise<DeleteResult> {
+  public async deleteLeaseAgreementById(@Param() param: { leaseAgreementId: number }): Promise<LeaseAgreement> {
     return await this.leaseAgreementService.deleteLeaseAgreementById(param.leaseAgreementId);
   }
 }
