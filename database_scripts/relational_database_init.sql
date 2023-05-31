@@ -288,9 +288,7 @@ ALTER TABLE IF EXISTS refilling.ship
 ALTER TABLE IF EXISTS refilling.traffic_planning
     OWNER to gh_refilling;
 ALTER TABLE IF EXISTS refilling.service
-    OWNER to gh_refilling,
-    ADD CONSTRAINT fk_traffic_planning FOREIGN KEY(traffic_planning_id) REFERENCES refilling.traffic_planning(id),
-    ADD CONSTRAINT fk_ship FOREIGN KEY(ship_id) REFERENCES refilling.ship(id);
+    OWNER to gh_refilling;
 
 -- Cargo Management
 CREATE TABLE cargo_management.cargo

@@ -6,6 +6,7 @@ import { ConfigService } from '@nestjs/config';
 import { getRelationalDataSource } from './config/datasources/relational_datasource';
 import { Service } from './entities/service.entity';
 import { TrafficPlanning } from './entities/traffic-planning.entity';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class RefillingService {
@@ -21,9 +22,9 @@ export class RefillingService {
   private  HOST = this.configService.get('RABBITMQ_HOST');
 
   // Repo's
-  private serviceRepo;
-  private shipRepo;
-  private trafficPlanningRepo;
+  private serviceRepo: Repository<Service>;
+  private shipRepo: Repository<Ship>;
+  private trafficPlanningRepo: Repository<TrafficPlanning>;
 
   // Init the repositories
   async initDatasources() {

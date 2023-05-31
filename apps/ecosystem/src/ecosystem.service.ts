@@ -4,8 +4,8 @@ import { WaterQualityReport } from './entities/water-quality-report.entity';
 import amqp from 'amqp-connection-manager';
 import { MarineLifeReport, MarineLifeReportList } from './entities/marine-life-report.entity';
 import { ConfigService } from '@nestjs/config';
-import { getDataSourceName } from '@nestjs/typeorm';
 import { getRelationalDataSource } from './config/datasources/relational_datasource';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class EcosystemService {
@@ -19,8 +19,8 @@ export class EcosystemService {
   private  HOST = this.configService.get('RABBITMQ_HOST');
 
   // Repo's
-  private marineLifeReportRepo;
-  private waterQualityReportRepo;
+  private marineLifeReportRepo: Repository<MarineLifeReport>;
+  private waterQualityReportRepo: Repository<WaterQualityReport>;
 
   // Init the repositories
   async initDatasources() {
