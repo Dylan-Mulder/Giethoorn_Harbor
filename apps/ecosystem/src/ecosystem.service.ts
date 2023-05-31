@@ -71,11 +71,11 @@ export class EcosystemService {
     const response = await axios.get(url);
     const data = response.data;
     const responseMappings = {
-      'pH': 'pH',
-      'chloride': 'chlorine',
-      'Zuurstof HACH': 'oxygenMgL',
-      'Temperatuur buiten HACH': 'temperature',
-      'diclofenac (historisch)': 'diclofenacUgL',
+      'pH': 'ph',
+      'chloride': 'chlorine_in_mg_per_l',
+      'Zuurstof HACH': 'oxygen_in_mg_per_l',
+      'Temperatuur buiten HACH': 'temperature_in_celsius',
+      'diclofenac (historisch)': 'diclofenac_in_ug_per_l',
       'Troebelheid': 'turbidity'
     }
     const wqr: WaterQualityReport = new WaterQualityReport();
@@ -158,8 +158,8 @@ export class EcosystemService {
         const report = new MarineLifeReport();
         report.year = parseInt(values[0], 10);
         report.species = values[3];
-        // report.scientificName = values[4];
-        // report.CPUE = values[5] !== '' ? parseFloat(values[5]) : 0;
+        report.scientific_name = values[4];
+        report.cpue = values[5] !== '' ? parseFloat(values[5]) : 0;
         report.habitat = values[7];
 
         reports.addReport(report);
