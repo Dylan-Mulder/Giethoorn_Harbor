@@ -1,11 +1,16 @@
-import { Column, CreateDateColumn, Entity, PrimaryGeneratedColumn } from 'typeorm';
+import {
+  Column,
+  CreateDateColumn,
+  Entity,
+  PrimaryGeneratedColumn,
+} from 'typeorm';
 
 @Entity({ name: 'event', schema: 'ecosystem' })
 export class GHEvent {
   @PrimaryGeneratedColumn()
   public id: number;
 
-  @Column({ type: 'uuid', nullable: false })
+  @Column({ type: 'varchar', length: 100, nullable: false })
   public stream_id: string;
 
   @Column({ type: 'varchar', length: 100, nullable: false })
@@ -17,4 +22,3 @@ export class GHEvent {
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   public created_at: Date;
 }
-
