@@ -4,14 +4,14 @@ import { IShipCompanyService } from '../../interfaces/IShipCompany.service';
 import { CreateShippingCompanyDTO } from './dto/create-shipping-company.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { LoggingInterceptor } from '../../interceptors/logging.interceptor';
-import { TransformationInterceptor } from '../../interceptors/transform.interceptor';
 import { ExceptionInterceptor } from '../../interceptors/exception.interceptor';
 import { TimeoutInterceptor } from '../../interceptors/timeout.interceptor';
+import { ValidationInterceptor } from '../../interceptors/validation.interceptor';
 
 
 @Controller('shipping-companies')
 @ApiTags('shipping-companies')
-@UseInterceptors(LoggingInterceptor, TransformationInterceptor, ExceptionInterceptor, TimeoutInterceptor)
+@UseInterceptors(LoggingInterceptor, ExceptionInterceptor, TimeoutInterceptor, ValidationInterceptor)
 export class ShippingCompanyController {
   constructor(private readonly shippingCompanyService: IShipCompanyService) { }
 

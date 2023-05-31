@@ -4,13 +4,13 @@ import { LeaseAgreement } from './entities/lease-agreement.entity';
 import { CreateLeaseAgreementDTO } from './dto/create-lease-agreement.dto';
 import { ApiTags } from '@nestjs/swagger';
 import { LoggingInterceptor } from '../../interceptors/logging.interceptor';
-import { TransformationInterceptor } from '../../interceptors/transform.interceptor';
 import { ExceptionInterceptor } from '../../interceptors/exception.interceptor';
 import { TimeoutInterceptor } from '../../interceptors/timeout.interceptor';
+import { ValidationInterceptor } from '../../interceptors/validation.interceptor';
 
 @Controller('lease-agreements')
 @ApiTags('lease-agreements')
-@UseInterceptors(LoggingInterceptor, TransformationInterceptor, ExceptionInterceptor, TimeoutInterceptor)
+@UseInterceptors(LoggingInterceptor, ExceptionInterceptor, TimeoutInterceptor, ValidationInterceptor)
 export class LeaseAgreementController {
   constructor(private readonly leaseAgreementService: ILeaseAgreementService) { }
 

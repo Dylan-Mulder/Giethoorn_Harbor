@@ -6,11 +6,11 @@ import { ApiTags } from '@nestjs/swagger';
 import { ExceptionInterceptor } from '../../interceptors/exception.interceptor';
 import { LoggingInterceptor } from '../../interceptors/logging.interceptor';
 import { TimeoutInterceptor } from '../../interceptors/timeout.interceptor';
-import { TransformationInterceptor } from '../../interceptors/transform.interceptor';
+import { ValidationInterceptor } from '../../interceptors/validation.interceptor';
 
 @Controller('docks')
 @ApiTags('docks')
-@UseInterceptors(LoggingInterceptor, TransformationInterceptor, ExceptionInterceptor, TimeoutInterceptor)
+@UseInterceptors(LoggingInterceptor, ExceptionInterceptor, TimeoutInterceptor, ValidationInterceptor)
 export class DockController {
   constructor(private readonly dockService: IDockService) { }
 

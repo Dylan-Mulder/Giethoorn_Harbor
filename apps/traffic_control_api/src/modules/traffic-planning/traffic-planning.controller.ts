@@ -6,12 +6,12 @@ import { ApiTags } from '@nestjs/swagger';
 import { ExceptionInterceptor } from '../../interceptors/exception.interceptor';
 import { LoggingInterceptor } from '../../interceptors/logging.interceptor';
 import { TimeoutInterceptor } from '../../interceptors/timeout.interceptor';
-import { TransformationInterceptor } from '../../interceptors/transform.interceptor';
+import { ValidationInterceptor } from '../../interceptors/validation.interceptor';
 
 
 @Controller('traffic-plannings')
 @ApiTags('traffic-plannings')
-@UseInterceptors(LoggingInterceptor, TransformationInterceptor, ExceptionInterceptor, TimeoutInterceptor)
+@UseInterceptors(LoggingInterceptor, ExceptionInterceptor, TimeoutInterceptor, ValidationInterceptor)
 export class TrafficPlanningController {
   constructor(private readonly trafficPlanningService: ITrafficPlanningService) { }
 

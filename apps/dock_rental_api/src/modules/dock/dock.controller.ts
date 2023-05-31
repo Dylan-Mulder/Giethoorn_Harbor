@@ -4,13 +4,13 @@ import { CreateDockDTO } from './dto/create-dock.dto';
 import { Dock } from './entities/dock.entity';
 import { LoggingInterceptor } from '../../interceptors/logging.interceptor';
 import { ApiTags } from '@nestjs/swagger';
-import { TransformationInterceptor } from '../../interceptors/transform.interceptor';
 import { ExceptionInterceptor } from '../../interceptors/exception.interceptor';
 import { TimeoutInterceptor } from '../../interceptors/timeout.interceptor';
+import { ValidationInterceptor } from '../../interceptors/validation.interceptor';
 
 @Controller('docks')
 @ApiTags('docks')
-@UseInterceptors(LoggingInterceptor, TransformationInterceptor, ExceptionInterceptor, TimeoutInterceptor)
+@UseInterceptors(LoggingInterceptor, ExceptionInterceptor, TimeoutInterceptor, ValidationInterceptor)
 export class DockController {
   constructor(private readonly dockService: IDockService) { }
 

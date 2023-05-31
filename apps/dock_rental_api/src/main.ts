@@ -10,12 +10,10 @@ import { LeaseAgreementController } from './modules/lease-agreement/lease-agreem
 import { ShippingCompanyController } from './modules/shipping-company/shipping-company.controller';
 import { DockRentalController } from './microservice_dock_rental/dock_rental.controller';
 import * as amqp from 'amqplib';
-import { LoggingInterceptor } from './interceptors/logging.interceptor';
 
 async function bootstrapAPI() {
   const appOptions = { cors: true };
   const app = await NestFactory.create(AppModule, appOptions);
-  app.useGlobalInterceptors(new LoggingInterceptor())
   app.setGlobalPrefix('api');
   app.useGlobalPipes(
     new ValidationPipe({
@@ -91,7 +89,6 @@ async function bootstrapDockRental() {
       },
     );
   }
-  app.useGlobalInterceptors(new LoggingInterceptor())
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.RMQ,
     options: {
