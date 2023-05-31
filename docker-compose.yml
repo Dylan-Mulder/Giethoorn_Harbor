@@ -38,6 +38,26 @@ services:
       - ./database_scripts/relational_database_init.sql:/docker-entrypoint-initdb.d/relational_database_init.sql
       - ./database_scripts/relational_database_insert.sql:/docker-entrypoint-initdb.d/relational_database_insert.sql
 
+  # CQRS DATABASE
+  cqrs_database:
+    container_name: PostgreSQL-CQRS-Database
+    image: postgres:latest
+    restart: always
+    networks:
+      - network
+    ports:
+      - '5433:5433'
+    logging:
+      options:
+        max-size: 10m
+        max-file: "3"
+    env_file:
+      - .env
+    volumes:
+      - cqrs_database:/var/lib/postgresql/data
+      - ./database_scripts/relational_database_init.sql:/docker-entrypoint-initdb.d/relational_database_init.sql
+      - ./database_scripts/relational_database_insert.sql:/docker-entrypoint-initdb.d/relational_database_insert.sql
+
   # EVENT SOURCE DATABASE
   event_store:
     container_name: PostgreSQL-Event-Store
@@ -46,7 +66,7 @@ services:
     networks:
       - network
     ports:
-      - '5433:5432'
+      - '5434:5434'
     logging:
       options:
         max-size: 10m
@@ -57,27 +77,27 @@ services:
       - event_store:/var/lib/postgresql/data
       - ./database_scripts/event_store_init.sql:/docker-entrypoint-initdb.d/event_store_init.sql
 
-  # DOCK RENTAL API
-  dock_rental_api:
-    container_name: Dock-Rental-API
-    build:
-      context: ./
-      dockerfile: ./apps/dock_rental_api/Dockerfile
-    ports:
-      - '4100:5001'
-    env_file:
-      - .env
-    depends_on:
-      - relational_database
-      - event_store
-      # - rabbitmq
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    networks:
-      network:
-        ipv4_address: 10.5.0.5
-    command: npm run start:dev dock_rental_api
+  # # DOCK RENTAL API
+  # dock_rental_api:
+  #   container_name: Dock-Rental-API
+  #   build:
+  #     context: ./
+  #     dockerfile: ./apps/dock_rental_api/Dockerfile
+  #   ports:
+  #     - '4100:5001'
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     - relational_database
+  #     - event_store
+  #     - rabbitmq
+  #   volumes:
+  #     - .:/usr/src/app
+  #     - /usr/src/app/node_modules
+  #   networks:
+  #     network:
+  #       ipv4_address: 10.5.0.5
+  #   command: npm run start:dev dock_rental_api
 
   # TRAFFIC CONTROL API
   # traffic_control_api:
@@ -101,25 +121,25 @@ services:
   #       ipv4_address: 10.5.0.6
   #   command: npm run start:dev traffic_control_api
 
-  traffic_control:
-    container_name: Traffic-Control
-    build:
-      context: ./
-      dockerfile: ./apps/traffic_control/Dockerfile
-    env_file:
-      - .env
-    depends_on:
-      # - rabbitmq
-      # - traffic_control_api
-      - relational_database
-      - event_store
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    networks:
-      network:
-        ipv4_address: 10.5.0.7
-    command: npm run start:dev traffic_control
+  # traffic_control:
+  #   container_name: Traffic-Control
+  #   build:
+  #     context: ./
+  #     dockerfile: ./apps/traffic_control/Dockerfile
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     # - rabbitmq
+  #     # - traffic_control_api
+  #     - relational_database
+  #     - event_store
+  #   volumes:
+  #     - .:/usr/src/app
+  #     - /usr/src/app/node_modules
+  #   networks:
+  #     network:
+  #       ipv4_address: 10.5.0.7
+  #   command: npm run start:dev traffic_control
 
   # dock_rental:
   #   container_name: Dock-Rental
@@ -141,24 +161,24 @@ services:
   #       ipv4_address: 10.5.0.8
   #   command: npm run start:dev dock_rental
 
-  # ecosystem:
-  #   container_name: Ecosystem
-  #   build:
-  #     context: ./
-  #     dockerfile: ./apps/ecosystem/Dockerfile
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     # - rabbitmq
-  #     - relational_database
-  #     - event_store
-  #   volumes:
-  #     - .:/usr/src/app
-  #     - /usr/src/app/node_modules
-  #   networks:
-  #     network:
-  #       ipv4_address: 10.5.0.9
-  #   command: npm run start:dev ecosystem
+  ecosystem:
+    container_name: Ecosystem
+    build:
+      context: ./
+      dockerfile: ./apps/ecosystem/Dockerfile
+    env_file:
+      - .env
+    depends_on:
+      - rabbitmq
+      - relational_database
+      - event_store
+    volumes:
+      - .:/usr/src/app
+      - /usr/src/app/node_modules
+    networks:
+      network:
+        ipv4_address: 10.5.0.9
+    command: npm run start:dev ecosystem
 
   # security:
   #   container_name: Security
@@ -180,25 +200,25 @@ services:
   #       ipv4_address: 10.5.0.10
   #   command: npm run start:dev security
 
-  refilling:
-    container_name: Refilling
-    build:
-      context: ./
-      dockerfile: ./apps/refilling/Dockerfile
-    env_file:
-      - .env
-    depends_on:
-      - rabbitmq
-      - traffic_control
-      - relational_database
-      - event_store
-    volumes:
-      - .:/usr/src/app
-      - /usr/src/app/node_modules
-    networks:
-      network:
-        ipv4_address: 10.5.0.11
-    command: npm run start:dev refilling
+  # refilling:
+  #   container_name: Refilling
+  #   build:
+  #     context: ./
+  #     dockerfile: ./apps/refilling/Dockerfile
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     - rabbitmq
+  #     - traffic_control
+  #     - relational_database
+  #     - event_store
+  #   volumes:
+  #     - .:/usr/src/app
+  #     - /usr/src/app/node_modules
+  #   networks:
+  #     network:
+  #       ipv4_address: 10.5.0.11
+  #   command: npm run start:dev refilling
 
   # cargo_management:
   #   container_name: Cargo-Management
@@ -295,4 +315,5 @@ networks:
 # VOLUMES
 volumes:
   relational_database:
+  cqrs_database:
   event_store:
