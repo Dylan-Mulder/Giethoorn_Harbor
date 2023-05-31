@@ -100,66 +100,26 @@ services:
   #   command: npm run start:dev dock_rental_api
 
   # TRAFFIC CONTROL API
-  # traffic_control_api:
-  #   container_name: Traffic-Control-API
-  #   build:
-  #     context: ./
-  #     dockerfile: ./apps/traffic_control_api/Dockerfile
-  #   ports:
-  #     - '4200:5000'
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     - relational_database
-  #     - event_store
-  #     - rabbitmq
-  #   volumes:
-  #     - .:/usr/src/app
-  #     - /usr/src/app/node_modules
-  #   networks:
-  #     network:
-  #       ipv4_address: 10.5.0.6
-  #   command: npm run start:dev traffic_control_api
-
-  # traffic_control:
-  #   container_name: Traffic-Control
-  #   build:
-  #     context: ./
-  #     dockerfile: ./apps/traffic_control/Dockerfile
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     # - rabbitmq
-  #     # - traffic_control_api
-  #     - relational_database
-  #     - event_store
-  #   volumes:
-  #     - .:/usr/src/app
-  #     - /usr/src/app/node_modules
-  #   networks:
-  #     network:
-  #       ipv4_address: 10.5.0.7
-  #   command: npm run start:dev traffic_control
-
-  ecosystem:
-    container_name: Ecosystem
+  traffic_control_api:
+    container_name: Traffic-Control-API
     build:
       context: ./
-      dockerfile: ./apps/ecosystem/Dockerfile
+      dockerfile: ./apps/traffic_control_api/Dockerfile
+    ports:
+      - '4200:5000'
     env_file:
       - .env
     depends_on:
-      - rabbitmq
       - relational_database
       - event_store
+      - rabbitmq
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     networks:
       network:
-        ipv4_address: 10.5.0.9
-    command: npm run start:dev ecosystem
-
+        ipv4_address: 10.5.0.6
+    command: npm run start:dev traffic_control_api
   # CUSTOM DOCKER NETWORK
 networks:
   network:
@@ -195,7 +155,24 @@ volumes:
     #       ipv4_address: 10.5.0.8
     #   command: npm run start:dev dock_rental
 
-
+    # ecosystem:
+    #   container_name: Ecosystem
+    #   build:
+    #     context: ./
+    #     dockerfile: ./apps/ecosystem/Dockerfile
+    #   env_file:
+    #     - .env
+    #   depends_on:
+    #     # - rabbitmq
+    #     - relational_database
+    #     - event_store
+    #   volumes:
+    #     - .:/usr/src/app
+    #     - /usr/src/app/node_modules
+    #   networks:
+    #     network:
+    #       ipv4_address: 10.5.0.9
+    #   command: npm run start:dev ecosystem
 
     # security:
     #   container_name: Security
@@ -206,7 +183,7 @@ volumes:
     #     - .env
     #   depends_on:
     #     # - rabbitmq
-    #     - traffic_control
+    #     - traffic_control_api
     #     - relational_database
     #     - event_store
     #   volumes:
@@ -226,7 +203,7 @@ volumes:
     #     - .env
     #   depends_on:
     #     - rabbitmq
-    #     - traffic_control
+    #     - traffic_control_api
     #     - relational_database
     #     - event_store
     #   volumes:
@@ -246,7 +223,7 @@ volumes:
     #     - .env
     #   depends_on:
     #     # - rabbitmq
-    #     - traffic_control
+    #     - traffic_control_api
     #     - relational_database
     #     - event_store
     #   volumes:
