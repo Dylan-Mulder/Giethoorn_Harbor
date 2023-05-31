@@ -3,7 +3,7 @@ import { DockRentalController } from './dock_rental.controller';
 import { DockRentalService } from './dock_rental.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import configuration from './config/configuration';
+import configuration from '../config/configuration';
 import { LeaseAgreement } from './entities/lease-agreement.entity';
 import { ShippingCompany } from './entities/shipping-company.entity';
 import { Dock } from './entities/dock.entity';
