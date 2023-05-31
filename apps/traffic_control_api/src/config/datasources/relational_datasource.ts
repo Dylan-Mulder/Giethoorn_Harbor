@@ -1,19 +1,22 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
-import { Service } from "../../entities/service.entity";
-import { Ship } from "../../entities/ship.entity";
-import { TrafficPlanning } from "../../entities/traffic-planning.entity";
+import { Dock } from "../../modules/dock/entities/dock.entity";
+import { Passage } from "../../modules/passage/entities/passage.entity";
+import { Ship } from "../../modules/ship/entities/ship.entity";
+import { TrafficPlanning } from "../../modules/traffic-planning/entities/traffic-planning.entity";
+import { Truck } from "../../modules/truck/entities/truck.entity";
+import { Tugboat } from "../../modules/tugboat/entities/tugboat.entity";
 
 const datasource = new DataSource({
   type: "postgres",
   host: process.env.POSTGRES_HOST,
   port: parseInt(process.env.POSTGRES_PORT),
-  username: 'gh_refilling',
-  password: 'jw8s0F4',
+  username: 'gh_traffic_control',
+  password: 'nsg762dsak21',
   database: process.env.POSTGRES_DATABASE,
   synchronize: false,
   logging: false,
-  entities: [Service, Ship, TrafficPlanning],
+  entities: [Dock, Passage, Ship, TrafficPlanning, Truck, Tugboat],
   migrations: [],
   subscribers: [],
 });

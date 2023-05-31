@@ -1,13 +1,50 @@
 import { Injectable } from '@nestjs/common';
 import { ConfigService } from '@nestjs/config';
 import * as amqp from 'amqplib';
+import { Repository } from 'typeorm';
+import { Dock } from '../modules/dock/entities/dock.entity';
+import { Passage } from '../modules/passage/entities/passage.entity';
+import { Ship } from '../modules/ship/entities/ship.entity';
+import { TrafficPlanning } from '../modules/traffic-planning/entities/traffic-planning.entity';
+import { Truck } from '../modules/truck/entities/truck.entity';
+import { Tugboat } from '../modules/tugboat/entities/tugboat.entity';
+import { GHEvent } from '../config/datasources/gh-event';
+import { getEventDataSource } from '../config/datasources/event_datasource';
+import { getRelationalDataSource } from '../config/datasources/relational_datasource';
 
 @Injectable()
 export class TrafficControlService {
-  constructor(private readonly configService: ConfigService){};
+  constructor(private readonly configService: ConfigService){
+    this.initDatasources();
+  };
+
+  // RabbitMQ
   private  USER = this.configService.get('RABBITMQ_USER');
   private  PASSWORD = this.configService.get('RABBITMQ_PASS');
   private  HOST = this.configService.get('RABBITMQ_HOST');
+
+  // Repo's
+  private eventRepo: Repository<GHEvent>
+  private dockRepo: Repository<Dock>;
+  private passageRepo: Repository<Passage>;
+  private shipRepo: Repository<Ship>;
+  private trafficPlanningRepo: Repository<TrafficPlanning>;
+  private truckRepo: Repository<Truck>;
+  private tugboatRepo: Repository<Tugboat>;
+
+  async initDatasources() {
+    // Init Datasources
+    const eventDatasource = await getEventDataSource();
+    const relationalDatasource = await getRelationalDataSource();
+    // Init repo's
+    this.eventRepo = eventDatasource.getRepository(GHEvent);
+    this.dockRepo = relationalDatasource.getRepository(Dock);
+    this.passageRepo = relationalDatasource.getRepository(Passage);
+    this.shipRepo = relationalDatasource.getRepository(Ship);
+    this.trafficPlanningRepo = relationalDatasource.getRepository(TrafficPlanning);
+    this.truckRepo = relationalDatasource.getRepository(Truck);
+    this.tugboatRepo = relationalDatasource.getRepository(Tugboat);
+  }
 
   //Event processors
   //EP-T-01	ShipHasBeenCleared Update planning to include cleared state of ship.

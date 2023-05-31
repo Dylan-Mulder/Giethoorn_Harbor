@@ -1,19 +1,17 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
-import { Service } from "../../entities/service.entity";
-import { Ship } from "../../entities/ship.entity";
-import { TrafficPlanning } from "../../entities/traffic-planning.entity";
+import { GHEvent } from "./gh-event";
 
 const datasource = new DataSource({
   type: "postgres",
-  host: process.env.POSTGRES_HOST,
+  host: process.env.POSTGRES_HOST_EVENTS,
   port: parseInt(process.env.POSTGRES_PORT),
-  username: 'gh_refilling',
-  password: 'jw8s0F4',
+  username: 'gh_traffic_control',
+  password: 'nsg762dsak21',
   database: process.env.POSTGRES_DATABASE,
   synchronize: false,
   logging: false,
-  entities: [Service, Ship, TrafficPlanning],
+  entities: [GHEvent],
   migrations: [],
   subscribers: [],
 });
@@ -24,7 +22,7 @@ datasource.initialize()
   })
   .catch((error) => console.log(error));
 
-export const getRelationalDataSource = (delay = 3000): Promise<DataSource> => {
+export const getEventDataSource = (delay = 3000): Promise<DataSource> => {
   if (datasource.isInitialized) return Promise.resolve(datasource);
 
   return new Promise((resolve, reject) => {
