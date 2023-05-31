@@ -52,11 +52,11 @@ export class DockRentalService {
   }
 
   //EP-DR-02 Shipping Company has been created
-  async createShippingCompany(leaseAgreementData: any): Promise<void>{
+  async createShippingCompany(shippingCompanyData: any): Promise<void>{
     const shippingCompany = new ShippingCompany();
-    shippingCompany.country=leaseAgreementData[0].country;
-    shippingCompany.name=leaseAgreementData[0].name;
-    shippingCompany.reference=leaseAgreementData[0].reference;
+    shippingCompany.country=shippingCompanyData[0].country;
+    shippingCompany.name=shippingCompanyData[0].name;
+    shippingCompany.reference=shippingCompanyData[0].reference;
 
     await this.shippingCompanyRepo.save(shippingCompany);
     console.log("Shipping company created at read database.");
