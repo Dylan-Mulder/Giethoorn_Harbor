@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ITruckService } from '../../interfaces/ITruck.service';
-import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Truck } from './entities/truck.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateTruckDTO } from './dto/create-truck.dto';
