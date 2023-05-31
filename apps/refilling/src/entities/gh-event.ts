@@ -10,7 +10,7 @@ export class GHEvent {
   @PrimaryGeneratedColumn()
   public id: number;
 
-  @Column({ type: 'uuid', nullable: false })
+  @Column({ type: 'varchar', length: 100, nullable: false })
   public stream_id: string;
 
   @Column({ type: 'varchar', length: 100, nullable: false })
