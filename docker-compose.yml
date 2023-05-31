@@ -100,26 +100,46 @@ services:
   #   command: npm run start:dev dock_rental_api
 
   # TRAFFIC CONTROL API
-  traffic_control_api:
-    container_name: Traffic-Control-API
+  # traffic_control_api:
+  #   container_name: Traffic-Control-API
+  #   build:
+  #     context: ./
+  #     dockerfile: ./apps/traffic_control_api/Dockerfile
+  #   ports:
+  #     - '4200:5000'
+  #   env_file:
+  #     - .env
+  #   depends_on:
+  #     - relational_database
+  #     - event_store
+  #     - rabbitmq
+  #   volumes:
+  #     - .:/usr/src/app
+  #     - /usr/src/app/node_modules
+  #   networks:
+  #     network:
+  #       ipv4_address: 10.5.0.6
+  #   command: npm run start:dev traffic_control_api
+
+  refilling:
+    container_name: Refilling
     build:
       context: ./
-      dockerfile: ./apps/traffic_control_api/Dockerfile
-    ports:
-      - '4200:5000'
+      dockerfile: ./apps/refilling/Dockerfile
     env_file:
       - .env
     depends_on:
+      - rabbitmq
+      #- traffic_control_api
       - relational_database
       - event_store
-      - rabbitmq
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
     networks:
       network:
-        ipv4_address: 10.5.0.6
-    command: npm run start:dev traffic_control_api
+        ipv4_address: 10.5.0.11
+    command: npm run start:dev refilling
   # CUSTOM DOCKER NETWORK
 networks:
   network:
@@ -194,25 +214,7 @@ volumes:
     #       ipv4_address: 10.5.0.10
     #   command: npm run start:dev security
 
-    # refilling:
-    #   container_name: Refilling
-    #   build:
-    #     context: ./
-    #     dockerfile: ./apps/refilling/Dockerfile
-    #   env_file:
-    #     - .env
-    #   depends_on:
-    #     - rabbitmq
-    #     - traffic_control_api
-    #     - relational_database
-    #     - event_store
-    #   volumes:
-    #     - .:/usr/src/app
-    #     - /usr/src/app/node_modules
-    #   networks:
-    #     network:
-    #       ipv4_address: 10.5.0.11
-    #   command: npm run start:dev refilling
+  
 
     # cargo_management:
     #   container_name: Cargo-Management

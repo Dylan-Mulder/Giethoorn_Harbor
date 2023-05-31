@@ -8,32 +8,30 @@ amqp.connect('amqp://user:password@localhost:5672', (error, connection) => {
   connection.createChannel((error, channel) => {
     if (error) throw error;
 
-    const exchangeName = 'ship-has-been-cleared';
-    const routingKey = 'event.ship-has-been-cleared';
+    const exchangeName = 'ship-registered';
+    const routingKey = 'event.ship-registered';
 
     channel.assertExchange(exchangeName, 'topic', { durable: false });
 
      const jsonData = {
       "data": {
-        "ship": [
+        "shipData": [
           { "id": 1, "name": "Ship 1", "hasBeenCleared": true },
         ],
         "refillServiceData": [
           {
             "id": 1,
-            "trafficPlanning": {},
-            "ship": { "id": 1, "name": "Ship 1" },
+            "ship_id": 1,
             "needsRefuelling": true,
-            "needsRecharging": false
+            "needsRecharging": false,
           }
         ],
-        "trafficPlanningData":[
+        "trafficPlanning": [
           {
-            "id":1,
-            "dockName":"dock 2",
-            "arrival": "2023-05-31T12:00:00Z",
-            "departure": "2023-05-31T20:00:00Z"
-          }
+          "dockName": "Erwin",
+          "arrival": "02-25-1999",
+          "departure": "02-19-1999"
+        }
         ]
       }
     };

@@ -16,7 +16,7 @@ async function bootstrap() {
   const PASSWORD = configService.get('RABBITMQ_PASS');
   const HOST = configService.get('RABBITMQ_HOST');
   const QUEUE = configService.get('RABBITMQ_REFILLING_QUEUE');
-  const refillingController = app.get(RefillingController)
+  const refillingController = app.get(RefillingController);
 
   const consumerConfigs = [
     {
