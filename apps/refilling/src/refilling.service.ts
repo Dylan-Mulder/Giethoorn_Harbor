@@ -48,16 +48,16 @@ export class RefillingService {
     trafficPlanningData: any,
   ): Promise<void> {
     const ship = new Ship();
-    ship.name = shipData[0].name;
+    ship.name = shipData.name;
 
     const refillService = new Service();
-    refillService.needs_recharging = refillServiceData[0].needsRecharging;
-    refillService.needs_refuelling = refillServiceData[0].needsRefuelling;
+    refillService.needs_recharging = refillServiceData.needsRecharging;
+    refillService.needs_refuelling = refillServiceData.needsRefuelling;
 
     const trafficPlanning = new TrafficPlanning();
-    trafficPlanning.dock_name = trafficPlanningData[0].dockName;
-    trafficPlanning.arrival = new Date(trafficPlanningData[0].arrival);
-    trafficPlanning.departure = new Date(trafficPlanningData[0].departure);
+    trafficPlanning.dock_name = trafficPlanningData.dockName;
+    trafficPlanning.arrival = new Date(trafficPlanningData.arrival);
+    trafficPlanning.departure = new Date(trafficPlanningData.departure);
 
     await this.trafficPlanningRepo
       .save(trafficPlanning)
