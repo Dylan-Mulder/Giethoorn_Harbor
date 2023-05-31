@@ -4,8 +4,8 @@ import { WaterQualityReport } from './entities/water-quality-report.entity';
 import amqp from 'amqp-connection-manager';
 import { MarineLifeReport, MarineLifeReportList } from './entities/marine-life-report.entity';
 import { ConfigService } from '@nestjs/config';
-import { getDataSourceName } from '@nestjs/typeorm';
 import { getRelationalDataSource } from './config/datasources/relational_datasource';
+import { Repository } from 'typeorm';
 
 @Injectable()
 export class EcosystemService {
@@ -19,8 +19,8 @@ export class EcosystemService {
   private  HOST = this.configService.get('RABBITMQ_HOST');
 
   // Repo's
-  private marineLifeReportRepo;
-  private waterQualityReportRepo;
+  private marineLifeReportRepo: Repository<MarineLifeReport>;
+  private waterQualityReportRepo: Repository<WaterQualityReport>;
 
   // Init the repositories
   async initDatasources() {
@@ -171,11 +171,10 @@ export class EcosystemService {
 
   async createWaterQuality(waterQualityReport: WaterQualityReport) {
     try {
-      const waterQualityReportRepository = getRepository(WaterQualityReport);
 
-      const insertedWaterQualityReport = await waterQualityReportRepository.save(waterQualityReport);
+      const insertedReport = await this.waterQualityReportRepo.save(waterQualityReport);
 
-      return insertedWaterQualityReport;
+      return insertedReport;
     } catch (error) {
       console.error(error);
     }
@@ -183,8 +182,6 @@ export class EcosystemService {
 
   async createMarineLifeReports(marineLifeReportList: MarineLifeReportList) {
     try {
-      const marineLifeReportRepository = getRepository(MarineLifeReport);
-
       const insertedReports: MarineLifeReport[] = [];
 
       for (const report of marineLifeReportList.reports) {
@@ -195,8 +192,8 @@ export class EcosystemService {
         marineLifeReport.cpue = report.cpue;
         marineLifeReport.habitat = report.habitat;
         marineLifeReport.season = report.season;
-
-        const insertedReport = await marineLifeReportRepository.save(marineLifeReport);
+        
+        const insertedReport = await this.marineLifeReportRepo.save(marineLifeReport);
         insertedReports.push(insertedReport);
       }
 
