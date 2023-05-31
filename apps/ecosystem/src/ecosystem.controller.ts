@@ -34,7 +34,7 @@ export class EcosystemController {
     try {
       const jsonData = JSON.parse(content);
       const EcosystemData = jsonData;
-      await this.ecosystemService.createWaterQuality(EcosystemData);
+      await this.ecosystemService.createMarineLifeReports(EcosystemData);
       context.getChannelRef().ack(context.getMessage()); // Acknowledge the message
     } catch (error) {
       console.error(error);
