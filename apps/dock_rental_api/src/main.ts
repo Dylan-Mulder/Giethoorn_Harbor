@@ -74,12 +74,14 @@ async function bootstrapDockRental() {
     console.log("Consumer listening on: " + exchange);
     await channel.consume(
       "rf-c-" + exchange,
-      async (message) => {
+      (message) => {
         if (message !== null) {
           const content = message.content.toString();
+          console.log(JSON.stringify(message.content));
+          console.log('Consumer received event');
           // Process the event:
           const rmqContext = new RmqContext([message, channel, null]);
-          await methodToCall.call(dockRentalController, content, rmqContext);
+          methodToCall.call(dockRentalController, content, rmqContext);
         }
       },
     );
