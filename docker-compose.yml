@@ -23,8 +23,6 @@ services:
     container_name: PostgreSQL-Relational-Database
     image: postgres:latest
     restart: always
-    networks:
-      - network
     ports:
       - '5432:5432'
     logging:
@@ -37,16 +35,17 @@ services:
       - relational_database:/var/lib/postgresql/data
       - ./database_scripts/relational_database_init.sql:/docker-entrypoint-initdb.d/relational_database_init.sql
       - ./database_scripts/relational_database_insert.sql:/docker-entrypoint-initdb.d/relational_database_insert.sql
+    networks:
+      network:
+        ipv4_address: 10.5.0.32
 
   # CQRS DATABASE
   cqrs_database:
     container_name: PostgreSQL-CQRS-Database
     image: postgres:latest
     restart: always
-    networks:
-      - network
     ports:
-      - '5433:5433'
+      - '5433:5432'
     logging:
       options:
         max-size: 10m
@@ -57,16 +56,17 @@ services:
       - cqrs_database:/var/lib/postgresql/data
       - ./database_scripts/relational_database_init.sql:/docker-entrypoint-initdb.d/relational_database_init.sql
       - ./database_scripts/relational_database_insert.sql:/docker-entrypoint-initdb.d/relational_database_insert.sql
+    networks:
+      network:
+        ipv4_address: 10.5.0.33
 
   # EVENT SOURCE DATABASE
   event_store:
     container_name: PostgreSQL-Event-Store
     image: postgres:latest
     restart: always
-    networks:
-      - network
     ports:
-      - '5434:5434'
+      - '5434:5432'
     logging:
       options:
         max-size: 10m
@@ -76,6 +76,9 @@ services:
     volumes:
       - event_store:/var/lib/postgresql/data
       - ./database_scripts/event_store_init.sql:/docker-entrypoint-initdb.d/event_store_init.sql
+    networks:
+      network:
+        ipv4_address: 10.5.0.34
 
   # # DOCK RENTAL API
   dock_rental_api:

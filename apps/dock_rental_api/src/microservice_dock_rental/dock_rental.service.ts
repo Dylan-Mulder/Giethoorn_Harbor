@@ -4,14 +4,35 @@ import { ConfigService } from '@nestjs/config';
 import { Dock } from '../modules/dock/entities/dock.entity';
 import { LeaseAgreement } from '../modules/lease-agreement/entities/lease-agreement.entity';
 import { ShippingCompany } from '../modules/shipping-company/entity/shipping-company.entity';
+import { Repository } from 'typeorm';
+import { GHEvent } from '../config/datasources/gh-event';
+import { getCQRSDataSource } from '../config/datasources/cqrs_datasource';
 //import { getRelationalDataSource } from '../config/datasources/relational_datasource';
 
 @Injectable()
 export class DockRentalService {
-  constructor(private readonly configService: ConfigService){};
+  constructor(private readonly configService: ConfigService){
+    this.initDatasources();
+  };
+
+  // RabbitMQ
   private  USER = this.configService.get('RABBITMQ_USER');
   private  PASSWORD = this.configService.get('RABBITMQ_PASS');
   private  HOST = this.configService.get('RABBITMQ_HOST');
+
+  // Repo's
+  private dockRepo: Repository<Dock>;
+  private leaseAgreementRepo: Repository<LeaseAgreement>;
+  private shippingCompanyRepo: Repository<ShippingCompany>;
+
+  async initDatasources() {
+    // Init Datasources
+    const cqrsDatasource = await getCQRSDataSource();
+    // Init Repo's
+    this.dockRepo = cqrsDatasource.getRepository(Dock);
+    this.leaseAgreementRepo = cqrsDatasource.getRepository(LeaseAgreement);
+    this.shippingCompanyRepo = cqrsDatasource.getRepository(ShippingCompany);
+  }
 
   //EP-DR-01 Dock has been created
   async createDock(dockData:any): Promise<void>{
