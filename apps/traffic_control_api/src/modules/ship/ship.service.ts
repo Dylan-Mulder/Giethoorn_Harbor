@@ -5,15 +5,23 @@ import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateShipDTO } from './dto/create-ship.dto';
 import { ShipDTO } from './dto/ship.dto';
+import { ConfigService } from '@nestjs/config';
+import * as amqp from 'amqplib';
 
 @Injectable()
 export class ShipService implements IShipService {
 
-  constructor(@InjectRepository(Ship) private readonly repo: Repository<Ship>) { }
+  private USER = this.configService.get('RABBITMQ_USER');
+  private PASSWORD = this.configService.get('RABBITMQ_PASS');
+  private HOST = this.configService.get('RABBITMQ_HOST');
+
+  constructor(@InjectRepository(Ship) private readonly repo: Repository<Ship>, private readonly configService: ConfigService) { }
 
   public async createShip(dto: CreateShipDTO): Promise<Ship> {
     const ship = this.repo.create(dto);
-    return await this.repo.save(ship);
+    const returnedObject = await this.repo.save(ship);
+    await this.sendToQueue('ship-registered', 'event.ship-registered', JSON.stringify(returnedObject));
+    return returnedObject;
   }
 
   public async getShipById(id: number): Promise<ShipDTO> {
@@ -34,4 +42,11 @@ export class ShipService implements IShipService {
     await this.repo.delete(id)
     return obj;
   }
+
+  async sendToQueue(exchangeName: string, routingKey: string, message: string) {
+    const connection = amqp.connect(`amqp://${this.USER}:${this.PASSWORD}@${this.HOST}`);
+    const channel = connection.createChannel();
+    await channel.assertExchange(exchangeName, 'topic', { durable: false });
+    await channel.publish(exchangeName, routingKey, Buffer.from(message));
+  };
 }
