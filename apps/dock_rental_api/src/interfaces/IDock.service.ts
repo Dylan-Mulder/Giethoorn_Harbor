@@ -6,6 +6,6 @@ export abstract class IDockService {
   abstract createDock(dto: CreateDockDTO): Promise<Dock>;
   abstract getDockById(id: number): Promise<Dock>;
   abstract getAllDocks(): Promise<Array<Dock>>;
-  abstract updateDockById(id: number, dto: CreateDockDTO): Promise<UpdateResult>;
-  abstract deleteDockById(id: number): Promise<DeleteResult>;
+  abstract updateDockById(id: number, dto: CreateDockDTO): Promise<Dock>;
+  abstract deleteDockById(id: number): Promise<Dock>;
 }
