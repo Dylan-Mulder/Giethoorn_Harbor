@@ -25,4 +25,8 @@ export class CreateShipDTO implements Readonly<CreateShipDTO> {
   @IsBoolean()
   @ApiProperty()
   public is_cleared: boolean;
+
+  @IsBoolean()
+  @ApiProperty()
+  public is_denied: boolean;
 }

@@ -31,6 +31,10 @@ export class ShipDTO implements Readonly<ShipDTO> {
   @ApiProperty()
   public is_cleared: boolean;
 
+  @IsBoolean()
+  @ApiProperty()
+  public is_denied: boolean;
+
   @IsDate()
   @ApiProperty()
   public created_at: Date;
@@ -44,6 +48,7 @@ export class ShipDTO implements Readonly<ShipDTO> {
     it.max_load_in_tonnage = dto.max_load_in_tonnage;
     it.length_in_m = dto.length_in_m;
     it.is_cleared = dto.is_cleared;
+    it.is_denied = dto.is_denied;
     it.created_at = dto.created_at;
     return it;
   }
@@ -57,6 +62,7 @@ export class ShipDTO implements Readonly<ShipDTO> {
       max_load_in_tonnage: entity.max_load_in_tonnage,
       length_in_m: entity.length_in_m,
       is_cleared: entity.is_cleared,
+      is_denied: entity.is_denied,
       created_at: entity.created_at,
     });
   }
@@ -70,6 +76,7 @@ export class ShipDTO implements Readonly<ShipDTO> {
     it.max_load_in_tonnage = this.max_load_in_tonnage;
     it.length_in_m = this.length_in_m;
     it.is_cleared = this.is_cleared;
+    it.is_denied = this.is_denied;
     it.created_at = this.created_at;
     return it;
   }

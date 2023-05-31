@@ -30,6 +30,9 @@ export class Ship {
   @Column('bool', { nullable: false, default: false })
   public is_cleared: boolean;
 
+  @Column('bool', { nullable: false, default: false })
+  public is_denied: boolean;
+
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   public created_at: Date;
 }
