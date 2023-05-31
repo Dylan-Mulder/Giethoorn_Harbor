@@ -38,7 +38,6 @@ bootstrapAPI();
 
 async function bootstrapDockRental() {
   const app = await NestFactory.create(DockRentalModule);
-
   const configService = app.get(ConfigService);
 
   const USER = configService.get('RABBITMQ_USER');

@@ -6,7 +6,7 @@ import { ShippingCompanyDTO } from './dto/ship-company.dto';
 import { CreateShippingCompanyDTO } from './dto/create-shipping-company.dto';
 import { ShippingCompany } from './entity/shipping-company.entity';
 import { ConfigService } from '@nestjs/config';
-
+import amqp from 'amqp-connection-manager';
 
 @Injectable()
 export class ShippingCompanyService implements IShipCompanyService {

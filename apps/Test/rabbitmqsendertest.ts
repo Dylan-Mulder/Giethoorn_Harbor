@@ -8,10 +8,10 @@ amqp.connect('amqp://user:password@localhost:5672', (error, connection) => {
   connection.createChannel((error, channel) => {
     if (error) throw error;
 
-    const exchangeName = 'dock-created';
-    const routingKey = 'event.dock-created';
-    // const exchangeName = 'lease-agreement-created';
-    // const routingKey = 'event.lease-agreement-created';
+    // const exchangeName = 'dock-created';
+    // const routingKey = 'event.dock-created';
+    const exchangeName = 'lease-agreement-created';
+    const routingKey = 'event.lease-agreement-created';
     // const exchangeName = 'shipping-company-created';
     // const routingKey = 'event.shipping-company-created';
 
@@ -56,16 +56,16 @@ amqp.connect('amqp://user:password@localhost:5672', (error, connection) => {
             "dock_id": 1,
             "shipping_company_id": 1,
             "price": 1000,
-            "reference": "Erwin",
+            "reference": "Erwintje",
             "sign_date":"02-25-1999",
             "valid_until":"02-25-1999"
           }
         ],
         "shippingCompany":[
           {
-            "country":"India",
-            "name":"Niek Roos B.V.",
-            "reference":"Niek"
+            "country":"India 2",
+            "name":"Niek Roos B.V. 2.0",
+            "reference":"Niek 2"
           }
         ]
       }

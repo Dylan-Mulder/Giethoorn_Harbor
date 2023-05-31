@@ -6,6 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { LeaseAgreementDTO } from './dto/lease-agreement.dto';
 import { CreateLeaseAgreementDTO } from './dto/create-lease-agreement.dto';
 import { ConfigService } from '@nestjs/config';
+import amqp from 'amqp-connection-manager';
 
 @Injectable()
 export class LeaseAgreementService implements ILeaseAgreementService {
