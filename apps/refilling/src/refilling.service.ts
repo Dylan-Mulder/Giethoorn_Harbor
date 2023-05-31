@@ -83,24 +83,21 @@ export class RefillingService {
     console.log(
       'Refilling - Ship has docked! Refilling team has been notified.',
     );
+
+    //Refilling team sees a notif and sets out to work:
     console.log(refillServiceData, shipData);
     if (refillServiceData[0].needsRefuelling == true) {
       this.refuelShip(shipData, refillServiceData);
     }
-
-    //Refilling team sets out to work:
     if (refillServiceData[0].needsRecharging == true) {
       this.rechargeShip(shipData, refillServiceData);
     }
-
-    return true;
   }
 
   async refuelShip(
     shipData: Partial<Ship>,
     refillingServiceData: Partial<RefillingService>,
   ) {
-    //Add actual fuel level
     let fuelPercentage = 0;
     //Refuel ship
     while (fuelPercentage < 100) {
@@ -111,25 +108,28 @@ export class RefillingService {
     }
     console.log('Refilling - Ship has been refilled!');
     const jsonShipData = JSON.parse(JSON.stringify(shipData));
-    const updatedRefillingServiceData = {
-      data: {
-        shipData: [shipData[0]],
-        refillServiceData: [
-          {
-            id: refillingServiceData[0].id,
-            needsRefuelling: false,
-          },
-        ],
-      },
-    };
-    const jsonRefillingServiceData = JSON.parse(
-      JSON.stringify(updatedRefillingServiceData),
-    );
+    const updatedRefillingServiceData = JSON.parse(JSON.stringify(refillingServiceData[0]))
+    updatedRefillingServiceData.needsRefuelling=false;
+
     const messageToSend = this.stringMessageBuilder(
       jsonShipData,
-      jsonRefillingServiceData,
+      updatedRefillingServiceData,
       null,
     );
+
+    //Update DB
+    const shipId = JSON.parse(shipData[0].id);
+    const serviceToUpdate = await this.serviceRepo.findOneBy({
+      ship_id:shipId
+    })
+
+    serviceToUpdate.needs_refuelling=false;
+    console.log(serviceToUpdate);
+    let returnedObject;
+    await this.serviceRepo.save(serviceToUpdate).then(service => {returnedObject=service});
+    this.addToEventStore(JSON.stringify(returnedObject.stream_id),'ship-has-refuelled',messageToSend);
+    
+    //Emit to queue
     this.sendToQueue(
       'ship-has-refuelled',
       'event.ship-has-refuelled',
@@ -161,42 +161,75 @@ export class RefillingService {
       jsonRefillingServiceData,
       null,
     );
+    //Update DB
+    const shipId = JSON.parse(shipData[0].id);
+    const serviceToUpdate = await this.serviceRepo.findOneBy({
+      ship_id:shipId
+    })
+
+    serviceToUpdate.needs_recharging=false;
+    console.log(serviceToUpdate);
+    let returnedObject;
+    await this.serviceRepo.save(serviceToUpdate).then(service => {returnedObject=service});
+    this.addToEventStore(JSON.stringify(returnedObject.stream_id),'ship-has-recharged',messageToSend);
+
+    //Emit to queue
     this.sendToQueue(
       'ship-has-recharged',
       'event.ship-has-recharged',
       messageToSend,
     );
-    //Todo: send ship on queue.
   }
 
   //EP-R-03	PlanningHasUpdated:	Update internal planning.
   async updatePlanning(planningData: any): Promise<any> {
-    //Mock communications
     console.log('Refilling - Planning has updated! ');
-
-    //TODO: UPDATE PLANNING IN DB, return updated planning
+    const trafficPlanning = new TrafficPlanning();
+    trafficPlanning.dock_name = planningData.dock_name;
+    trafficPlanning.arrival = new Date(planningData.arrival);
+    trafficPlanning.departure = new Date(planningData.departure);
+    let planningToUpdate = await this.trafficPlanningRepo.findOneBy(
+      {
+        id: planningData.id
+      }
+    )
+    let returnedObject;
+    await this.trafficPlanningRepo.save(planningToUpdate).then(traffic_planning =>{returnedObject=traffic_planning});
+    this.addToEventStore(JSON.stringify(returnedObject.stream_id),'planning-has-updated',returnedObject);
     return true;
   }
 
   //EP-R-04	ShipHasBeenRecharged:	Update internal state of ship to recharged.
-  async updateShip(shipData: any, refillingServiceData: any): Promise<any> {
-    //Mock communications
-    console.log('Refilling - Ship has updated!');
+  async updateService(shipData: any, refillingServiceData: any): Promise<any> {
+    console.log('Refilling - Service has updated!');
 
-    //TODO: UPDATE SHIP IN DB, return updated ship
-    return true;
+    const service = new Service();
+    service.traffic_planning_id = refillingServiceData.traffic_planning_id;
+    service.ship_id=refillingServiceData.ship_id;
+    service.needs_recharging=refillingServiceData.needsRecharging;
+    service.needs_refuelling=refillingServiceData.needsRefuelling;
+
+    let serviceToUpdate = await this.serviceRepo.findOneBy(
+      {
+        traffic_planning_id:refillingServiceData.traffic_planning_id,
+        ship_id:refillingServiceData.ship_id
+      }
+    )
+    let returnedObject;
+    await this.serviceRepo.save(serviceToUpdate).then(service =>{returnedObject=service});
+    this.addToEventStore(JSON.stringify(returnedObject.stream_id),'ship-has-updated',returnedObject);
   }
 
   stringMessageBuilder(
     shipData: object[],
-    refillServiceData: object[],
+    refillService: object[],
     trafficPlanningData: object[],
   ): string {
     if (!shipData) {
       shipData = [];
     }
-    if (!refillServiceData) {
-      refillServiceData = [];
+    if (!refillService) {
+      refillService = [];
     }
     if (!trafficPlanningData) {
       trafficPlanningData = [];
@@ -204,7 +237,7 @@ export class RefillingService {
     const jsonData = {
       data: {
         shipData,
-        refillServiceData,
+        refillService: refillService,
         trafficPlanningData,
       },
     };
@@ -219,5 +252,14 @@ export class RefillingService {
     const channel = await connection.createChannel();
     await channel.assertExchange(exchangeName, 'topic', { durable: false });
     await channel.publish(exchangeName, routingKey, Buffer.from(message));
+  }
+
+  async addToEventStore(stream_id: string, type: string, body: string) {
+    let ghEvent = new GHEvent;
+    ghEvent.stream_id = stream_id;
+    ghEvent.type = type;
+    ghEvent.body = body;
+
+    await this.eventRepo.save(ghEvent);
   }
 }

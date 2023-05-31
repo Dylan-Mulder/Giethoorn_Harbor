@@ -96,7 +96,7 @@ ALTER TABLE IF EXISTS security.event
 CREATE TABLE refilling.event
 (
     id serial NOT NULL,
-    stream_id uuid NOT NULL,
+    stream_id text NOT NULL,
     type text NOT NULL,
     body jsonb NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),

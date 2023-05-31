@@ -1,4 +1,4 @@
-const json = require('stream/consumers');
+let json = require('stream/consumers');
 
 amqp = require('amqplib/callback_api');
 
