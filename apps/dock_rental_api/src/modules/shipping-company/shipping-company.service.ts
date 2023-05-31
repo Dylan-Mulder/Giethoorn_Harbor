@@ -9,7 +9,6 @@ import { ShippingCompany } from './entity/shipping-company.entity';
 
 @Injectable()
 export class ShippingCompanyService implements IShipCompanyService {
-
   constructor(@InjectRepository(ShippingCompany) private readonly repo: Repository<ShippingCompany>) { }
 
   public async getShipCompanyById(id: number): Promise<ShippingCompanyDTO> {
@@ -22,7 +21,8 @@ export class ShippingCompanyService implements IShipCompanyService {
 
   public async createShipCompany(dto: CreateShippingCompanyDTO): Promise<ShippingCompany> {
     const shipCompany = this.repo.create(dto);
-    return await this.repo.save(shipCompany);
+    const returnedObject = await this.repo.save(shipCompany);
+    return returnedObject
   }
 
   public async updateShipCompanyById(id: number, updateShipCompany: CreateShippingCompanyDTO): Promise<ShippingCompany> {

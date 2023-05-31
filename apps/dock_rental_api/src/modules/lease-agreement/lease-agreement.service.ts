@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ILeaseAgreementService } from '../../interfaces/ILeaseAgreement.service';
-import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { Repository } from 'typeorm';
 import { LeaseAgreement } from './entities/lease-agreement.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LeaseAgreementDTO } from './dto/lease-agreement.dto';
@@ -24,7 +24,8 @@ export class LeaseAgreementService implements ILeaseAgreementService {
     dto.valid_until = new Date(dto.valid_until);
 
     const result = this.repo.create(dto);
-    return await this.repo.save(result);
+    const returnedObject = await this.repo.save(result);
+    return returnedObject;
   }
 
   public async updateLeaseAgreementById(id: number, updateLeaseAgreement: CreateLeaseAgreementDTO): Promise<LeaseAgreement> {

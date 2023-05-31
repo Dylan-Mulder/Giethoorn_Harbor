@@ -4,9 +4,10 @@ import { DockRentalService } from './dock_rental.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from '../config/configuration';
-import { LeaseAgreement } from './entities/lease-agreement.entity';
-import { ShippingCompany } from './entities/shipping-company.entity';
-import { Dock } from './entities/dock.entity';
+import { Dock } from '../modules/dock/entities/dock.entity';
+import { LeaseAgreement } from '../modules/lease-agreement/entities/lease-agreement.entity';
+import { ShippingCompany } from '../modules/shipping-company/entity/shipping-company.entity';
+
 
 @Module({
   imports: [
