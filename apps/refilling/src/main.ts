@@ -7,11 +7,11 @@ import { RefillingController } from './refilling.controller';
 
 
 async function bootstrap() {
-  
+  // Create App
   const app = await NestFactory.create(RefillingModule);
-
   const configService = app.get(ConfigService);
 
+  // RabbitMQ
   const USER = configService.get('RABBITMQ_USER');
   const PASSWORD = configService.get('RABBITMQ_PASS');
   const HOST = configService.get('RABBITMQ_HOST');

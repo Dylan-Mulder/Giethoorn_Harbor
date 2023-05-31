@@ -3,15 +3,35 @@ import { Pool, PoolClient } from 'pg';
 import { Ship } from './entities/ship.entity'
 import amqp from 'amqp-connection-manager';
 import { ConfigService } from '@nestjs/config';
+import { getRelationalDataSource } from './config/datasources/relational_datasource';
+import { Service } from './entities/service.entity';
+import { TrafficPlanning } from './entities/traffic-planning.entity';
 
 @Injectable()
 export class RefillingService {
+  constructor(private readonly configService: ConfigService){
+    this.initDatasources();
+  };
+
   private pool: Pool;
 
-  constructor(private readonly configService: ConfigService){};
+  // RabbitMQ
   private  USER = this.configService.get('RABBITMQ_USER');
   private  PASSWORD = this.configService.get('RABBITMQ_PASS');
   private  HOST = this.configService.get('RABBITMQ_HOST');
+
+  // Repo's
+  private serviceRepo;
+  private shipRepo;
+  private trafficPlanningRepo;
+
+  // Init the repositories
+  async initDatasources() {
+    const relationalDatasource = await getRelationalDataSource();
+    this.serviceRepo = relationalDatasource.getRepository(Service);
+    this.shipRepo = relationalDatasource.getRepository(Ship);
+    this.trafficPlanningRepo = relationalDatasource.getRepository(TrafficPlanning);
+  }
 
   //EP-R-01 ShipRegistered: Add new ship to internal list. 
   async createShip(shipData: any, refillServiceData: any): Promise<Ship> {
