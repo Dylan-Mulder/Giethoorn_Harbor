@@ -44,7 +44,7 @@ ALTER SCHEMA messaging
 CREATE TABLE traffic_control.event
 (
     id serial NOT NULL,
-    stream_id uuid NOT NULL,
+    stream_id text NOT NULL,
     type text NOT NULL,
     body jsonb NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
@@ -57,7 +57,7 @@ ALTER TABLE IF EXISTS traffic_control.event
 CREATE TABLE dock_rental.event
 (
     id serial NOT NULL,
-    stream_id uuid NOT NULL,
+    stream_id text NOT NULL,
     type text NOT NULL,
     body jsonb NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
@@ -70,7 +70,7 @@ ALTER TABLE IF EXISTS dock_rental.event
 CREATE TABLE ecosystem.event
 (
     id serial NOT NULL,
-    stream_id uuid NOT NULL,
+    stream_id text NOT NULL,
     type text NOT NULL,
     body jsonb NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
@@ -83,7 +83,7 @@ ALTER TABLE IF EXISTS ecosystem.event
 CREATE TABLE security.event
 (
     id serial NOT NULL,
-    stream_id uuid NOT NULL,
+    stream_id text NOT NULL,
     type text NOT NULL,
     body jsonb NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
@@ -96,7 +96,7 @@ ALTER TABLE IF EXISTS security.event
 CREATE TABLE refilling.event
 (
     id serial NOT NULL,
-    stream_id uuid NOT NULL,
+    stream_id text NOT NULL,
     type text NOT NULL,
     body jsonb NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
@@ -109,7 +109,7 @@ ALTER TABLE IF EXISTS refilling.event
 CREATE TABLE cargo_management.event
 (
     id serial NOT NULL,
-    stream_id uuid NOT NULL,
+    stream_id text NOT NULL,
     type text NOT NULL,
     body jsonb NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
@@ -122,7 +122,7 @@ ALTER TABLE IF EXISTS cargo_management.event
 CREATE TABLE publications.event
 (
     id serial NOT NULL,
-    stream_id uuid NOT NULL,
+    stream_id text NOT NULL,
     type text NOT NULL,
     body jsonb NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
@@ -135,7 +135,7 @@ ALTER TABLE IF EXISTS publications.event
 CREATE TABLE billing.event
 (
     id serial NOT NULL,
-    stream_id uuid NOT NULL,
+    stream_id text NOT NULL,
     type text NOT NULL,
     body jsonb NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
@@ -148,7 +148,7 @@ ALTER TABLE IF EXISTS billing.event
 CREATE TABLE messaging.event
 (
     id serial NOT NULL,
-    stream_id uuid NOT NULL,
+    stream_id text NOT NULL,
     type text NOT NULL,
     body jsonb NOT NULL,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
