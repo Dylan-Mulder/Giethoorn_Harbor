@@ -5,7 +5,6 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from './config/configuration';
 import { MarineLifeReport } from './entities/marine-life-report.entity';
-import { TrafficPlanning } from './entities/traffic-planning.entity';
 import { WaterQualityReport } from './entities/water-quality-report.entity';
 
 @Module({
@@ -24,9 +23,9 @@ import { WaterQualityReport } from './entities/water-quality-report.entity';
         username: configService.get('username'),
         password: configService.get('password'),
         database: configService.get('database'),
-        entities: [MarineLifeReport, TrafficPlanning, WaterQualityReport],
-        synchronize: false,
-        migrationsRun: false
+        entities: configService.get('entities'),
+        synchronize: configService.get('synchronize'),
+        migrationsRun: configService.get('migrationsRun')
       }),
     })
   ],
