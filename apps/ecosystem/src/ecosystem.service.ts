@@ -6,6 +6,8 @@ import { MarineLifeReport, MarineLifeReportList } from './entities/marine-life-r
 import { ConfigService } from '@nestjs/config';
 import { getRelationalDataSource } from './config/datasources/relational_datasource';
 import { Repository } from 'typeorm';
+import { GHEvent } from './entities/gh-event';
+import { getEventDataSource } from './config/datasources/event_datasource';
 
 @Injectable()
 export class EcosystemService {
@@ -19,12 +21,16 @@ export class EcosystemService {
   private  HOST = this.configService.get('RABBITMQ_HOST');
 
   // Repo's
+  private eventRepo: Repository<GHEvent>;
   private marineLifeReportRepo: Repository<MarineLifeReport>;
   private waterQualityReportRepo: Repository<WaterQualityReport>;
 
-  // Init the repositories
   async initDatasources() {
+    // Init datasources
+    const eventDatasource = await getEventDataSource();
     const relationalDatasource = await getRelationalDataSource();
+    // Init repo's
+    this.eventRepo = eventDatasource.getRepository(GHEvent);
     this.marineLifeReportRepo = relationalDatasource.getRepository(MarineLifeReport);
     this.waterQualityReportRepo = relationalDatasource.getRepository(WaterQualityReport);
   }

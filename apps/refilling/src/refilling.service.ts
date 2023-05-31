@@ -7,6 +7,8 @@ import { getRelationalDataSource } from './config/datasources/relational_datasou
 import { Service } from './entities/service.entity';
 import { TrafficPlanning } from './entities/traffic-planning.entity';
 import { Repository } from 'typeorm';
+import { GHEvent } from './entities/gh-event';
+import { getEventDataSource } from './config/datasources/event_datasource';
 
 @Injectable()
 export class RefillingService {
@@ -22,13 +24,17 @@ export class RefillingService {
   private  HOST = this.configService.get('RABBITMQ_HOST');
 
   // Repo's
+  private eventRepo: Repository<GHEvent>
   private serviceRepo: Repository<Service>;
   private shipRepo: Repository<Ship>;
   private trafficPlanningRepo: Repository<TrafficPlanning>;
 
-  // Init the repositories
   async initDatasources() {
+    // Init datasources
+    const eventDatasource = await getEventDataSource();
     const relationalDatasource = await getRelationalDataSource();
+    // Init repo's
+    this.eventRepo = eventDatasource.getRepository(GHEvent);
     this.serviceRepo = relationalDatasource.getRepository(Service);
     this.shipRepo = relationalDatasource.getRepository(Ship);
     this.trafficPlanningRepo = relationalDatasource.getRepository(TrafficPlanning);

@@ -1,13 +1,13 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
-import { GHEvent } from "../../entities/event";
+import { GHEvent } from "../../entities/gh-event";
 
 const datasource = new DataSource({
   type: "postgres",
   host: process.env.POSTGRES_HOST,
   port: 5434,
-  username: 'gh_ecosystem',
-  password: 'URY382992ef',
+  username: 'gh_refilling',
+  password: 'jw8s0F4',
   database: process.env.POSTGRES_DATABASE,
   synchronize: false,
   logging: false,
@@ -22,7 +22,7 @@ datasource.initialize()
   })
   .catch((error) => console.log(error));
 
-export const getDataSource = (delay = 3000): Promise<DataSource> => {
+export const getEventDataSource = (delay = 3000): Promise<DataSource> => {
   if (datasource.isInitialized) return Promise.resolve(datasource);
 
   return new Promise((resolve, reject) => {
