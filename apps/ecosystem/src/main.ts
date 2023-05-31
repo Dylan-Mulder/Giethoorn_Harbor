@@ -6,7 +6,7 @@ import { Transport, MicroserviceOptions, RmqContext } from '@nestjs/microservice
 import { EcosystemController } from './ecosystem.controller';
 import * as amqp from 'amqplib';
 import { WaterQualityReport } from './entities/water-quality-report.entity';
-import { MarineLifeReport, MarineLifeReportList } from './entities/marine-life-report.entity';
+import { MarineLifeReportList } from './entities/marine-life-report.entity';
 
 async function bootstrap() {
   // Create App
@@ -54,8 +54,7 @@ async function bootstrap() {
           async (message) => {
             if (message !== null) {
               const content = message.content.toString();
-              console.log(JSON.stringify(JSON.parse(message.content)));
-              console.log('Consumer received event');
+              console.log('Consumer ' + exchange +' received event');
               // Process the event:
               const rmqContext = new RmqContext([message, channel, null]);
               await methodToCall.call(ecosystemController, content, rmqContext);
@@ -63,14 +62,16 @@ async function bootstrap() {
           },
     );
 
-    const report = await eosystemService.getFakeWaterQualityReport(); 
-    const reportmarine = await eosystemService.getFakeMarineLifeReport(); 
+    let report;
+    if(exchange.toString() == 'waterquality-inspected'){
+      report = await eosystemService.getWaterQualityReport(); 
+      await addWaterQualityReportToExchange(exchange, routingKeyPattern, report, channel);
+    }
+    else{
+      report = await eosystemService.getMarineLifeReport();
+      await addMarineQualityReportToExchange(exchange, routingKeyPattern, report, channel);
+    }
 
-    const exchangeName = 'waterquality-inspected';
-    const routingKey = 'event.waterquality-inspected';
-  
-    await addWaterQualityReportToExchange(exchangeName, routingKey, report);
-    await addMarineQualityReportToExchange(exchangeName, routingKey, reportmarine);
 }
 
   app.connectMicroservice<MicroserviceOptions>({
@@ -90,38 +91,22 @@ async function bootstrap() {
 }
 bootstrap();
 
-async function addWaterQualityReportToExchange(exchangeName: string, routingKey: string, report: WaterQualityReport) {
-  const app = await NestFactory.create(EcosystemModule);
-
-  const configService = app.get(ConfigService);
-
-  const USER = configService.get('RABBITMQ_USER');
-  const PASSWORD = configService.get('RABBITMQ_PASS');
-  const HOST = configService.get('RABBITMQ_HOST');
-  const QUEUE = configService.get('RABBITMQ_ECOSYSTEM_QUEUE');
-
-  const connection = await amqp.connect(`amqp://${USER}:${PASSWORD}@${HOST}`);
-  const channel = await connection.createChannel();
-  await channel.assertExchange(exchangeName, 'topic', { durable: false });
-  
-  const reportData = JSON.stringify(report); // Convert report object to JSON string
+async function addWaterQualityReportToExchange(
+  exchangeName: string,
+  routingKey: string,
+  report: WaterQualityReport,
+  channel: amqp.Channel
+) {
+  const reportData = JSON.stringify(report);
   await channel.publish(exchangeName, routingKey, Buffer.from(reportData));
 }
 
-async function addMarineQualityReportToExchange(exchangeName: string, routingKey: string, report: MarineLifeReportList) {
-  const app = await NestFactory.create(EcosystemModule);
-
-  const configService = app.get(ConfigService);
-
-  const USER = configService.get('RABBITMQ_USER');
-  const PASSWORD = configService.get('RABBITMQ_PASS');
-  const HOST = configService.get('RABBITMQ_HOST');
-  const QUEUE = configService.get('RABBITMQ_ECOSYSTEM_QUEUE');
-
-  const connection = await amqp.connect(`amqp://${USER}:${PASSWORD}@${HOST}`);
-  const channel = await connection.createChannel();
-  await channel.assertExchange(exchangeName, 'topic', { durable: false });
-  
-  const reportData = JSON.stringify(report); // Convert report object to JSON string
+async function addMarineQualityReportToExchange(
+  exchangeName: string,
+  routingKey: string,
+  report: MarineLifeReportList,
+  channel: amqp.Channel
+) {
+  const reportData = JSON.stringify(report);
   await channel.publish(exchangeName, routingKey, Buffer.from(reportData));
 }
