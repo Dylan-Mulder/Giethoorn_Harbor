@@ -33,6 +33,8 @@ export class DockRentalService {
     this.shippingCompanyRepo = cqrsDatasource.getRepository(ShippingCompany);
   }
 
+  // CREATE 
+
   //EP-DR-01 Dock has been created
   async createDock(dockData: any): Promise<Dock> {
     //Naar CQRS-READ-DB
@@ -42,11 +44,6 @@ export class DockRentalService {
     const returnedObject = await this.dockRepo.save(newDock);
     await this.sendToQueue('dock-created', 'event.dock-created', JSON.stringify(returnedObject));
     return returnedObject
-
-    // let event = new GHEvent();
-    // event.stream_id = returnedObject.stream_id;
-    // event.body = JSON.stringify(returnedObject)
-    // event.type = 'dock-created'
   }
 
   //EP-DR-02 Lease Agreement has been created
@@ -77,14 +74,11 @@ export class DockRentalService {
     return returnedObject
   }
 
+  // READ ALL
+
   //EP-DR-04 All Docks have been found
   async readAllDocks(): Promise<Array<Dock>> {
     return await this.dockRepo.find();
-  }
-
-  //EP-DR-05 Dock has been found
-  async readSingleDock(id: number): Promise<Dock> {
-    return await this.dockRepo.findOne({ where: { id: id } });
   }
 
   //EP-DR-06 All Lease Agreements have been found
@@ -92,15 +86,24 @@ export class DockRentalService {
     return await this.leaseAgreementRepo.find();
   }
 
+  //EP-DR-08 All Shipping Companies have been found
+  async readAllShippingCompanies(): Promise<Array<ShippingCompany>> {
+    return await this.shippingCompanyRepo.find();
+  }
+
+
+  // READ SINGLE
+
+  //EP-DR-05 Dock has been found
+  async readSingleDock(id: number): Promise<Dock> {
+    return await this.dockRepo.findOne({ where: { id: id } });
+  }
+
   //EP-DR-07 Lease Agreement has been found
   async readSingleLeaseAgreement(id: number): Promise<LeaseAgreement> {
     return await this.leaseAgreementRepo.findOne({ where: { id: id } });
   }
 
-  //EP-DR-08 All Shipping Companies have been found
-  async readAllShippingCompanies(): Promise<Array<ShippingCompany>> {
-    return await this.shippingCompanyRepo.find();
-  }
 
   //EP-DR-09 Shipping Company has been found
   async readSingleShippingCompany(id: number): Promise<ShippingCompany> {
