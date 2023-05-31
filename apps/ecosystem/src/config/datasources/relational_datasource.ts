@@ -6,7 +6,7 @@ import { WaterQualityReport } from "../../entities/water-quality-report.entity";
 const datasource = new DataSource({
   type: "postgres",
   host: process.env.POSTGRES_HOST,
-  port: 5432,
+  port: parseInt(process.env.POSTGRES_PORT),
   username: 'gh_ecosystem',
   password: 'URY382992ef',
   database: process.env.POSTGRES_DATABASE,

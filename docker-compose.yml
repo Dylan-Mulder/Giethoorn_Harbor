@@ -23,8 +23,6 @@ services:
     container_name: PostgreSQL-Relational-Database
     image: postgres:latest
     restart: always
-    # networks:
-    #   - network
     ports:
       - '5432:5432'
     logging:
@@ -46,8 +44,6 @@ services:
     container_name: PostgreSQL-CQRS-Database
     image: postgres:latest
     restart: always
-    # networks:
-    #   - network
     ports:
       - '5433:5432'
     logging:
@@ -69,8 +65,6 @@ services:
     container_name: PostgreSQL-Event-Store
     image: postgres:latest
     restart: always
-    # networks:
-    #   - network
     ports:
       - '5434:5432'
     logging:

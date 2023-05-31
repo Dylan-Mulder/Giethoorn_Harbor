@@ -7,7 +7,7 @@ import { TrafficPlanning } from "../../entities/traffic-planning.entity";
 const datasource = new DataSource({
   type: "postgres",
   host: process.env.POSTGRES_HOST,
-  port: 5432,
+  port: parseInt(process.env.POSTGRES_PORT),
   username: 'gh_refilling',
   password: 'jw8s0F4',
   database: process.env.POSTGRES_DATABASE,
