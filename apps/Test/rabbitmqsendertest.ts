@@ -8,41 +8,75 @@ amqp.connect('amqp://user:password@localhost:5672', (error, connection) => {
   connection.createChannel((error, channel) => {
     if (error) throw error;
 
-    const exchangeName = 'ship-has-been-cleared';
-    const routingKey = 'event.ship-has-been-cleared';
+    const exchangeName = 'dock-created';
+    const routingKey = 'event.dock-created';
+    // const exchangeName = 'lease-agreement-created';
+    // const routingKey = 'event.lease-agreement-created';
+    // const exchangeName = 'shipping-company-created';
+    // const routingKey = 'event.shipping-company-created';
 
     channel.assertExchange(exchangeName, 'topic', { durable: false });
 
-     const jsonData = {
+    //  const jsonData = {
+    //   "data": {
+    //     "ship": [
+    //       { "id": 1, "name": "Ship 1", "hasBeenCleared": true },
+    //     ],
+    //     "refillServiceData": [
+    //       {
+    //         "id": 1,
+    //         "trafficPlanning": {},
+    //         "ship": { "id": 1, "name": "Ship 1" },
+    //         "needsRefuelling": true,
+    //         "needsRecharging": false
+    //       }
+    //     ],
+    //     "trafficPlanningData":[
+    //       {
+    //         "id":1,
+    //         "dockName":"dock 2",
+    //         "arrival": "2023-05-31T12:00:00Z",
+    //         "departure": "2023-05-31T20:00:00Z"
+    //       }
+    //     ]
+    //   }
+    // };
+
+    const jsonData = {
       "data": {
-        "ship": [
-          { "id": 1, "name": "Ship 1", "hasBeenCleared": true },
+        "dock": [
+          { 
+            "id": 1, 
+            "name": "Dock Erwin 1", 
+            "created_at": "02-25-1999" },
         ],
-        "refillServiceData": [
+        "leaseAgreement": [
           {
             "id": 1,
-            "trafficPlanning": {},
-            "ship": { "id": 1, "name": "Ship 1" },
-            "needsRefuelling": true,
-            "needsRecharging": false
+            "dock_id": 1,
+            "shipping_company_id": 1,
+            "price": 1000,
+            "reference": "Erwin",
+            "sign_date":"02-25-1999",
+            "valid_until":"02-25-1999"
           }
         ],
-        "trafficPlanningData":[
+        "shippingCompany":[
           {
-            "id":1,
-            "dockName":"dock 2",
-            "arrival": "2023-05-31T12:00:00Z",
-            "departure": "2023-05-31T20:00:00Z"
+            "country":"India",
+            "name":"Niek Roos B.V.",
+            "reference":"Niek"
           }
         ]
       }
     };
 
+
     const message = JSON.stringify(jsonData);
     
     channel.publish(exchangeName, routingKey, Buffer.from(message));
 
-    console.log('Event published:', message);
+    console.log('Event published:',exchangeName,routingKey, message);
 
     setTimeout(() => {
       connection.close();

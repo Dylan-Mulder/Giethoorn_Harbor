@@ -6,6 +6,7 @@ import { DockDTO } from './dto/dock.dto';
 import { CreateDockDTO } from './dto/create-dock.dto';
 import { Dock } from './entities/dock.entity';
 import { ConfigService } from '@nestjs/config';
+import amqp from 'amqp-connection-manager';
 
 
 @Injectable()

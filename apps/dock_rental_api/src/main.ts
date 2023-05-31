@@ -9,6 +9,7 @@ import { DockController } from './modules/dock/dock.controller';
 import { LeaseAgreementController } from './modules/lease-agreement/lease-agreement.controller';
 import { ShippingCompanyController } from './modules/shipping-company/shipping-company.controller';
 import { DockRentalController } from './microservice_dock_rental/dock_rental.controller';
+import * as amqp from 'amqplib';
 
 async function bootstrapAPI() {
   const appOptions = { cors: true };
@@ -57,17 +58,12 @@ async function bootstrapDockRental() {
     {
       exchange: 'lease-agreement-created',
       routingKeyPattern: 'event.lease-agreement-created',
-      methodToCall: dockRentalController.handleDockCreated
+      methodToCall: dockRentalController.handleLeaseAgreementCreated
     },
     {
-      exchange: 'lease-has-started',
-      routingKeyPattern: 'event.lease-has-started',
-      methodToCall: dockRentalController.handleDockCreated
-    },
-    {
-      exchange: 'lease-has-expired',
-      routingKeyPattern: 'event.lease-has-expired',
-      methodToCall: dockRentalController.handleDockCreated
+      exchange: 'shipping-company-created',
+      routingKeyPattern: 'event.shipping-company-created',
+      methodToCall: dockRentalController.handleShippingCompanyCreated
     },
   ]
 

@@ -34,7 +34,26 @@ export class DockRentalController {
       const leaseAgreementData = jsonData.data.leaseAgreement;
       const shippingCompanyData = jsonData.data.shippingCompany; 
 
-      await this.dockRentalService.createLeaseAgreement(dockData,leaseAgreementData,shippingCompanyData);
+      await this.dockRentalService.createLeaseAgreement(leaseAgreementData);
+      context.getChannelRef().ack(context.getMessage()); // Acknowledge the message
+    } catch (error) {
+      console.error(error);
+    }
+  }
+
+  //DE-D-02	ShippingCompanyHasBeenCreated	A new Lease agreement has been created.
+  @MessagePattern({ exchange: 'shipping-company-created', routingKey: 'event.shipping-company-created' })
+  async handleShippingCompanyCreated(
+    @Payload() content: string,
+    @Ctx() context: RmqContext, // Context to acknowledge the message
+  ): Promise<void> {
+    try {
+      const jsonData = JSON.parse(content);
+      const dockData = jsonData.data.dock;
+      const leaseAgreementData = jsonData.data.leaseAgreement;
+      const shippingCompanyData = jsonData.data.shippingCompany; 
+
+      await this.dockRentalService.createShippingCompany(shippingCompanyData);
       context.getChannelRef().ack(context.getMessage()); // Acknowledge the message
     } catch (error) {
       console.error(error);

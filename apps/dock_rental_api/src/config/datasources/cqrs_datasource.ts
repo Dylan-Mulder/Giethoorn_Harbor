@@ -1,6 +1,8 @@
 import "reflect-metadata";
 import { DataSource } from "typeorm";
-import { GHEvent } from "./gh-event";
+import { Dock } from "../../modules/dock/entities/dock.entity";
+import { LeaseAgreement } from "../../modules/lease-agreement/entities/lease-agreement.entity";
+import { ShippingCompany } from "../../modules/shipping-company/entity/shipping-company.entity";
 
 const datasource = new DataSource({
   type: "postgres",
@@ -11,7 +13,7 @@ const datasource = new DataSource({
   database: process.env.POSTGRES_DATABASE,
   synchronize: false,
   logging: false,
-  entities: [GHEvent],
+  entities: [Dock, LeaseAgreement, ShippingCompany],
   migrations: [],
   subscribers: [],
 });

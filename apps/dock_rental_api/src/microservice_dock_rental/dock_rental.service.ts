@@ -36,14 +36,36 @@ export class DockRentalService {
 
   //EP-DR-01 Dock has been created
   async createDock(dockData:any): Promise<void>{
-  //Naar CQRS-READ-DB
+    const dock = new Dock();
+    dock.name = dockData[0].name;
+    await this.dockRepo.save(dock);
+    console.log("Dock created at read database.");
   }
 
   //EP-DR-02 Lease Agreement has been created
-  async createLeaseAgreement(dockData:any, leaseAgreementData: any, shippingCompanyData: any): Promise<void>{
-    //Naar CQRS-READ-DB
+  async createLeaseAgreement(leaseAgreementData: any): Promise<void>{
+    const leaseAgreement = new LeaseAgreement();
+    leaseAgreement.dock_id= leaseAgreementData[0].dock_id;
+    leaseAgreement.shipping_company_id= leaseAgreementData[0].shipping_company_id;
+    leaseAgreement.price=leaseAgreementData[0].price;
+    leaseAgreement.reference=leaseAgreementData[0].reference;
+    leaseAgreement.sign_date=new Date(leaseAgreementData[0].sign_date);
+    leaseAgreement.valid_until=new Date(leaseAgreementData[0].valid_until);
+
+    await this.leaseAgreementRepo.save(leaseAgreement);
+    console.log("Lease Agreement created at read database.");
   }
 
+  //EP-DR-02 Shipping Company has been created
+  async createShippingCompany(leaseAgreementData: any): Promise<void>{
+    const shippingCompany = new ShippingCompany();
+    shippingCompany.country=leaseAgreementData[0].country;
+    shippingCompany.name=leaseAgreementData[0].name;
+    shippingCompany.reference=leaseAgreementData[0].reference;
+
+    await this.shippingCompanyRepo.save(shippingCompany);
+    console.log("Shipping company created at read database.");
+}
   async sendToQueue(exchangeName: string, routingKey: string, message: string){
     const connection = await amqp.connect(`amqp://${this.USER}:${this.PASSWORD}@${this.HOST}`);
     const channel = await connection.createChannel();
