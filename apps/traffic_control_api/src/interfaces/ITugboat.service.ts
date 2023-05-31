@@ -6,6 +6,6 @@ export abstract class ITugboatService {
   abstract createTugboat(dto: CreateTugboatDTO): Promise<Tugboat>;
   abstract getTugboatById(id: number): Promise<Tugboat>;
   abstract getAllTugboats(): Promise<Array<Tugboat>>;
-  abstract updateTugboatById(id: number, dto: CreateTugboatDTO): Promise<UpdateResult>;
-  abstract deleteTugboatById(id: number): Promise<DeleteResult>;
+  abstract updateTugboatById(id: number, dto: CreateTugboatDTO): Promise<Tugboat>;
+  abstract deleteTugboatById(id: number): Promise<Tugboat>;
 }

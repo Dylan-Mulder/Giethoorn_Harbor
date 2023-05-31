@@ -3,10 +3,13 @@ import { DockRentalController } from './dock_rental.controller';
 import { DockRentalService } from './dock_rental.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import configuration from './config/configuration';
-import { LeaseAgreement } from './entities/lease-agreement.entity';
-import { ShippingCompany } from './entities/shipping-company.entity';
-import { Dock } from './entities/dock.entity';
+import configuration from '../config/configuration';
+import { Dock } from '../modules/dock/entities/dock.entity';
+import { LeaseAgreement } from '../modules/lease-agreement/entities/lease-agreement.entity';
+import { ShippingCompany } from '../modules/shipping-company/entity/shipping-company.entity';
+import { LeaseAgreementModule } from '../modules/lease-agreement/lease-agreement.module';
+import { DockModule } from '../modules/dock/dock.module';
+import { ShippingCompanyModule } from '../modules/shipping-company/shipping-company.module';
 
 @Module({
   imports: [
@@ -28,7 +31,10 @@ import { Dock } from './entities/dock.entity';
         synchronize: false,
         migrationsRun: false
       }),
-    })
+    }),
+    LeaseAgreementModule,
+    DockModule,
+    ShippingCompanyModule
   ],
   controllers: [DockRentalController],
   providers: [DockRentalService],

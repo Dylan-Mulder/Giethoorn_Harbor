@@ -1,11 +1,11 @@
-import "reflect-metadata";
-import { DataSource } from "typeorm";
-import { Service } from "../../entities/service.entity";
-import { Ship } from "../../entities/ship.entity";
-import { TrafficPlanning } from "../../entities/traffic-planning.entity";
+import 'reflect-metadata';
+import { DataSource } from 'typeorm';
+import { Service } from '../../entities/service.entity';
+import { Ship } from '../../entities/ship.entity';
+import { TrafficPlanning } from '../../entities/traffic-planning.entity';
 
 const datasource = new DataSource({
-  type: "postgres",
+  type: 'postgres',
   host: process.env.POSTGRES_HOST,
   port: parseInt(process.env.POSTGRES_PORT),
   username: 'gh_refilling',
@@ -18,9 +18,10 @@ const datasource = new DataSource({
   subscribers: [],
 });
 
-datasource.initialize()
+datasource
+  .initialize()
   .then(async () => {
-    console.log("Connection initialized with database...");
+    console.log('Connection initialized with database...');
   })
   .catch((error) => console.log(error));
 
@@ -30,7 +31,7 @@ export const getRelationalDataSource = (delay = 3000): Promise<DataSource> => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (datasource.isInitialized) resolve(datasource);
-      else reject("Failed to create connection with database");
+      else reject('Failed to create connection with database');
     }, delay);
   });
 };
