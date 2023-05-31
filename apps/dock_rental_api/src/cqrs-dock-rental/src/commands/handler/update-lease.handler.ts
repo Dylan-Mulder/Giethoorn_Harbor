@@ -5,7 +5,7 @@ import { UpdateLeaseAgreementCommand } from "../impl/update-lease-agreement.comm
 import { LeaseAgreement } from "../../entities/lease-agreement.entity";
 
 @CommandHandler(UpdateLeaseAgreementCommand)
-export class UpdateDrinkHandler implements ICommandHandler<UpdateLeaseAgreementCommand> {
+export class UpdateLeaseHandler implements ICommandHandler<UpdateLeaseAgreementCommand> {
   constructor(@InjectRepository(LeaseAgreement) private repo: Repository<LeaseAgreement>) { }
 
   async execute(command: UpdateLeaseAgreementCommand): Promise<any> {
