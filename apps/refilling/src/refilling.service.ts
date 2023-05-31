@@ -77,19 +77,25 @@ export class RefillingService {
   //EP-R-02	ShipHasDocked:	Notify internal systems of arrived ship, perform relevant refilling activity.
   async notifyShipHasDocked(
     shipData: any,
-    refillServiceData: any,
-  ): Promise<any> {
+  ) {
     //Mock communications
     console.log(
       'Refilling - Ship has docked! Refilling team has been notified.',
     );
+      let refillServiceData2: any;
+      refillServiceData2= await this.serviceRepo.findOneBy({
+        ship_id:shipData.id
+      });
+      console.log(JSON.stringify(refillServiceData2))
+      let refillServiceData3 = JSON.stringify(refillServiceData2);
+      let refillServiceData=JSON.parse(refillServiceData3);
 
     //Refilling team sees a notif and sets out to work:
-    console.log(refillServiceData, shipData);
-    if (refillServiceData[0].needsRefuelling == true) {
+    
+    if (refillServiceData.needs_refuelling == true) {
       this.refuelShip(shipData, refillServiceData);
     }
-    if (refillServiceData[0].needsRecharging == true) {
+    if (refillServiceData.needs_recharging == true) {
       this.rechargeShip(shipData, refillServiceData);
     }
   }
@@ -108,8 +114,8 @@ export class RefillingService {
     }
     console.log('Refilling - Ship has been refilled!');
     const jsonShipData = JSON.parse(JSON.stringify(shipData));
-    const updatedRefillingServiceData = JSON.parse(JSON.stringify(refillingServiceData[0]))
-    updatedRefillingServiceData.needsRefuelling=false;
+    const updatedRefillingServiceData = JSON.parse(JSON.stringify(refillingServiceData))
+    updatedRefillingServiceData.needs_refuelling=false;
 
     const messageToSend = this.stringMessageBuilder(
       jsonShipData,
@@ -118,7 +124,7 @@ export class RefillingService {
     );
 
     //Update DB
-    const shipId = JSON.parse(shipData[0].id);
+    const shipId = shipData.id;
     const serviceToUpdate = await this.serviceRepo.findOneBy({
       ship_id:shipId
     })
@@ -155,14 +161,14 @@ export class RefillingService {
     const jsonRefillingServiceData = JSON.parse(
       JSON.stringify(refillingServiceData),
     );
-    jsonRefillingServiceData[0].needsRecharging = false;
+    jsonRefillingServiceData.needs_recharging = false;
     const messageToSend = this.stringMessageBuilder(
       jsonShipData,
       jsonRefillingServiceData,
       null,
     );
     //Update DB
-    const shipId = JSON.parse(shipData[0].id);
+    const shipId = shipData.id;
     const serviceToUpdate = await this.serviceRepo.findOneBy({
       ship_id:shipId
     })
@@ -206,8 +212,8 @@ export class RefillingService {
     const service = new Service();
     service.traffic_planning_id = refillingServiceData.traffic_planning_id;
     service.ship_id=refillingServiceData.ship_id;
-    service.needs_recharging=refillingServiceData.needsRecharging;
-    service.needs_refuelling=refillingServiceData.needsRefuelling;
+    service.needs_recharging=refillingServiceData.needs_recharging;
+    service.needs_refuelling=refillingServiceData.needs_refuelling;
 
     let serviceToUpdate = await this.serviceRepo.findOneBy(
       {

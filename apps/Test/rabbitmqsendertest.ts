@@ -22,7 +22,7 @@ amqp.connect('amqp://user:password@localhost:5672', (error, connection) => {
 
      const jsonData = {
       "data": {
-        "ship": [
+        "ship": 
           { 
             "name": "Demo Maersk",
             "shipping_company_name": "Avans",
@@ -34,8 +34,8 @@ amqp.connect('amqp://user:password@localhost:5672', (error, connection) => {
             "stream_id": "2f41b667-ac9a-4808-ae41-ebc64d9ae65f",
             "created_at": "2023-05-31T21:13:27.911Z"
           },
-        ],
-        "refillService": [
+        
+        "refillService": 
           {
             "id": 1,
             "traffic_planning_id": 1,
@@ -44,15 +44,15 @@ amqp.connect('amqp://user:password@localhost:5672', (error, connection) => {
             "needsRefuelling": true,
             "needsRecharging": false
           }
-        ],
-        "trafficPlanning":[
+        ,
+        "trafficPlanning":
           {
             "id":1,
             "dockName":"dock 2",
             "arrival": "2023-05-31T12:00:00Z",
             "departure": "2023-05-31T20:00:00Z"
           }
-        ]
+        
       }
     };
 

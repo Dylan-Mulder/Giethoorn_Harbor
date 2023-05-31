@@ -19,8 +19,8 @@ export class ShipService implements IShipService {
 
   public async createShip(dto: any): Promise<any> {
     const ship = this.repo.create(dto.data.ship);
-    const returnedObject = await this.repo.save(dto.data);
-    await this.sendToQueue('ship-registered', 'event.ship-registered', JSON.stringify(returnedObject));
+    const returnedObject = await this.repo.save(dto.data.ship);
+    await this.sendToQueue('ship-registered', 'event.ship-registered', JSON.stringify(dto));
     return ship;
   }
 

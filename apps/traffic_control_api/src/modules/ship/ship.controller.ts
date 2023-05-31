@@ -17,7 +17,7 @@ export class ShipController {
 
   @Post()
   @UseFilters(new HttpExceptionFilter())
-  public async createShip(@Body() createShipDTO: CreateShipDTO): Promise<Ship> {
+  public async createShip(@Body() createShipDTO: any): Promise<Ship> {
     return await this.shipService.createShip(createShipDTO);
   }
 

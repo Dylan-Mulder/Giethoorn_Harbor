@@ -15,6 +15,7 @@ export class RefillingController {
   ): Promise<void> {
     try {
       const jsonData = JSON.parse(content);
+      console.log(JSON.stringify(jsonData))
       const shipData = jsonData.data.ship;
       const trafficPlanningData = jsonData.data.trafficPlanning
       const refillServiceData = jsonData.data.refillService;
@@ -34,10 +35,9 @@ export class RefillingController {
     try {
       
       const jsonData = JSON.parse(content);
-      const shipData = jsonData.data.ship;
-      const refillServiceData = jsonData.data.refillService;
+      const shipData = jsonData;
       
-      await this.refillingService.notifyShipHasDocked(shipData, refillServiceData);
+      await this.refillingService.notifyShipHasDocked(shipData);
       context.getChannelRef().ack(context.getMessage());
     } catch (error) {
       console.error(error);

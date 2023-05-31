@@ -14,7 +14,8 @@ export class DockRentalController {
   ): Promise<void> {
     try {
       const jsonData = JSON.parse(content);
-      const dockData = jsonData.data.dock;
+      console.log(JSON.stringify(jsonData));
+      const dockData = jsonData;
 
       await this.dockRentalService.createDock(dockData);
       context.getChannelRef().ack(context.getMessage()); // Acknowledge the message
@@ -31,9 +32,7 @@ export class DockRentalController {
   ): Promise<void> {
     try {
       const jsonData = JSON.parse(content);
-      const dockData = jsonData.data.dock;
-      const leaseAgreementData = jsonData.data.leaseAgreement;
-      const shippingCompanyData = jsonData.data.shippingCompany;
+      const leaseAgreementData = jsonData;
 
       await this.dockRentalService.createLeaseAgreement(leaseAgreementData);
       context.getChannelRef().ack(context.getMessage()); // Acknowledge the message
@@ -50,7 +49,7 @@ export class DockRentalController {
   ): Promise<void> {
     try {
       const jsonData = JSON.parse(content);
-      const shippingCompanyData = jsonData.data.shippingCompany;
+      const shippingCompanyData = jsonData;
 
       await this.dockRentalService.createShippingCompany(shippingCompanyData);
       context.getChannelRef().ack(context.getMessage()); // Acknowledge the message
