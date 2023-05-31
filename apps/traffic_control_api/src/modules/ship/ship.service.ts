@@ -24,11 +24,14 @@ export class ShipService implements IShipService {
     return await this.repo.find().then((docks: Array<Ship>) => docks.map(d => ShipDTO.fromEntity(d)));
   }
 
-  public async updateShipById(id: number, updateShip: CreateShipDTO): Promise<UpdateResult> {
-    return await this.repo.update(id, updateShip)
+  public async updateShipById(id: number, updateShip: CreateShipDTO): Promise<Ship> {
+    await this.repo.update(id, updateShip)
+    return await this.getShipById(id);
   }
 
-  public async deleteShipById(id: number): Promise<DeleteResult> {
-    return await this.repo.delete(id)
+  public async deleteShipById(id: number): Promise<Ship> {
+    const obj = await this.getShipById(id);
+    await this.repo.delete(id)
+    return obj;
   }
 }

@@ -15,10 +15,4 @@ import { ShippingCompany } from './entity/shipping-company.entity';
   ],
   controllers: [ShippingCompanyController]
 })
-export class ShippingCompanyModule {
-  // public configure(consumer: MiddlewareConsumer) {
-  //   consumer
-  //     .apply(AuthMiddleware)
-  //     .forRoutes({ path: 'dock', method: RequestMethod.GET }, { path: 'dock', method: RequestMethod.PUT });
-  // }
-}
+export class ShippingCompanyModule { }

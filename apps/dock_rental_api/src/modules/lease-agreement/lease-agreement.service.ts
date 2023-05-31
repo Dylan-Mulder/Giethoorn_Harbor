@@ -27,13 +27,16 @@ export class LeaseAgreementService implements ILeaseAgreementService {
     return await this.repo.save(result);
   }
 
-  public async updateLeaseAgreementById(id: number, updateLeaseAgreement: CreateLeaseAgreementDTO): Promise<UpdateResult> {
+  public async updateLeaseAgreementById(id: number, updateLeaseAgreement: CreateLeaseAgreementDTO): Promise<LeaseAgreement> {
     updateLeaseAgreement.sign_date = new Date(updateLeaseAgreement.sign_date);
     updateLeaseAgreement.valid_until = new Date(updateLeaseAgreement.valid_until);
-    return await this.repo.update(id, updateLeaseAgreement)
+    await this.repo.update(id, updateLeaseAgreement)
+    return await this.getLeaseAgreementById(id);
   }
 
-  public async deleteLeaseAgreementById(id: number): Promise<DeleteResult> {
-    return await this.repo.delete(id)
+  public async deleteLeaseAgreementById(id: number): Promise<LeaseAgreement> {
+    const obj = await this.getLeaseAgreementById(id);
+    await this.repo.delete(id)
+    return obj;
   }
 }

@@ -24,11 +24,14 @@ export class DockService implements IDockService {
     return await this.repo.find().then((docks: Array<Dock>) => docks.map(d => DockDTO.fromEntity(d)));
   }
 
-  public async updateDockById(id: number, updateDock: CreateDockDTO): Promise<UpdateResult> {
-    return await this.repo.update(id, updateDock)
+  public async updateDockById(id: number, updateDock: CreateDockDTO): Promise<Dock> {
+    await this.repo.update(id, updateDock)
+    return await this.getDockById(id)
   }
 
-  public async deleteDockById(id: number): Promise<DeleteResult> {
-    return await this.repo.delete(id)
+  public async deleteDockById(id: number): Promise<Dock> {
+    const obj = await this.getDockById(id);
+    await this.repo.delete(id)
+    return obj;
   }
 }
