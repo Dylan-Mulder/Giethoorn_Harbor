@@ -1,9 +1,16 @@
-import { Controller, Get, Param, Post, Body, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Delete, Put, UseInterceptors } from '@nestjs/common';
 import { IShipService } from '../../interfaces/IShip.service';
 import { Ship } from './entities/ship.entity';
 import { CreateShipDTO } from './dto/create-ship.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { ExceptionInterceptor } from '../../interceptors/exception.interceptor';
+import { LoggingInterceptor } from '../../interceptors/logging.interceptor';
+import { TimeoutInterceptor } from '../../interceptors/timeout.interceptor';
+import { TransformationInterceptor } from '../../interceptors/transform.interceptor';
 
 @Controller('ships')
+@ApiTags('ships')
+@UseInterceptors(LoggingInterceptor, TransformationInterceptor, ExceptionInterceptor, TimeoutInterceptor)
 export class ShipController {
   constructor(private readonly shipService: IShipService) { }
 

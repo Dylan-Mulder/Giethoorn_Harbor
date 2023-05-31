@@ -1,10 +1,17 @@
-import { Controller, Get, Param, Post, Body, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Delete, Put, UseInterceptors } from '@nestjs/common';
 import { ITrafficPlanningService } from '../../interfaces/ITrafficPlanning.service';
 import { TrafficPlanning } from './entities/traffic-planning.entity';
 import { CreateTrafficPlanningDTO } from './dto/create-traffic-planning.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { ExceptionInterceptor } from '../../interceptors/exception.interceptor';
+import { LoggingInterceptor } from '../../interceptors/logging.interceptor';
+import { TimeoutInterceptor } from '../../interceptors/timeout.interceptor';
+import { TransformationInterceptor } from '../../interceptors/transform.interceptor';
 
 
 @Controller('traffic-plannings')
+@ApiTags('traffic-plannings')
+@UseInterceptors(LoggingInterceptor, TransformationInterceptor, ExceptionInterceptor, TimeoutInterceptor)
 export class TrafficPlanningController {
   constructor(private readonly trafficPlanningService: ITrafficPlanningService) { }
 

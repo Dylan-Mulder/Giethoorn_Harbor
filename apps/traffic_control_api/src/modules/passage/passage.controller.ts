@@ -1,9 +1,16 @@
-import { Controller, Post, Get, Param, Put, Body, Delete } from "@nestjs/common";
+import { Controller, Post, Get, Param, Put, Body, Delete, UseInterceptors } from "@nestjs/common";
 import { IPassageService } from "../../interfaces/IPassage.service";
 import { CreatePassageDTO } from "./dto/create-passage.dto";
 import { Passage } from "./entities/passage.entity";
+import { ApiTags } from "@nestjs/swagger";
+import { ExceptionInterceptor } from "../../interceptors/exception.interceptor";
+import { LoggingInterceptor } from "../../interceptors/logging.interceptor";
+import { TimeoutInterceptor } from "../../interceptors/timeout.interceptor";
+import { TransformationInterceptor } from "../../interceptors/transform.interceptor";
 
 @Controller('passages')
+@ApiTags('passages')
+@UseInterceptors(LoggingInterceptor, TransformationInterceptor, ExceptionInterceptor, TimeoutInterceptor)
 export class PassageController {
   constructor(private readonly passageService: IPassageService) { }
 

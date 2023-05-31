@@ -1,10 +1,17 @@
-import { Controller, Get, Param, Post, Body, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Delete, Put, UseInterceptors } from '@nestjs/common';
 import { ShippingCompany } from './entity/shipping-company.entity';
 import { IShipCompanyService } from '../../interfaces/IShipCompany.service';
 import { CreateShippingCompanyDTO } from './dto/create-shipping-company.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { LoggingInterceptor } from '../../interceptors/logging.interceptor';
+import { TransformationInterceptor } from '../../interceptors/transform.interceptor';
+import { ExceptionInterceptor } from '../../interceptors/exception.interceptor';
+import { TimeoutInterceptor } from '../../interceptors/timeout.interceptor';
 
 
 @Controller('shipping-companies')
+@ApiTags('shipping-companies')
+@UseInterceptors(LoggingInterceptor, TransformationInterceptor, ExceptionInterceptor, TimeoutInterceptor)
 export class ShippingCompanyController {
   constructor(private readonly shippingCompanyService: IShipCompanyService) { }
 

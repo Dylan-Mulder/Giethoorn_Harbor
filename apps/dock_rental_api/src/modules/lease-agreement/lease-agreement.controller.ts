@@ -1,9 +1,16 @@
-import { Controller, Get, Param, Post, Body, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Delete, Put, UseInterceptors } from '@nestjs/common';
 import { ILeaseAgreementService } from '../../interfaces/ILeaseAgreement.service';
 import { LeaseAgreement } from './entities/lease-agreement.entity';
 import { CreateLeaseAgreementDTO } from './dto/create-lease-agreement.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { LoggingInterceptor } from '../../interceptors/logging.interceptor';
+import { TransformationInterceptor } from '../../interceptors/transform.interceptor';
+import { ExceptionInterceptor } from '../../interceptors/exception.interceptor';
+import { TimeoutInterceptor } from '../../interceptors/timeout.interceptor';
 
 @Controller('lease-agreements')
+@ApiTags('lease-agreements')
+@UseInterceptors(LoggingInterceptor, TransformationInterceptor, ExceptionInterceptor, TimeoutInterceptor)
 export class LeaseAgreementController {
   constructor(private readonly leaseAgreementService: ILeaseAgreementService) { }
 

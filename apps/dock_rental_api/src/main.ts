@@ -10,10 +10,12 @@ import { LeaseAgreementController } from './modules/lease-agreement/lease-agreem
 import { ShippingCompanyController } from './modules/shipping-company/shipping-company.controller';
 import { DockRentalController } from './microservice_dock_rental/dock_rental.controller';
 import * as amqp from 'amqplib';
+import { LoggingInterceptor } from './interceptors/logging.interceptor';
 
 async function bootstrapAPI() {
   const appOptions = { cors: true };
   const app = await NestFactory.create(AppModule, appOptions);
+  app.useGlobalInterceptors(new LoggingInterceptor())
   app.setGlobalPrefix('api');
   app.useGlobalPipes(
     new ValidationPipe({
@@ -46,7 +48,7 @@ async function bootstrapDockRental() {
   const QUEUE = configService.get('RABBITMQ_DOCK_RENTAL_QUEUE');
   const dockController = app.get(DockController);
   const leaseAgreementController = app.get(LeaseAgreementController);
-  const shippingCompanyController= app.get(ShippingCompanyController);
+  const shippingCompanyController = app.get(ShippingCompanyController);
   const dockRentalController = app.get(DockRentalController);
   const consumerConfigs = [
     {
@@ -67,28 +69,29 @@ async function bootstrapDockRental() {
   ]
 
   for (const consumerConfig of consumerConfigs) {
-    const { exchange, routingKeyPattern, methodToCall} = consumerConfig;
+    const { exchange, routingKeyPattern, methodToCall } = consumerConfig;
     const connection = await amqp.connect(`amqp://${USER}:${PASSWORD}@${HOST}`);
     const channel = await connection.createChannel();
     await channel.assertExchange(exchange, 'topic', { durable: false });
-    await channel.assertQueue("rf-c-"+exchange, { durable: true });
-    await channel.bindQueue("rf-c-"+exchange, exchange, routingKeyPattern);
+    await channel.assertQueue("rf-c-" + exchange, { durable: true });
+    await channel.bindQueue("rf-c-" + exchange, exchange, routingKeyPattern);
 
-    console.log("Consumer listening on: "+exchange);
+    console.log("Consumer listening on: " + exchange);
     await channel.consume(
-        "rf-c-"+exchange,
-            async (message) => {
-              if (message !== null) {
-                const content = message.content.toString();
-                console.log(JSON.stringify(JSON.parse(message.content)));
-                console.log('Consumer received event');
-                // Process the event:
-                const rmqContext = new RmqContext([message, channel, null]);
-                await methodToCall.call(dockRentalController, content, rmqContext);
-              }
-            },
-      );
+      "rf-c-" + exchange,
+      async (message) => {
+        if (message !== null) {
+          const content = message.content.toString();
+          console.log(JSON.stringify(JSON.parse(message.content)));
+          console.log('Consumer received event');
+          // Process the event:
+          const rmqContext = new RmqContext([message, channel, null]);
+          await methodToCall.call(dockRentalController, content, rmqContext);
+        }
+      },
+    );
   }
+  app.useGlobalInterceptors(new LoggingInterceptor())
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.RMQ,
     options: {

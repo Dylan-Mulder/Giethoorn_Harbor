@@ -1,9 +1,16 @@
-import { Controller, Get, Param, Post, Body, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Delete, Put, UseInterceptors } from '@nestjs/common';
 import { ITruckService } from '../../interfaces/ITruck.service';
 import { Truck } from './entities/truck.entity';
 import { CreateTruckDTO } from './dto/create-truck.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { ExceptionInterceptor } from '../../interceptors/exception.interceptor';
+import { LoggingInterceptor } from '../../interceptors/logging.interceptor';
+import { TimeoutInterceptor } from '../../interceptors/timeout.interceptor';
+import { TransformationInterceptor } from '../../interceptors/transform.interceptor';
 
 @Controller('trucks')
+@ApiTags('trucks')
+@UseInterceptors(LoggingInterceptor, TransformationInterceptor, ExceptionInterceptor, TimeoutInterceptor)
 export class TruckController {
   constructor(private readonly truckService: ITruckService) { }
 

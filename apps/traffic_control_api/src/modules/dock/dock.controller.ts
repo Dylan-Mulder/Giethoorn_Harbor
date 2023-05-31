@@ -1,9 +1,16 @@
-import { Controller, Get, Param, Post, Body, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Delete, Put, UseInterceptors } from '@nestjs/common';
 import { IDockService } from '../../interfaces/IDock.service';
 import { Dock } from './entities/dock.entity';
 import { CreateDockDTO } from './dto/create-dock.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { ExceptionInterceptor } from '../../interceptors/exception.interceptor';
+import { LoggingInterceptor } from '../../interceptors/logging.interceptor';
+import { TimeoutInterceptor } from '../../interceptors/timeout.interceptor';
+import { TransformationInterceptor } from '../../interceptors/transform.interceptor';
 
 @Controller('docks')
+@ApiTags('docks')
+@UseInterceptors(LoggingInterceptor, TransformationInterceptor, ExceptionInterceptor, TimeoutInterceptor)
 export class DockController {
   constructor(private readonly dockService: IDockService) { }
 

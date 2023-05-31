@@ -1,9 +1,16 @@
-import { Controller, Get, Param, Post, Body, Delete, Put } from '@nestjs/common';
+import { Controller, Get, Param, Post, Body, Delete, Put, UseInterceptors } from '@nestjs/common';
 import { ITugboatService } from '../../interfaces/ITugboat.service';
 import { Tugboat } from './entities/tugboat.entity';
 import { CreateTugboatDTO } from './dto/create-tugboat.dto';
+import { ApiTags } from '@nestjs/swagger';
+import { ExceptionInterceptor } from '../../interceptors/exception.interceptor';
+import { LoggingInterceptor } from '../../interceptors/logging.interceptor';
+import { TimeoutInterceptor } from '../../interceptors/timeout.interceptor';
+import { TransformationInterceptor } from '../../interceptors/transform.interceptor';
 
 @Controller('tugboats')
+@ApiTags('tugboats')
+@UseInterceptors(LoggingInterceptor, TransformationInterceptor, ExceptionInterceptor, TimeoutInterceptor)
 export class TugboatController {
   constructor(private readonly tugboatService: ITugboatService) { }
 
