@@ -50,50 +50,80 @@ export class TrafficControlService {
   //EP-T-01	ShipHasBeenCleared Update planning to include cleared state of ship.
   async updateShipCleared(ship: any){
     console.log("Traffic Control - Ship has been cleared!")
-    //TODO: ja verbinden met die db om die ship up te daten.
-    //^Returns updated Ship with uuid
+    let uuid;
+  
+    await this.shipRepo.save(ship)
+    .then(ship => {uuid = ship.stream_id});
+
+    this.addToEventStore(uuid,'ship-has-been-cleared', JSON.stringify(ship))
   }
 
   //EP-T-02	ShipHasBeenDenied	Update planning to include denied state of ship.
   async updateShipDenied(ship: any){
     console.log("Traffic Control - Ship's status has been updated!")
-    //TODO: ja verbinden met die db om die ship up te daten.
-    //^Returns updated Ship with uuid
+    let uuid;
+  
+    await this.shipRepo.save(ship)
+    .then(ship => {uuid = ship.stream_id});
+
+    this.addToEventStore(uuid,'ship-has-been-denied', JSON.stringify(ship))
   }
 
   //EP-T-03	TruckHasBeenCleared Update planning to include cleared state of Truck.
   async updateTruckCleared(truck: any){
     console.log("Traffic Control - Truck's status has been updated!")
-    //TODO: ja verbinden met die db om die Truck up te daten.
-    //^Returns updated Truck with uuid
+    let uuid;
+  
+    await truck.this.truckRepo.save(truck)
+    .then(truck => {uuid = truck.stream_id});
+
+    this.addToEventStore(uuid,'truck-has-been-cleared', JSON.stringify(truck))
   }
 
   //EP-T-04	TruckHasBeenDenied	Update planning to include denied state of Truck.
   async updateTruckDenied(truck: any){
     console.log("Traffic Control - Truck's status has been updated!")
-    //TODO: ja verbinden met die db om die Truck up te daten.
-    //^Returns updated Truck with uuid
+    let uuid;
+  
+    await truck.this.truckRepo.save(truck)
+    .then(truck => {uuid = truck.stream_id});
+
+    this.addToEventStore(uuid,'truck-has-been-denied', JSON.stringify(truck))
   }
 
   //EP-T-05	DE-C-01	ShipHasBeenUnloaded	Update planning to change ship state.
   async updateShipUnloaded(ship: any){
     console.log("Traffic Control - Ship's status has been updated!")
-    //TODO: ja verbinden met die db om die ship up te daten.
-    //^Returns updated Ship with uuid
+    let uuid;
+  
+    await this.shipRepo.save(ship)
+    .then(ship => {uuid = ship.stream_id});
+
+    this.addToEventStore(uuid,'ship-has-been-unloaded', JSON.stringify(ship))
   }
 
   //EP-T-06	DE-C-02	ShipHasBeenLoaded	Update planning to change ship state.
   async updateShipLoaded(ship: any){
     console.log("Traffic Control - Ship's status has been updated!")
-    //TODO: ja verbinden met die db om die ship up te daten.
-    //^Returns updated Ship with uuid
+    let uuid;
+  
+    await this.shipRepo.save(ship)
+    .then(ship => {uuid = ship.stream_id});
+
+    this.addToEventStore(uuid,'ship-has-been-loaded', JSON.stringify(ship))
   }
 
   //EP-T-07	LeaseHasStarted	Update internal dock state to allow ships from company.
   async assignDock(dock: any, companyName: any){
     console.log("Traffic Control - Dock has been assigned!");
-    //TODO: ja verbinden met die db om die Dock up te daten
-    //^Returns updated Dock
+    let uuid;
+
+    dock.companyName = companyName;
+  
+    await this.dockRepo.save(dock)
+    .then(dock => {uuid = dock.stream_id});
+
+    this.addToEventStore(uuid,'lease-has-started', JSON.stringify(dock))
   }
   
 
@@ -101,22 +131,11 @@ export class TrafficControlService {
   async unassignDock(dock: any){
     console.log("Traffic Control - Dock has been unassigned!");
     let uuid;
-      
-
-
-    // const photoRepository = AppDataSource.getRepository(Photo)
-    // const photoToUpdate = await photoRepository.findOneBy({
-    //     id: 1,
-    // })
-    // photoToUpdate.name = "Me, my friends and polar bears"
-    // await photoRepository.save(photoToUpdate)
-
-
+  
     await this.dockRepo.save(dock)
     .then(dock => {uuid = dock.stream_id});
 
-    this.addToEventStore(uuid,'dock-created', JSON.stringify(dock))
-
+    this.addToEventStore(uuid,'lease-has-expired', JSON.stringify(dock))
   }
 
   //EP-T-09	New dock has been created
@@ -126,7 +145,7 @@ export class TrafficControlService {
     await this.dockRepo.save(dock)
     .then(dock => {uuid = dock.stream_id});
 
-    this.addToEventStore(uuid,'dock-created', JSON.stringify(dock))
+    this.addToEventStore(uuid,'dock-was-created', JSON.stringify(dock))
   }
 
   async addToEventStore(stream_id: string, type: string, body: string) {
