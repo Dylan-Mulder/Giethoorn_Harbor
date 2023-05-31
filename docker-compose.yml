@@ -122,6 +122,7 @@ services:
   #     network:
   #       ipv4_address: 10.5.0.6
   #   command: npm run start:dev traffic_control_api
+
   ecosystem:
     container_name: Ecosystem
     build:
@@ -141,7 +142,6 @@ services:
         ipv4_address: 10.5.0.9
     command: npm run start:dev ecosystem
 
-
   refilling:
     container_name: Refilling
     build:
@@ -160,7 +160,7 @@ services:
     networks:
       network:
         ipv4_address: 10.5.0.6
-    command: npm run start:dev traffic_control_api
+    command: npm run start:dev refilling
 
 # CUSTOM DOCKER NETWORK
 networks:

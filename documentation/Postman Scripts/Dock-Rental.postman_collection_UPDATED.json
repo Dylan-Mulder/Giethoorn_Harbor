@@ -1,0 +1,304 @@
+{
+  "info": {
+    "_postman_id": "325ac2e4-c399-4d1c-bb97-9b959818bb73",
+    "name": "Dock-Rental",
+    "schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+    "_exporter_id": "7291926"
+  },
+  "item": [
+    {
+      "name": "DOCK",
+      "item": [
+        {
+          "name": "POST DOCK",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"New Dock\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:4100/api/docks",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "4100",
+              "path": ["api", "docks"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET ALL DOCKS",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4100/api/docks",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "4100",
+              "path": ["api", "docks"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET DOCK ID 11",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4100/api/docks/10",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "4100",
+              "path": ["api", "docks", "10"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT DOCK ID 11",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"name\": \"Updated Dock name\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:4100/api/docks/10/update",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "4100",
+              "path": ["api", "docks", "10", "update"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE DOCK ID 11",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4100/api/docks/10/delete",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "4100",
+              "path": ["api", "docks", "10", "delete"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "LEASE-AGREEMENTS",
+      "item": [
+        {
+          "name": "POST LEASE-AGREEMENT",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"reference\": \"RFR-DEMO\",\r\n    \"dock_id\": 2,\r\n    \"shipping_company_id\": 1,\r\n    \"sign_date\": \"1999-12-14\",\r\n    \"valid_until\": \"1999-12-14\",\r\n    \"price\": 6.69 \r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:4100/api/lease-agreements",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "4100",
+              "path": ["api", "lease-agreements"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET ALL LEASE-AGREEMENTS",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4100/api/lease-agreements",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "4100",
+              "path": ["api", "lease-agreements"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET LEASE-AGREEMENT ID 2",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4100/api/lease-agreements/2",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "4100",
+              "path": ["api", "lease-agreements", "2"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT LEASE-AGREEMENT ID 2",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"reference\": \"Updated Reference\",\r\n    \"dock_id\": 2,\r\n    \"shipping_company_id\": 1,\r\n    \"sign_date\": \"1999-12-20\",\r\n    \"valid_until\": \"1999-12-20\",\r\n    \"price\": 77.69\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:4100/api/lease-agreements/2/update",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "4100",
+              "path": ["api", "lease-agreements", "2", "update"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE LEASE-AGREEMENT ID 2",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4100/api/lease-agreements/2/delete",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "4100",
+              "path": ["api", "lease-agreements", "2", "delete"]
+            }
+          },
+          "response": []
+        }
+      ]
+    },
+    {
+      "name": "SHIPPING-COMPANY",
+      "item": [
+        {
+          "name": "POST SHIPPING-COMPANY",
+          "request": {
+            "method": "POST",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"reference\": \"RFR-DEMO\",\r\n    \"name\": \"dit is een naam\",\r\n    \"country\": \"dit is een country\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:4100/api/shipping-companies",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "4100",
+              "path": ["api", "shipping-companies"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET ALLSHIPPING-COMPANIES",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4100/api/shipping-companies",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "4100",
+              "path": ["api", "shipping-companies"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "GET SHIPPING-COMPANY ID 7",
+          "request": {
+            "method": "GET",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4100/api/shipping-companies/7",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "4100",
+              "path": ["api", "shipping-companies", "7"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "PUT SHIPPING-COMPANY ID 7",
+          "request": {
+            "method": "PUT",
+            "header": [],
+            "body": {
+              "mode": "raw",
+              "raw": "{\r\n    \"reference\": \"RFR-DEMO\",\r\n    \"name\": \"dit is een naam\",\r\n    \"country\": \"dit is een country\"\r\n}",
+              "options": {
+                "raw": {
+                  "language": "json"
+                }
+              }
+            },
+            "url": {
+              "raw": "http://localhost:4100/api/shipping-companies/7/update",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "4100",
+              "path": ["api", "shipping-companies", "7", "update"]
+            }
+          },
+          "response": []
+        },
+        {
+          "name": "DELETE LEASE-AGREEMENT ID 7",
+          "request": {
+            "method": "DELETE",
+            "header": [],
+            "url": {
+              "raw": "http://localhost:4100/api/shipping-companies/7/delete",
+              "protocol": "http",
+              "host": ["localhost"],
+              "port": "4100",
+              "path": ["api", "shipping-companies", "7", "delete"]
+            }
+          },
+          "response": []
+        }
+      ]
+    }
+  ]
+}
