@@ -46,7 +46,7 @@ services:
     networks:
       - network
     ports:
-      - '5433:5433'
+      - '5433:5432'
     logging:
       options:
         max-size: 10m
@@ -66,7 +66,7 @@ services:
     networks:
       - network
     ports:
-      - '5434:5434'
+      - '5434:5432'
     logging:
       options:
         max-size: 10m

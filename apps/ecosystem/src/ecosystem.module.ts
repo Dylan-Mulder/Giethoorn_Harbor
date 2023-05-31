@@ -4,8 +4,6 @@ import { EcosystemService } from './ecosystem.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from './config/configuration';
-import { MarineLifeReport } from './entities/marine-life-report.entity';
-import { WaterQualityReport } from './entities/water-quality-report.entity';
 
 @Module({
   imports: [
