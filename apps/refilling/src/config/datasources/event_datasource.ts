@@ -1,10 +1,10 @@
-import "reflect-metadata";
-import { DataSource } from "typeorm";
-import { GHEvent } from "../../entities/gh-event";
+import 'reflect-metadata';
+import { DataSource } from 'typeorm';
+import { GHEvent } from '../../entities/gh-event';
 
 const datasource = new DataSource({
-  type: "postgres",
-  host: process.env.POSTGRES_HOST,
+  type: 'postgres',
+  host: process.env.POSTGRES_HOST_EVENTS,
   port: parseInt(process.env.POSTGRES_PORT),
   username: 'gh_refilling',
   password: 'jw8s0F4',
@@ -16,9 +16,10 @@ const datasource = new DataSource({
   subscribers: [],
 });
 
-datasource.initialize()
+datasource
+  .initialize()
   .then(async () => {
-    console.log("Connection initialized with database...");
+    console.log('Connection initialized with database...');
   })
   .catch((error) => console.log(error));
 
@@ -28,7 +29,7 @@ export const getEventDataSource = (delay = 3000): Promise<DataSource> => {
   return new Promise((resolve, reject) => {
     setTimeout(() => {
       if (datasource.isInitialized) resolve(datasource);
-      else reject("Failed to create connection with database");
+      else reject('Failed to create connection with database');
     }, delay);
   });
 };
