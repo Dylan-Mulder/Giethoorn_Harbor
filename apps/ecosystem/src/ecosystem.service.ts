@@ -178,9 +178,15 @@ export class EcosystemService {
   async createWaterQuality(waterQualityReport: WaterQualityReport) {
     try {
 
-      const insertedReport = await this.waterQualityReportRepo.save(waterQualityReport);
+      await this.waterQualityReportRepo.save(waterQualityReport);
+      let uuid;
+        
+      await this.marineLifeReportRepo.save(waterQualityReport)
+      .then(marineLifeReport => {uuid = marineLifeReport.stream_id});
 
-      return insertedReport;
+      //sdhasudhasda
+      this.addToEventStore(uuid,'marinelife-inspected', JSON.stringify(waterQualityReport))
+
     } catch (error) {
       console.error(error);
     }
@@ -198,16 +204,30 @@ export class EcosystemService {
         marineLifeReport.cpue = report.cpue;
         marineLifeReport.habitat = report.habitat;
         marineLifeReport.season = report.season;
-        
-        const insertedReport = await this.marineLifeReportRepo.save(marineLifeReport);
-        insertedReports.push(insertedReport);
-      }
 
-      return insertedReports;
+        let uuid;
+        
+        await this.marineLifeReportRepo.save(marineLifeReport)
+        .then(marineLifeReport => {uuid = marineLifeReport.stream_id});
+
+        //sdhasudhasda
+        this.addToEventStore(uuid,'waterquality-inspected', JSON.stringify(marineLifeReport))
+
+      }
     } catch (error) {
       console.error(error);
     }
   }
+
+  async addToEventStore(stream_id: string, type: string, body: string) {
+      let ghEvent = new GHEvent;
+      ghEvent.stream_id = stream_id;
+      ghEvent.type = type;
+      ghEvent.body = body;
+
+      await this.eventRepo.save(ghEvent);
+    }
+
   async sendToQueue(exchangeName: string, routingKey: string, message: string) {
     const connection = await amqp.connect(`amqp://${this.USER}:${this.PASSWORD}@${this.HOST}`);
     const channel = await connection.createChannel();
