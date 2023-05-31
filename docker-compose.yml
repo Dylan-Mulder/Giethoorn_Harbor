@@ -112,7 +112,7 @@ services:
     depends_on:
       - relational_database
       - event_store
-      # - rabbitmq
+      - rabbitmq
     volumes:
       - .:/usr/src/app
       - /usr/src/app/node_modules
@@ -120,26 +120,6 @@ services:
       network:
         ipv4_address: 10.5.0.6
     command: npm run start:dev traffic_control_api
-  # traffic_control:
-  #   container_name: Traffic-Control
-  #   build:
-  #     context: ./
-  #     dockerfile: ./apps/traffic_control/Dockerfile
-  #   env_file:
-  #     - .env
-  #   depends_on:
-  #     # - rabbitmq
-  #     # - traffic_control_api
-  #     - relational_database
-  #     - event_store
-  #   volumes:
-  #     - .:/usr/src/app
-  #     - /usr/src/app/node_modules
-  #   networks:
-  #     network:
-  #       ipv4_address: 10.5.0.7
-  #   command: npm run start:dev traffic_control
-
   # CUSTOM DOCKER NETWORK
 networks:
   network:
@@ -203,7 +183,7 @@ volumes:
     #     - .env
     #   depends_on:
     #     # - rabbitmq
-    #     - traffic_control
+    #     - traffic_control_api
     #     - relational_database
     #     - event_store
     #   volumes:
@@ -223,7 +203,7 @@ volumes:
     #     - .env
     #   depends_on:
     #     - rabbitmq
-    #     - traffic_control
+    #     - traffic_control_api
     #     - relational_database
     #     - event_store
     #   volumes:
@@ -243,7 +223,7 @@ volumes:
     #     - .env
     #   depends_on:
     #     # - rabbitmq
-    #     - traffic_control
+    #     - traffic_control_api
     #     - relational_database
     #     - event_store
     #   volumes:
