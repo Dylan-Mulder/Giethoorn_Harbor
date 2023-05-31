@@ -5,7 +5,7 @@ import { GHEvent } from "../../entities/gh-event";
 const datasource = new DataSource({
   type: "postgres",
   host: process.env.POSTGRES_HOST_EVENTS,
-  port: 5434,
+  port: 5432,
   username: 'gh_ecosystem',
   password: 'URY382992ef',
   database: process.env.POSTGRES_DATABASE,
