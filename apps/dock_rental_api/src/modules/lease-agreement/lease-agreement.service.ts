@@ -1,15 +1,20 @@
 import { Injectable } from '@nestjs/common';
 import { ILeaseAgreementService } from '../../interfaces/ILeaseAgreement.service';
-import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { Repository } from 'typeorm';
 import { LeaseAgreement } from './entities/lease-agreement.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { LeaseAgreementDTO } from './dto/lease-agreement.dto';
 import { CreateLeaseAgreementDTO } from './dto/create-lease-agreement.dto';
+import { ConfigService } from '@nestjs/config';
 
 @Injectable()
 export class LeaseAgreementService implements ILeaseAgreementService {
 
-  constructor(@InjectRepository(LeaseAgreement) private readonly repo: Repository<LeaseAgreement>) { }
+  private USER = this.configService.get('RABBITMQ_USER');
+  private PASSWORD = this.configService.get('RABBITMQ_PASS');
+  private HOST = this.configService.get('RABBITMQ_HOST');
+
+  constructor(@InjectRepository(LeaseAgreement) private readonly repo: Repository<LeaseAgreement>, private readonly configService: ConfigService) { }
 
   public async getLeaseAgreementById(id: number): Promise<LeaseAgreementDTO> {
     return LeaseAgreementDTO.fromEntity(await this.repo.findOne({ where: { id: id } }));
@@ -24,7 +29,9 @@ export class LeaseAgreementService implements ILeaseAgreementService {
     dto.valid_until = new Date(dto.valid_until);
 
     const result = this.repo.create(dto);
-    return await this.repo.save(result);
+    const returnedObject = await this.repo.save(result);
+    await this.sendToQueue('lease-agreement-created', 'event.lease-agreement-created', JSON.stringify(returnedObject));
+    return returnedObject;
   }
 
   public async updateLeaseAgreementById(id: number, updateLeaseAgreement: CreateLeaseAgreementDTO): Promise<LeaseAgreement> {
@@ -39,4 +46,11 @@ export class LeaseAgreementService implements ILeaseAgreementService {
     await this.repo.delete(id)
     return obj;
   }
+
+  async sendToQueue(exchangeName: string, routingKey: string, message: string) {
+    const connection = amqp.connect(`amqp://${this.USER}:${this.PASSWORD}@${this.HOST}`);
+    const channel = connection.createChannel();
+    await channel.assertExchange(exchangeName, 'topic', { durable: false });
+    await channel.publish(exchangeName, routingKey, Buffer.from(message));
+  };
 }

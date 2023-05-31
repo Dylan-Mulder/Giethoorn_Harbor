@@ -4,8 +4,9 @@ import { Ctx, MessagePattern, Payload, RmqContext } from '@nestjs/microservices'
 
 @Controller()
 export class DockRentalController {
-  constructor(private readonly dockRentalService: DockRentalService) {}
-  
+  constructor(private readonly dockRentalService: DockRentalService) { }
+
+  //DE-D-01	DockHasBeenCreated	A new Dock has been created.
   @MessagePattern({ exchange: 'dock-created', routingKey: 'event.dock-created' })
   async handleDockCreated(
     @Payload() content: string,
@@ -22,7 +23,7 @@ export class DockRentalController {
     }
   }
 
-  //DE-D-01	LeaseAgreementHasBeenCreated	A new Lease agreement has been created.
+  //DE-D-02	LeaseAgreementHasBeenCreated	A new Lease Agreement has been created.
   @MessagePattern({ exchange: 'lease-agreement-created', routingKey: 'event.lease-agreement-created' })
   async handleLeaseAgreementCreated(
     @Payload() content: string,
@@ -32,7 +33,7 @@ export class DockRentalController {
       const jsonData = JSON.parse(content);
       const dockData = jsonData.data.dock;
       const leaseAgreementData = jsonData.data.leaseAgreement;
-      const shippingCompanyData = jsonData.data.shippingCompany; 
+      const shippingCompanyData = jsonData.data.shippingCompany;
 
       await this.dockRentalService.createLeaseAgreement(leaseAgreementData);
       context.getChannelRef().ack(context.getMessage()); // Acknowledge the message
@@ -41,7 +42,7 @@ export class DockRentalController {
     }
   }
 
-  //DE-D-02	ShippingCompanyHasBeenCreated	A new Lease agreement has been created.
+  //DE-D-03	ShippingCompanyHasBeenCreated	A new Shipping Company has been created.
   @MessagePattern({ exchange: 'shipping-company-created', routingKey: 'event.shipping-company-created' })
   async handleShippingCompanyCreated(
     @Payload() content: string,
@@ -49,9 +50,7 @@ export class DockRentalController {
   ): Promise<void> {
     try {
       const jsonData = JSON.parse(content);
-      const dockData = jsonData.data.dock;
-      const leaseAgreementData = jsonData.data.leaseAgreement;
-      const shippingCompanyData = jsonData.data.shippingCompany; 
+      const shippingCompanyData = jsonData.data.shippingCompany;
 
       await this.dockRentalService.createShippingCompany(shippingCompanyData);
       context.getChannelRef().ack(context.getMessage()); // Acknowledge the message
@@ -59,5 +58,4 @@ export class DockRentalController {
       console.error(error);
     }
   }
-
 }

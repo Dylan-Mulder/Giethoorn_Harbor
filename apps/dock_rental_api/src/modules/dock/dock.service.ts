@@ -11,15 +11,11 @@ import amqp from 'amqp-connection-manager';
 
 @Injectable()
 export class DockService implements IDockService {
-  private USER;
-  private PASSWORD;
-  private HOST;
+  private USER = this.configService.get('RABBITMQ_USER');
+  private PASSWORD = this.configService.get('RABBITMQ_PASS');
+  private HOST = this.configService.get('RABBITMQ_HOST');
 
-  constructor(@InjectRepository(Dock) private readonly repo: Repository<Dock>, private readonly configService: ConfigService) {
-    this.USER = configService.get('RABBITMQ_USER');
-    this.PASSWORD = this.configService.get('RABBITMQ_PASS');
-    this.HOST = this.configService.get('RABBITMQ_HOST');
-  }
+  constructor(@InjectRepository(Dock) private readonly repo: Repository<Dock>, private readonly configService: ConfigService) { }
 
   public async getDockById(id: number): Promise<DockDTO> {
     return DockDTO.fromEntity(await this.repo.findOne({ where: { id: id } }));
@@ -32,7 +28,7 @@ export class DockService implements IDockService {
   public async createDock(dto: CreateDockDTO): Promise<Dock> {
     const dock = this.repo.create(dto);
     const returnedObject = await this.repo.save(dock);
-    this.sendToQueue('dock-created', 'event.dock-created', JSON.stringify(returnedObject));
+    await this.sendToQueue('dock-created', 'event.dock-created', JSON.stringify(returnedObject));
     return returnedObject
   }
 
@@ -48,8 +44,8 @@ export class DockService implements IDockService {
   }
 
   async sendToQueue(exchangeName: string, routingKey: string, message: string) {
-    const connection = await amqp.connect(`amqp://${this.USER}:${this.PASSWORD}@${this.HOST}`);
-    const channel = await connection.createChannel();
+    const connection = amqp.connect(`amqp://${this.USER}:${this.PASSWORD}@${this.HOST}`);
+    const channel = connection.createChannel();
     await channel.assertExchange(exchangeName, 'topic', { durable: false });
     await channel.publish(exchangeName, routingKey, Buffer.from(message));
   };

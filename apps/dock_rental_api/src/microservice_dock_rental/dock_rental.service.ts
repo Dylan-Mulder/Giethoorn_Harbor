@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import amqp from 'amqp-connection-manager';
 import { ConfigService } from '@nestjs/config';
 import { Dock } from '../modules/dock/entities/dock.entity';
 import { LeaseAgreement } from '../modules/lease-agreement/entities/lease-agreement.entity';
@@ -7,18 +6,13 @@ import { ShippingCompany } from '../modules/shipping-company/entity/shipping-com
 import { Repository } from 'typeorm';
 import { GHEvent } from '../config/datasources/gh-event';
 import { getCQRSDataSource } from '../config/datasources/cqrs_datasource';
-//import { getRelationalDataSource } from '../config/datasources/relational_datasource';
 
 @Injectable()
 export class DockRentalService {
-  constructor(private readonly configService: ConfigService){
+  constructor() {
     this.initDatasources();
   };
 
-  // RabbitMQ
-  private  USER = this.configService.get('RABBITMQ_USER');
-  private  PASSWORD = this.configService.get('RABBITMQ_PASS');
-  private  HOST = this.configService.get('RABBITMQ_HOST');
 
   // Repo's
   private dockRepo: Repository<Dock>;
@@ -34,6 +28,8 @@ export class DockRentalService {
     this.shippingCompanyRepo = cqrsDatasource.getRepository(ShippingCompany);
   }
 
+  // CREATE 
+
   //EP-DR-01 Dock has been created
   async createDock(dockData:any): Promise<void>{
     const dock = new Dock();
@@ -41,7 +37,6 @@ export class DockRentalService {
     await this.dockRepo.save(dock);
     console.log("Dock created at read database.");
   }
-
   //EP-DR-02 Lease Agreement has been created
   async createLeaseAgreement(leaseAgreementData: any): Promise<void>{
     const leaseAgreement = new LeaseAgreement();
@@ -66,10 +61,39 @@ export class DockRentalService {
     await this.shippingCompanyRepo.save(shippingCompany);
     console.log("Shipping company created at read database.");
 }
-  async sendToQueue(exchangeName: string, routingKey: string, message: string){
-    const connection = await amqp.connect(`amqp://${this.USER}:${this.PASSWORD}@${this.HOST}`);
-    const channel = await connection.createChannel();
-    await channel.assertExchange(exchangeName, 'topic', { durable: false });
-    await channel.publish(exchangeName, routingKey, Buffer.from(message));
-  };
+  // READ ALL
+
+  //EP-DR-04 All Docks have been found
+  async readAllDocks(): Promise<Array<Dock>> {
+    return await this.dockRepo.find();
+  }
+
+  //EP-DR-06 All Lease Agreements have been found
+  async readAllLeaseAgreements(): Promise<Array<LeaseAgreement>> {
+    return await this.leaseAgreementRepo.find();
+  }
+
+  //EP-DR-08 All Shipping Companies have been found
+  async readAllShippingCompanies(): Promise<Array<ShippingCompany>> {
+    return await this.shippingCompanyRepo.find();
+  }
+
+
+  // READ SINGLE
+
+  //EP-DR-05 Dock has been found
+  async readSingleDock(id: number): Promise<Dock> {
+    return await this.dockRepo.findOne({ where: { id: id } });
+  }
+
+  //EP-DR-07 Lease Agreement has been found
+  async readSingleLeaseAgreement(id: number): Promise<LeaseAgreement> {
+    return await this.leaseAgreementRepo.findOne({ where: { id: id } });
+  }
+
+
+  //EP-DR-09 Shipping Company has been found
+  async readSingleShippingCompany(id: number): Promise<ShippingCompany> {
+    return await this.shippingCompanyRepo.findOne({ where: { id: id } });
+  }
 }
