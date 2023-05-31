@@ -3,15 +3,15 @@ import { TrafficControlController } from './traffic_control.controller';
 import { TrafficControlService } from './traffic_control.service';
 import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
-import configuration from './config/configuration';
+import configuration from '../config/configuration';
 
 // Entities
-import { Dock } from './entities/dock.entity';
-import { Passage } from './entities/passage.entity';
-import { Ship } from './entities/ship.entity';
-import { TrafficPlanning } from './entities/traffic-planning.entity';
-import { Truck } from './entities/truck.entity';
-import { Tugboat } from './entities/tugboat.entity';
+import { Dock } from '../modules/dock/entities/dock.entity';
+import { Passage } from '../modules/passage/entities/passage.entity';
+import { Ship } from '../modules/ship/entities/ship.entity';
+import { TrafficPlanning } from '../modules/traffic-planning/entities/traffic-planning.entity';
+import { Truck } from '../modules/truck/entities/truck.entity';
+import { Tugboat } from '../modules/tugboat/entities/tugboat.entity'
 
 @Module({
   imports: [
