@@ -1,5 +1,4 @@
 import { Injectable } from '@nestjs/common';
-import amqp from 'amqp-connection-manager';
 import { ConfigService } from '@nestjs/config';
 import { Dock } from '../modules/dock/entities/dock.entity';
 import { LeaseAgreement } from '../modules/lease-agreement/entities/lease-agreement.entity';
@@ -10,14 +9,10 @@ import { getCQRSDataSource } from '../config/datasources/cqrs_datasource';
 
 @Injectable()
 export class DockRentalService {
-  constructor(private readonly configService: ConfigService) {
+  constructor() {
     this.initDatasources();
   };
 
-  // RabbitMQ
-  private USER = this.configService.get('RABBITMQ_USER');
-  private PASSWORD = this.configService.get('RABBITMQ_PASS');
-  private HOST = this.configService.get('RABBITMQ_HOST');
 
   // Repo's
   private dockRepo: Repository<Dock>;
@@ -42,7 +37,6 @@ export class DockRentalService {
     newDock.name = dockData.name;
     this.dockRepo.create(newDock);
     const returnedObject = await this.dockRepo.save(newDock);
-    await this.sendToQueue('dock-created', 'event.dock-created', JSON.stringify(returnedObject));
     return returnedObject
   }
 
@@ -57,7 +51,6 @@ export class DockRentalService {
     newLease.price = leaseAgreementData.price;
     this.shippingCompanyRepo.create(newLease);
     const returnedObject = await this.leaseAgreementRepo.save(newLease);
-    await this.sendToQueue('lease-agreement-created', 'event.lease-agreement-created', JSON.stringify(returnedObject));
     return returnedObject
   }
 
@@ -70,7 +63,6 @@ export class DockRentalService {
     newCompany.country = shippingCompanyData.country;
     this.shippingCompanyRepo.create(newCompany);
     const returnedObject = await this.shippingCompanyRepo.save(newCompany);
-    await this.sendToQueue('shipping-company-created', 'event.shipping-company-created', JSON.stringify(returnedObject));
     return returnedObject
   }
 
@@ -109,11 +101,4 @@ export class DockRentalService {
   async readSingleShippingCompany(id: number): Promise<ShippingCompany> {
     return await this.shippingCompanyRepo.findOne({ where: { id: id } });
   }
-
-  async sendToQueue(exchangeName: string, routingKey: string, message: string) {
-    const connection = amqp.connect(`amqp://${this.USER}:${this.PASSWORD}@${this.HOST}`);
-    const channel = connection.createChannel();
-    await channel.assertExchange(exchangeName, 'topic', { durable: false });
-    await channel.publish(exchangeName, routingKey, Buffer.from(message));
-  };
 }

@@ -5,13 +5,16 @@ import { IDockService } from '../../interfaces/IDock.service';
 import { DockDTO } from './dto/dock.dto';
 import { CreateDockDTO } from './dto/create-dock.dto';
 import { Dock } from './entities/dock.entity';
+import { ConfigService } from '@nestjs/config';
 
 
 @Injectable()
 export class DockService implements IDockService {
+  private USER = this.configService.get('RABBITMQ_USER');
+  private PASSWORD = this.configService.get('RABBITMQ_PASS');
+  private HOST = this.configService.get('RABBITMQ_HOST');
 
-  constructor(@InjectRepository(Dock) private readonly repo: Repository<Dock>) {
-  }
+  constructor(@InjectRepository(Dock) private readonly repo: Repository<Dock>, private readonly configService: ConfigService) { }
 
   public async getDockById(id: number): Promise<DockDTO> {
     return DockDTO.fromEntity(await this.repo.findOne({ where: { id: id } }));
@@ -24,6 +27,7 @@ export class DockService implements IDockService {
   public async createDock(dto: CreateDockDTO): Promise<Dock> {
     const dock = this.repo.create(dto);
     const returnedObject = await this.repo.save(dock);
+    await this.sendToQueue('dock-created', 'event.dock-created', JSON.stringify(returnedObject));
     return returnedObject
   }
 
@@ -37,4 +41,11 @@ export class DockService implements IDockService {
     await this.repo.delete(id);
     return obj;
   }
+
+  async sendToQueue(exchangeName: string, routingKey: string, message: string) {
+    const connection = amqp.connect(`amqp://${this.USER}:${this.PASSWORD}@${this.HOST}`);
+    const channel = connection.createChannel();
+    await channel.assertExchange(exchangeName, 'topic', { durable: false });
+    await channel.publish(exchangeName, routingKey, Buffer.from(message));
+  };
 }
