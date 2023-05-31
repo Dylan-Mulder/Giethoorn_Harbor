@@ -153,6 +153,7 @@ networks:
 volumes:
   relational_database:
   event_store:
+  cqrs_database:
 
     # dock_rental:
     #   container_name: Dock-Rental
