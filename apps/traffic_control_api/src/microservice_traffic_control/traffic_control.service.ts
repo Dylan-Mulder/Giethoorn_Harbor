@@ -67,7 +67,6 @@ export class TrafficControlService {
   }
 
   //Event emitter functions
-  //QUESTION: Functions here
   
   async sendToQueue(exchangeName: string, routingKey: string, message: string){
     const connection = await amqp.connect(`amqp://${this.USER}:${this.PASSWORD}@${this.HOST}`);

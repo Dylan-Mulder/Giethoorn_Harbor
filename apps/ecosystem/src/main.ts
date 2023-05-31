@@ -9,14 +9,16 @@ import { WaterQualityReport } from './entities/water-quality-report.entity';
 import { MarineLifeReportList } from './entities/marine-life-report.entity';
 
 async function bootstrap() {
+  // Create App
   const app = await NestFactory.create(EcosystemModule);
-
   const configService = app.get(ConfigService);
 
+  // RabbitMQ
   const USER = configService.get('RABBITMQ_USER');
   const PASSWORD = configService.get('RABBITMQ_PASS');
   const HOST = configService.get('RABBITMQ_HOST');
   const QUEUE = configService.get('RABBITMQ_ECOSYSTEM_QUEUE');
+
   const ecosystemController = app.get(EcosystemController)
   const eosystemService = app.get(EcosystemService)
 
@@ -83,8 +85,9 @@ async function bootstrap() {
       },
     },
   });
- 
-  app.startAllMicroservices();
+
+
+  await app.startAllMicroservices();
 }
 bootstrap();
 

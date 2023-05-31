@@ -1,16 +1,12 @@
 import { Column, CreateDateColumn, Entity, Generated, PrimaryGeneratedColumn } from 'typeorm';
 
-@Entity({ name: 'tugboat', schema: 'traffic_control' })
-export class Tugboat {
+@Entity({ name: 'event', schema: 'ecosystem' })
+export class Event {
   @PrimaryGeneratedColumn()
   public id: number;
 
-  @Column()
-  @Generated("uuid")
+  @Column("uuid", { nullable: false })
   public stream_id: string;
-
-  @Column({ type: 'varchar', length: 100, nullable: false })
-  public name: string;
 
   @CreateDateColumn({ type: 'timestamptz', default: () => 'CURRENT_TIMESTAMP' })
   public created_at: Date;

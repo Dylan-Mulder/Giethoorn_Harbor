@@ -4,13 +4,30 @@ import { WaterQualityReport } from './entities/water-quality-report.entity';
 import amqp from 'amqp-connection-manager';
 import { MarineLifeReport, MarineLifeReportList } from './entities/marine-life-report.entity';
 import { ConfigService } from '@nestjs/config';
+import { getDataSourceName } from '@nestjs/typeorm';
+import { getRelationalDataSource } from './config/datasources/relational_datasource';
 
 @Injectable()
 export class EcosystemService {
-  constructor(private readonly configService: ConfigService){};
-  private USER = this.configService.get('RABBITMQ_USER');
-  private PASSWORD = this.configService.get('RABBITMQ_PASS');
-  private HOST = this.configService.get('RABBITMQ_HOST');
+  constructor(private readonly configService: ConfigService){
+    this.initDatasources();
+  };
+
+  // RabbitMQ
+  private  USER = this.configService.get('RABBITMQ_USER');
+  private  PASSWORD = this.configService.get('RABBITMQ_PASS');
+  private  HOST = this.configService.get('RABBITMQ_HOST');
+
+  // Repo's
+  private marineLifeReportRepo;
+  private waterQualityReportRepo;
+
+  // Init the repositories
+  async initDatasources() {
+    const relationalDatasource = await getRelationalDataSource();
+    this.marineLifeReportRepo = relationalDatasource.getRepository(MarineLifeReport);
+    this.waterQualityReportRepo = relationalDatasource.getRepository(WaterQualityReport);
+  }
 
   async getFakeWaterQualityReport(): Promise<WaterQualityReport> {
 

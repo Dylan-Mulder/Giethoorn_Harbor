@@ -53,27 +53,6 @@ import configuration from './config/configuration';
   controllers: [AppController],
   providers: [
     {
-      provide: 'TRAFFIC_CONTROL_SERVICE',
-      useFactory: (configService: ConfigService) => {
-        const USER = configService.get('RABBITMQ_USER');
-        const PASSWORD = configService.get('RABBITMQ_PASSWORD');
-        const HOST = configService.get('RABBITMQ_HOST');
-        const QUEUE = configService.get('RABBITMQ_TRAFFIC_CONTROL_QUEUE');
-
-        return ClientProxyFactory.create({
-          transport: Transport.RMQ,
-          options: {
-            urls: [`amqp://${USER}:${PASSWORD}@${HOST}`],
-            queue: QUEUE,
-            queueOptions: {
-              durable: true
-            }
-          }
-        })
-      },
-      inject: [ConfigService]
-    },
-    {
       provide: 'SECURITY_SERVICE',
       useFactory: (configService: ConfigService) => {
         const USER = configService.get('RABBITMQ_USER');

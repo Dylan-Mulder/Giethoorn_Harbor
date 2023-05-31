@@ -5,18 +5,13 @@ import { TypeOrmModule } from '@nestjs/typeorm';
 import { ConfigModule, ConfigService } from '@nestjs/config';
 import configuration from './config/configuration';
 
-// Entities
-import { Service } from './entities/service.entity';
-import { Ship } from './entities/ship.entity';
-import { TrafficPlanning } from './entities/traffic-planning.entity';
-
 @Module({
   imports: [
     ConfigModule.forRoot({
       isGlobal: true,
       load: [configuration]
     }),
-    TypeOrmModule.forRootAsync({
+    TypeOrmModule.forRootAsync({ 
       imports: [ConfigModule],
       inject: [ConfigService],
       useFactory: (configService: ConfigService) => ({
@@ -26,9 +21,9 @@ import { TrafficPlanning } from './entities/traffic-planning.entity';
         username: configService.get('username'),
         password: configService.get('password'),
         database: configService.get('database'),
-        entities: [Service, Ship, TrafficPlanning],
-        synchronize: false,
-        migrationsRun: false
+        entities: configService.get('entities'),
+        synchronize: configService.get('synchronize'),
+        migrationsRun: configService.get('migrationsRun')
       }),
     })
   ],

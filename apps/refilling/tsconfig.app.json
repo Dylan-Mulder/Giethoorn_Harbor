@@ -5,5 +5,7 @@
     "outDir": "../../dist/apps/refilling"
   },
   "include": ["src/**/*"],
-  "exclude": ["node_modules", "dist", "test", "**/*spec.ts"]
+  "exclude": ["node_modules", "dist", "test", "**/*spec.ts"],
+  "emitDecoratorMetadata": true,
+  "experimentalDecorators": true
 }

@@ -16,7 +16,7 @@ export class TrafficControlController {
     try {
       const jsonData = JSON.parse(content);
       const shipData = jsonData.data.ship;
-      console.log(JSON.stringify(jsonData));
+      console.log(JSON.stringify(shipData));
       
       await this.trafficControlService.updateShipCleared(shipData);
       context.getChannelRef().ack(context.getMessage()); // Acknowledge the message
@@ -147,6 +147,4 @@ export class TrafficControlController {
   }
 
   //Event emitter functions
-  //QUESTION: Functions here
-
 }
