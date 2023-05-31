@@ -17,9 +17,12 @@ export class ShipService implements IShipService {
 
   constructor(@InjectRepository(Ship) private readonly repo: Repository<Ship>, private readonly configService: ConfigService) { }
 
-  public async createShip(dto: CreateShipDTO): Promise<Ship> {
-    const ship = this.repo.create(dto);
-    return await this.repo.save(ship);
+  public async createShip(dto: any): Promise<Ship> {
+    const ship = this.repo.create(dto.data.ship);
+    const returnedObject = await this.repo.save(dto.data);
+
+    await this.sendToQueue('ship-registered', 'event.ship-registered', JSON.stringify(returnedObject));
+    return returnedObject;
   }
 
   public async getShipById(id: number): Promise<ShipDTO> {
