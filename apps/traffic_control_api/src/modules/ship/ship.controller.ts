@@ -2,7 +2,6 @@ import { Controller, Get, Param, Post, Body, Delete, Put } from '@nestjs/common'
 import { IShipService } from '../../interfaces/IShip.service';
 import { Ship } from './entities/ship.entity';
 import { CreateShipDTO } from './dto/create-ship.dto';
-import { UpdateResult, DeleteResult } from 'typeorm';
 
 @Controller('ships')
 export class ShipController {
@@ -24,12 +23,12 @@ export class ShipController {
   }
 
   @Put(':shipId/update')
-  public async updateShipById(@Param() param: { shipId: number }, @Body() updateShip: CreateShipDTO): Promise<UpdateResult> {
+  public async updateShipById(@Param() param: { shipId: number }, @Body() updateShip: CreateShipDTO): Promise<Ship> {
     return await this.shipService.updateShipById(Number(param.shipId), updateShip);
   }
 
   @Delete(':shipId/delete')
-  public async deleteShip(@Param() param: { shipId: number }): Promise<DeleteResult> {
+  public async deleteShip(@Param() param: { shipId: number }): Promise<Ship> {
     return await this.shipService.deleteShipById(Number(param.shipId));
   }
 }

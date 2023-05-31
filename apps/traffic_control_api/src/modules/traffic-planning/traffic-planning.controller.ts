@@ -1,7 +1,6 @@
 import { Controller, Get, Param, Post, Body, Delete, Put } from '@nestjs/common';
 import { ITrafficPlanningService } from '../../interfaces/ITrafficPlanning.service';
 import { TrafficPlanning } from './entities/traffic-planning.entity';
-import { DeleteResult, UpdateResult } from 'typeorm';
 import { CreateTrafficPlanningDTO } from './dto/create-traffic-planning.dto';
 
 
@@ -25,12 +24,12 @@ export class TrafficPlanningController {
   }
 
   @Put(':trafficPlanningId/update')
-  async updateTrafficPlanningById(@Param() param: { trafficPlanningId: number }, @Body() updateTrafficPlanning: CreateTrafficPlanningDTO): Promise<UpdateResult> {
+  async updateTrafficPlanningById(@Param() param: { trafficPlanningId: number }, @Body() updateTrafficPlanning: CreateTrafficPlanningDTO): Promise<TrafficPlanning> {
     return await this.trafficPlanningService.updateTrafficPlanningById(Number(param.trafficPlanningId), updateTrafficPlanning);
   }
 
   @Delete(':trafficPlanningId/delete')
-  async deleteTrafficPlanning(@Param() param: { trafficPlanningId: number }): Promise<DeleteResult> {
+  async deleteTrafficPlanning(@Param() param: { trafficPlanningId: number }): Promise<TrafficPlanning> {
     return await this.trafficPlanningService.deleteTrafficPlanningById(Number(param.trafficPlanningId));
   }
 }

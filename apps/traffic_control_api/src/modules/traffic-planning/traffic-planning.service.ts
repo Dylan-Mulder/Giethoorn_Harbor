@@ -27,14 +27,16 @@ export class TrafficPlanningService implements ITrafficPlanningService {
     return await this.repo.find().then((trafficplannings: Array<TrafficPlanning>) => trafficplannings.map(d => TrafficPlanningDTO.fromEntity(d)));
   }
 
-  public async updateTrafficPlanningById(id: number, dto: CreateTrafficPlanningDTO): Promise<UpdateResult> {
+  public async updateTrafficPlanningById(id: number, dto: CreateTrafficPlanningDTO): Promise<TrafficPlanning> {
     dto.start_date = new Date(dto.start_date);
     dto.end_date = new Date(dto.end_date);
-    return await this.repo.update(id, dto)
+    await this.repo.update(id, dto)
+    return await this.getTrafficPlanningById(id);
   }
 
-  public async deleteTrafficPlanningById(id: number): Promise<DeleteResult> {
-    return await this.repo.delete(id)
+  public async deleteTrafficPlanningById(id: number): Promise<TrafficPlanning> {
+    const obj = await this.getTrafficPlanningById(id);
+    await this.repo.delete(id);
+    return obj;
   }
-
 }

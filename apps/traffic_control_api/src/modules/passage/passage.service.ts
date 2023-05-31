@@ -27,13 +27,17 @@ export class PassageService implements IPassageService {
     return await this.repo.save(passage);
   }
 
-  public async updatePassageById(id: number, updatePassage: CreatePassageDTO): Promise<UpdateResult> {
+  public async updatePassageById(id: number, updatePassage: CreatePassageDTO): Promise<Passage> {
     updatePassage.arrival = new Date(updatePassage.arrival);
     updatePassage.departure = new Date(updatePassage.departure);
-    return await this.repo.update(id, updatePassage)
+    await this.repo.update(id, updatePassage)
+    return await this.getPassageById(id);
   }
 
-  public async deletePassageById(id: number): Promise<DeleteResult> {
-    return await this.repo.delete(id)
+
+  public async deletePassageById(id: number): Promise<Passage> {
+    const obj = await this.getPassageById(id);
+    await this.repo.delete(id)
+    return obj;
   }
 }

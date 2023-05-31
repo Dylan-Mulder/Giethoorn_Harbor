@@ -24,11 +24,14 @@ export class TugboatService implements ITugboatService {
     return await this.repo.find().then((tugs: Array<Tugboat>) => tugs.map(d => TugboatDTO.fromEntity(d)));
   }
 
-  public async updateTugboatById(id: number, dto: CreateTugboatDTO): Promise<UpdateResult> {
-    return await this.repo.update(id, dto)
+  public async updateTugboatById(id: number, dto: CreateTugboatDTO): Promise<Tugboat> {
+    await this.repo.update(id, dto)
+    return await this.getTugboatById(id);
   }
 
-  public async deleteTugboatById(id: number): Promise<DeleteResult> {
-    return await this.repo.delete(id)
+  public async deleteTugboatById(id: number): Promise<Tugboat> {
+    const obj = await this.getTugboatById(id);
+    await this.repo.delete(id);
+    return obj;
   }
 }

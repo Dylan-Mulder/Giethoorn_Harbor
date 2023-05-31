@@ -1,6 +1,5 @@
 import { Controller, Get, Param, Post, Body, Delete, Put } from '@nestjs/common';
 import { IDockService } from '../../interfaces/IDock.service';
-import { UpdateResult, DeleteResult } from 'typeorm';
 import { CreateDockDTO } from './dto/create-dock.dto';
 import { Dock } from './entities/dock.entity';
 
