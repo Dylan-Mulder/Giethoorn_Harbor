@@ -8,6 +8,7 @@ import { MicroserviceOptions, RmqContext, Transport } from '@nestjs/microservice
 import { DockController } from './modules/dock/dock.controller';
 import { LeaseAgreementController } from './modules/lease-agreement/lease-agreement.controller';
 import { ShippingCompanyController } from './modules/shipping-company/shipping-company.controller';
+import { DockRentalController } from './microservice_dock_rental/dock_rental.controller';
 
 async function bootstrapAPI() {
   const appOptions = { cors: true };
@@ -46,12 +47,27 @@ async function bootstrapDockRental() {
   const dockController = app.get(DockController);
   const leaseAgreementController = app.get(LeaseAgreementController);
   const shippingCompanyController= app.get(ShippingCompanyController);
-
+  const dockRentalController = app.get(DockRentalController);
   const consumerConfigs = [
     {
-      exchange: 'ship-registered',
-      routingKeyPattern: 'event.ship-registered',
-      methodToCall: ""
+      exchange: 'dock-created',
+      routingKeyPattern: 'event.dock-created',
+      methodToCall: dockRentalController.handleDockCreated
+    },
+    {
+      exchange: 'lease-agreement-created',
+      routingKeyPattern: 'event.lease-agreement-created',
+      methodToCall: dockRentalController.handleDockCreated
+    },
+    {
+      exchange: 'lease-has-started',
+      routingKeyPattern: 'event.lease-has-started',
+      methodToCall: dockRentalController.handleDockCreated
+    },
+    {
+      exchange: 'lease-has-expired',
+      routingKeyPattern: 'event.lease-has-expired',
+      methodToCall: dockRentalController.handleDockCreated
     },
   ]
 
@@ -73,7 +89,7 @@ async function bootstrapDockRental() {
                 console.log('Consumer received event');
                 // Process the event:
                 const rmqContext = new RmqContext([message, channel, null]);
-                await methodToCall.call(, content, rmqContext);
+                await methodToCall.call(dockRentalController, content, rmqContext);
               }
             },
       );
