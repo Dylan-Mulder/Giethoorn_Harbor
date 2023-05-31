@@ -1,7 +1,7 @@
 import { Injectable } from '@nestjs/common';
 import { IDockService } from '../../interfaces/IDock.service';
 import { Dock } from './entities/dock.entity';
-import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { Repository } from 'typeorm';
 import { CreateDockDTO } from './dto/create-dock.dto';
 import { InjectRepository } from '@nestjs/typeorm';
 import { DockDTO } from './dto/dock.dto';

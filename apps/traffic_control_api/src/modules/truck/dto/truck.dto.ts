@@ -1,6 +1,6 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsNumber, IsString, IsDate } from "class-validator";
-import { Truck } from "../entities/truck.entity";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNumber, IsString, IsDate, IsBoolean } from 'class-validator';
+import { Truck } from '../entities/truck.entity';
 
 export class TruckDTO implements Readonly<TruckDTO> {
   @IsNumber()
@@ -19,6 +19,14 @@ export class TruckDTO implements Readonly<TruckDTO> {
   @ApiProperty()
   public shipping_company_name: string;
 
+  @IsBoolean()
+  @ApiProperty()
+  public is_cleared: boolean;
+
+  @IsBoolean()
+  @ApiProperty()
+  public is_denied: boolean;
+
   @IsDate()
   @ApiProperty()
   public created_at: Date;
@@ -29,6 +37,8 @@ export class TruckDTO implements Readonly<TruckDTO> {
     it.stream_id = dto.stream_id;
     it.name = dto.name;
     it.shipping_company_name = dto.shipping_company_name;
+    it.is_cleared = dto.is_cleared;
+    it.is_denied = dto.is_denied;
     it.created_at = dto.created_at;
     return it;
   }
@@ -39,7 +49,9 @@ export class TruckDTO implements Readonly<TruckDTO> {
       stream_id: entity.stream_id,
       name: entity.name,
       shipping_company_name: entity.shipping_company_name,
-      created_at: entity.created_at
+      is_cleared: entity.is_cleared,
+      is_denied: entity.is_denied,
+      created_at: entity.created_at,
     });
   }
 
@@ -49,6 +61,8 @@ export class TruckDTO implements Readonly<TruckDTO> {
     it.stream_id = this.stream_id;
     it.name = this.name;
     it.shipping_company_name = this.shipping_company_name;
+    it.is_cleared = this.is_cleared;
+    it.is_denied = this.is_denied;
     it.created_at = this.created_at;
     return it;
   }

@@ -73,6 +73,8 @@ CREATE TABLE traffic_control.ship
     shipping_company_name text NOT NULL,
     max_load_in_tonnage integer NOT NULL,
     length_in_m integer NOT NULL,
+    is_cleared boolean NOT NULL DEFAULT false,
+    is_denied boolean NOT NULL DEFAULT false,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     PRIMARY KEY (id)
 );
@@ -82,6 +84,8 @@ CREATE TABLE traffic_control.truck
     stream_id uuid NOT NULL DEFAULT gen_random_uuid(),
     name text NOT NULL,
     shipping_company_name text NOT NULL,
+    is_cleared boolean NOT NULL DEFAULT false,
+    is_denied boolean NOT NULL DEFAULT false,
     created_at timestamp with time zone NOT NULL DEFAULT now(),
     PRIMARY KEY (id)
 );
@@ -108,10 +112,7 @@ CREATE TABLE traffic_control.tugboat
 ALTER TABLE IF EXISTS traffic_control.traffic_planning
     OWNER to gh_traffic_control;
 ALTER TABLE IF EXISTS traffic_control.passage
-    OWNER to gh_traffic_control,
-    ADD CONSTRAINT fk_dock FOREIGN KEY(dock_id) REFERENCES traffic_control.dock(id),
-    ADD CONSTRAINT fk_ship FOREIGN KEY(ship_id) REFERENCES traffic_control.ship(id),
-    ADD CONSTRAINT fk_truck FOREIGN KEY(truck_id) REFERENCES traffic_control.truck(id);
+    OWNER to gh_traffic_control;
 ALTER TABLE IF EXISTS traffic_control.ship
     OWNER to gh_traffic_control;
 ALTER TABLE IF EXISTS traffic_control.truck
@@ -161,9 +162,7 @@ ALTER TABLE IF EXISTS dock_rental.dock
 ALTER TABLE IF EXISTS dock_rental.shipping_company
     OWNER to gh_dock_rental;
 ALTER TABLE IF EXISTS dock_rental.lease_agreement
-    OWNER to gh_dock_rental,
-    ADD CONSTRAINT fk_dock FOREIGN KEY(dock_id) REFERENCES dock_rental.dock(id),
-    ADD CONSTRAINT fk_shipping_company FOREIGN KEY(shipping_company_id) REFERENCES dock_rental.shipping_company(id);
+    OWNER to gh_dock_rental;
 
 -- Ecosystem
 CREATE TABLE ecosystem.marine_life_report
@@ -247,10 +246,7 @@ ALTER TABLE IF EXISTS security.ship
 ALTER TABLE IF EXISTS security.traffic_planning
     OWNER to gh_security;
 ALTER TABLE IF EXISTS security.inspection
-    OWNER to gh_security,
-    ADD CONSTRAINT fk_traffic_planning FOREIGN KEY(traffic_planning_id) REFERENCES security.traffic_planning(id),
-    ADD CONSTRAINT fk_ship FOREIGN KEY(ship_id) REFERENCES security.ship(id),
-    ADD CONSTRAINT fk_truck FOREIGN KEY(truck_id) REFERENCES security.truck(id);
+    OWNER to gh_security;
 
 -- Refilling
 CREATE TABLE refilling.ship
@@ -334,17 +330,13 @@ CREATE TABLE cargo_management.service
 );
 
 ALTER TABLE IF EXISTS cargo_management.cargo
-    OWNER to gh_cargo_management,
-    ADD CONSTRAINT fk_ship FOREIGN KEY(ship_id) REFERENCES cargo_management.ship(id);
+    OWNER to gh_cargo_management;
 ALTER TABLE IF EXISTS cargo_management.ship
     OWNER to gh_cargo_management;
 ALTER TABLE IF EXISTS cargo_management.traffic_planning
     OWNER to gh_cargo_management;
 ALTER TABLE IF EXISTS cargo_management.service
-    OWNER to gh_cargo_management,
-    ADD CONSTRAINT fk_traffic_planning FOREIGN KEY(traffic_planning_id) REFERENCES cargo_management.traffic_planning(id),
-    ADD CONSTRAINT fk_ship FOREIGN KEY(ship_id) REFERENCES cargo_management.ship(id),
-    ADD CONSTRAINT fk_cargo FOREIGN KEY(cargo_id) REFERENCES cargo_management.cargo(id);
+    OWNER to gh_cargo_management;
 
 -- Publications
 CREATE TABLE publications.traffic_planning
@@ -442,16 +434,13 @@ CREATE TABLE billing.invoice
 );
 
 ALTER TABLE IF EXISTS billing.ship_service
-    OWNER to gh_billing,
-    ADD CONSTRAINT fk_shipping_company FOREIGN KEY(shipping_company_id) REFERENCES billing.shipping_company(id);
+    OWNER to gh_billing;
 ALTER TABLE IF EXISTS billing.shipping_company
     OWNER to gh_billing;
 ALTER TABLE IF EXISTS billing.lease_agreement
-    OWNER to gh_billing,
-    ADD CONSTRAINT fk_shipping_company FOREIGN KEY(shipping_company_id) REFERENCES billing.shipping_company(id);
+    OWNER to gh_billing;
 ALTER TABLE IF EXISTS billing.invoice
-    OWNER to gh_billing,
-    ADD CONSTRAINT fk_shipping_company FOREIGN KEY(shipping_company_id) REFERENCES billing.shipping_company(id);
+    OWNER to gh_billing;
 
 -- Messaging
 CREATE TABLE messaging.invoice

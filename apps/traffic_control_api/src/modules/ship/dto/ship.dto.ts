@@ -1,6 +1,6 @@
-import { ApiProperty } from "@nestjs/swagger";
-import { IsNumber, IsString, IsDate } from "class-validator";
-import { Ship } from "../entities/ship.entity";
+import { ApiProperty } from '@nestjs/swagger';
+import { IsNumber, IsString, IsDate, IsBoolean } from 'class-validator';
+import { Ship } from '../entities/ship.entity';
 
 export class ShipDTO implements Readonly<ShipDTO> {
   @IsNumber()
@@ -27,6 +27,14 @@ export class ShipDTO implements Readonly<ShipDTO> {
   @ApiProperty()
   public length_in_m: number;
 
+  @IsBoolean()
+  @ApiProperty()
+  public is_cleared: boolean;
+
+  @IsBoolean()
+  @ApiProperty()
+  public is_denied: boolean;
+
   @IsDate()
   @ApiProperty()
   public created_at: Date;
@@ -39,6 +47,8 @@ export class ShipDTO implements Readonly<ShipDTO> {
     it.shipping_company_name = dto.shipping_company_name;
     it.max_load_in_tonnage = dto.max_load_in_tonnage;
     it.length_in_m = dto.length_in_m;
+    it.is_cleared = dto.is_cleared;
+    it.is_denied = dto.is_denied;
     it.created_at = dto.created_at;
     return it;
   }
@@ -51,7 +61,9 @@ export class ShipDTO implements Readonly<ShipDTO> {
       shipping_company_name: entity.shipping_company_name,
       max_load_in_tonnage: entity.max_load_in_tonnage,
       length_in_m: entity.length_in_m,
-      created_at: entity.created_at
+      is_cleared: entity.is_cleared,
+      is_denied: entity.is_denied,
+      created_at: entity.created_at,
     });
   }
 
@@ -63,6 +75,8 @@ export class ShipDTO implements Readonly<ShipDTO> {
     it.shipping_company_name = this.shipping_company_name;
     it.max_load_in_tonnage = this.max_load_in_tonnage;
     it.length_in_m = this.length_in_m;
+    it.is_cleared = this.is_cleared;
+    it.is_denied = this.is_denied;
     it.created_at = this.created_at;
     return it;
   }

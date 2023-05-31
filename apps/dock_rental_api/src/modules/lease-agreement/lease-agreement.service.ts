@@ -6,7 +6,7 @@ import { InjectRepository } from '@nestjs/typeorm';
 import { LeaseAgreementDTO } from './dto/lease-agreement.dto';
 import { CreateLeaseAgreementDTO } from './dto/create-lease-agreement.dto';
 import { ConfigService } from '@nestjs/config';
-import amqp from 'amqp-connection-manager';
+import * as amqp from 'amqplib';
 
 @Injectable()
 export class LeaseAgreementService implements ILeaseAgreementService {
@@ -49,8 +49,8 @@ export class LeaseAgreementService implements ILeaseAgreementService {
   }
 
   async sendToQueue(exchangeName: string, routingKey: string, message: string) {
-    const connection = amqp.connect(`amqp://${this.USER}:${this.PASSWORD}@${this.HOST}`);
-    const channel = connection.createChannel();
+    const connection = await amqp.connect(`amqp://${this.USER}:${this.PASSWORD}@${this.HOST}`);
+    const channel = await connection.createChannel();
     await channel.assertExchange(exchangeName, 'topic', { durable: false });
     await channel.publish(exchangeName, routingKey, Buffer.from(message));
   };
