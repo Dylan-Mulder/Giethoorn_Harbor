@@ -159,11 +159,27 @@ CREATE TABLE dock_rental.lease_agreement
     CONSTRAINT unique_lease_agreement UNIQUE(reference)
 );
 
+CREATE VIEW dock_rental.denormalized_lease_agreement AS
+	SELECT 
+		la.reference AS lease_agreement_reference,
+		sc.reference AS shipping_company_reference,
+		sc.name AS shipping_company_name,
+		sc.country AS shipping_company_country,
+		d.name AS dock_name,
+		la.sign_date,
+		la.valid_until,
+		la.price
+	FROM dock_rental.lease_agreement AS la
+	INNER JOIN dock_rental.dock AS d ON la.dock_id=d.id
+	INNER JOIN dock_rental.shipping_company AS sc ON la.shipping_company_id=sc.id;
+
 ALTER TABLE IF EXISTS dock_rental.dock
     OWNER to gh_dock_rental;
 ALTER TABLE IF EXISTS dock_rental.shipping_company
     OWNER to gh_dock_rental;
 ALTER TABLE IF EXISTS dock_rental.lease_agreement
+    OWNER to gh_dock_rental;
+ALTER VIEW IF EXISTS dock_rental.denormalized_lease_agreement
     OWNER to gh_dock_rental;
 
 -- Ecosystem
