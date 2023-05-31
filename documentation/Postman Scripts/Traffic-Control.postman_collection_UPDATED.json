@@ -1,0 +1,778 @@
+{
+	"info": {
+		"_postman_id": "9daf3c58-20b8-4332-a4eb-f44f41866e1c",
+		"name": "Traffic-Control",
+		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
+		"_exporter_id": "7291926"
+	},
+	"item": [
+		{
+			"name": "DOCK",
+			"item": [
+				{
+					"name": "POST DOCK",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"D20\",\r\n    \"description\": \"Dit is een omschrijving van Docks\",\r\n    \"amount_of_ship_spots\": 200,\r\n    \"amount_of_truck_spots\": 150\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4200/api/docks",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"docks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ALL DOCKS",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4200/api/docks",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"docks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET DOCK ID 11",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4200/api/docks/10",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"docks",
+								"10"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT DOCK ID 11",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"DUpdated\",\r\n    \"description\": \"Dit is een omschrijving van Docks\",\r\n    \"amount_of_ship_spots\": 50,\r\n    \"amount_of_truck_spots\": 500\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4200/api/docks/10/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"docks",
+								"10",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE DOCK ID 11",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4200/api/docks/10/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"docks",
+								"10",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "PASSAGES",
+			"item": [
+				{
+					"name": "POST PASSAGE",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"dock_id\": 1,\r\n    \"ship_id\": 2,\r\n    \"truck_id\": 2,\r\n    \"tugboats\":\"{}\",\r\n    \"arrival\": \"1999-12-14\",\r\n    \"departure\": \"1999-12-14\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4200/api/passages",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"passages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ALL PASSAGES",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4200/api/passages",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"passages"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET PASSAGE ID 6",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4200/api/passages/6",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"passages",
+								"6"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "PUT PASSAGES ID 6",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"dock_id\": 2,\r\n    \"ship_id\": 1,\r\n    \"truck_id\": 1,\r\n    \"tugboats\": \"{}\",\r\n    \"arrival\": \"1999-12-24\",\r\n    \"departure\": \"1999-12-13\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4200/api/passages/6/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"passages",
+								"6",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE PASSAGE ID 6",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4200/api/passages/6/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"passages",
+								"6",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "SHIP",
+			"item": [
+				{
+					"name": "POST SHIP",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Demo Maersk\",\r\n    \"shipping_company_name\": \"Avans\",\r\n    \"max_load_in_tonnage\": 2500,\r\n    \"length_in_m\": 500\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4200/api/ships",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"ships"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ALL SHIPS",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4200/api/ships",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"ships"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET SHIP BY ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4200/api/ships/4",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"ships",
+								"4"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE SHIP BY ID",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Updated Maersk\",\r\n    \"shipping_company_name\": \"Avans\",\r\n    \"max_load_in_tonnage\": 2500,\r\n    \"length_in_m\": 650\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4200/api/ships/4/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"ships",
+								"4",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE SHIP BY ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4200/api/ships/4/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"ships",
+								"4",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TRAFFIC-PLANNING",
+			"item": [
+				{
+					"name": "POST TRAFFIC-PLANNING",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n \"passages\": \"{}\",\r\n \"start_date\": \"2023-05-06\",\r\n \"end_date\": \"2024-05-06\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4200/api/traffic-plannings",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"traffic-plannings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ALL TRAFFIC-PLANNINGS",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4200/api/traffic-plannings",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"traffic-plannings"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET TRAFFIC-PLANNING BY ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4200/api/traffic-plannings/1",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"traffic-plannings",
+								"1"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE TRAFFIC-PLANNING BY ID",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n \"passages\": \"{}\",\r\n \"start_date\": \"2099-05-06\",\r\n \"end_date\": \"2100-05-06\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4200/api/traffic-plannings/2/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"traffic-plannings",
+								"2",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE TRAFFIC-PLANNING BY ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4200/api/traffic-plannings/2/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"traffic-plannings",
+								"2",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TRUCK",
+			"item": [
+				{
+					"name": "POST TRUCK",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Testing hiero\",\r\n    \"shipping_company_name\": \"Avans Transport B.V\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4200/api/trucks",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"trucks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ALL TRUCKS",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4200/api/trucks",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"trucks"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET TRUCK BY ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4200/api/trucks/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"trucks",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE TRUCK BY ID",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"VDL Updated Truck\",\r\n    \"shipping_company_name\": \"Van der Linden Transport\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4200/api/trucks/4/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"trucks",
+								"4",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE TRUCK BY ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4200/api/trucks/4/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"trucks",
+								"4",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "TUGBOAT",
+			"item": [
+				{
+					"name": "POST TUGBOAT",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Avans\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4200/api/tugboats",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"tugboats"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET ALL TUGBOATS",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4200/api/tugboats",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"tugboats"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "GET TUGBOAT BY ID",
+					"request": {
+						"method": "GET",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4200/api/tugboats/3",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"tugboats",
+								"3"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "UPDATE TUGBOAT BY ID",
+					"request": {
+						"method": "PUT",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"name\": \"Avans\"\r\n    }",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "http://localhost:4200/api/tugboats/5/update",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"tugboats",
+								"5",
+								"update"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "DELETE TUGBOAT BY ID",
+					"request": {
+						"method": "DELETE",
+						"header": [],
+						"url": {
+							"raw": "http://localhost:4200/api/tugboats/5/delete",
+							"protocol": "http",
+							"host": [
+								"localhost"
+							],
+							"port": "4200",
+							"path": [
+								"api",
+								"tugboats",
+								"5",
+								"delete"
+							]
+						}
+					},
+					"response": []
+				}
+			]
+		}
+	]
+}
