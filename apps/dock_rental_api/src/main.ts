@@ -46,7 +46,7 @@ async function bootstrapDockRental() {
   const QUEUE = configService.get('RABBITMQ_DOCK_RENTAL_QUEUE');
   const dockController = app.get(DockController);
   const leaseAgreementController = app.get(LeaseAgreementController);
-  const shippingCompanyController= app.get(ShippingCompanyController);
+  const shippingCompanyController = app.get(ShippingCompanyController);
   const dockRentalController = app.get(DockRentalController);
   const consumerConfigs = [
     {
@@ -67,27 +67,27 @@ async function bootstrapDockRental() {
   ]
 
   for (const consumerConfig of consumerConfigs) {
-    const { exchange, routingKeyPattern, methodToCall} = consumerConfig;
+    const { exchange, routingKeyPattern, methodToCall } = consumerConfig;
     const connection = await amqp.connect(`amqp://${USER}:${PASSWORD}@${HOST}`);
     const channel = await connection.createChannel();
     await channel.assertExchange(exchange, 'topic', { durable: false });
-    await channel.assertQueue("rf-c-"+exchange, { durable: true });
-    await channel.bindQueue("rf-c-"+exchange, exchange, routingKeyPattern);
+    await channel.assertQueue("rf-c-" + exchange, { durable: true });
+    await channel.bindQueue("rf-c-" + exchange, exchange, routingKeyPattern);
 
-    console.log("Consumer listening on: "+exchange);
+    console.log("Consumer listening on: " + exchange);
     await channel.consume(
-        "rf-c-"+exchange,
-            async (message) => {
-              if (message !== null) {
-                const content = message.content.toString();
-                console.log(JSON.stringify(JSON.parse(message.content)));
-                console.log('Consumer received event');
-                // Process the event:
-                const rmqContext = new RmqContext([message, channel, null]);
-                await methodToCall.call(dockRentalController, content, rmqContext);
-              }
-            },
-      );
+      "rf-c-" + exchange,
+      async (message) => {
+        if (message !== null) {
+          const content = message.content.toString();
+          console.log(JSON.stringify(JSON.parse(message.content)));
+          console.log('Consumer received event');
+          // Process the event:
+          const rmqContext = new RmqContext([message, channel, null]);
+          await methodToCall.call(dockRentalController, content, rmqContext);
+        }
+      },
+    );
   }
   app.connectMicroservice<MicroserviceOptions>({
     transport: Transport.RMQ,
