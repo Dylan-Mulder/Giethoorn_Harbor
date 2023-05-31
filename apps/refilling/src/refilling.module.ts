@@ -27,7 +27,7 @@ import configuration from './config/configuration';
       }),
     })
   ],
-  controllers: [RefillingController],
+  controllers: [RefillingController], // Add the controller here
   providers: [RefillingService],
 })
-export class RefillingModule { }
+export class RefillingModule {}

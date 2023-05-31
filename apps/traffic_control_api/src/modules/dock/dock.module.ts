@@ -1,6 +1,6 @@
 import { DockController } from './dock.controller';
 import { TypeOrmModule } from '@nestjs/typeorm';
-import { Dock } from './dock.entity';
+import { Dock } from './entities/dock.entity';
 import { DockService } from './dock.service';
 import { Module } from '@nestjs/common';
 import { IDockService } from '../../interfaces/IDock.service';

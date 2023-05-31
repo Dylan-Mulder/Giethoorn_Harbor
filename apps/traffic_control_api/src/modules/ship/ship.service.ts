@@ -1,24 +1,34 @@
 import { Injectable } from '@nestjs/common';
-import { Ship } from './ship.entity';
+import { Ship } from './entities/ship.entity';
 import { IShipService } from '../../interfaces/IShip.service';
-import { DeleteResult } from 'typeorm';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { InjectRepository } from '@nestjs/typeorm';
+import { CreateShipDTO } from './dto/create-ship.dto';
+import { ShipDTO } from './dto/ship.dto';
 
 @Injectable()
 export class ShipService implements IShipService {
-  createShip(Ship: Ship): Promise<Ship> {
-    throw new Error('Method not implemented.');
-  }
-  getShipById(id: number): Promise<Ship> {
-    throw new Error('Method not implemented.');
-  }
-  getAllShips(): Promise<Ship[]> {
-    throw new Error('Method not implemented.');
-  }
-  updateShipById(id: number, updateShip: Ship): Promise<Ship> {
-    throw new Error('Method not implemented.');
-  }
-  deleteShipById(id: number): Promise<DeleteResult> {
-    throw new Error('Method not implemented.');
+
+  constructor(@InjectRepository(Ship) private readonly repo: Repository<Ship>) { }
+
+  public async createShip(dto: CreateShipDTO): Promise<Ship> {
+    const ship = this.repo.create(dto);
+    return await this.repo.save(ship);
   }
 
+  public async getShipById(id: number): Promise<ShipDTO> {
+    return ShipDTO.fromEntity(await this.repo.findOne({ where: { id: id } }));
+  }
+
+  public async getAllShips(): Promise<Array<ShipDTO>> {
+    return await this.repo.find().then((docks: Array<Ship>) => docks.map(d => ShipDTO.fromEntity(d)));
+  }
+
+  public async updateShipById(id: number, updateShip: CreateShipDTO): Promise<UpdateResult> {
+    return await this.repo.update(id, updateShip)
+  }
+
+  public async deleteShipById(id: number): Promise<DeleteResult> {
+    return await this.repo.delete(id)
+  }
 }

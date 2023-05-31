@@ -1,30 +1,34 @@
 import { Injectable } from '@nestjs/common';
 import { IDockService } from '../../interfaces/IDock.service';
-import { Dock } from './dock.entity';
-import { CreateDockDTO } from './dto/createDock.dto';
-import { UpdateDockDTO } from './dto/updateDock.dto';
-import { DeleteResult } from 'typeorm';
+import { Dock } from './entities/dock.entity';
+import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { CreateDockDTO } from './dto/create-dock.dto';
+import { InjectRepository } from '@nestjs/typeorm';
+import { DockDTO } from './dto/dock.dto';
 
 @Injectable()
 export class DockService implements IDockService {
 
-  createDock(dto: CreateDockDTO): Promise<Dock> {
-    throw new Error('Method not implemented.');
+  constructor(@InjectRepository(Dock) private readonly repo: Repository<Dock>) { }
+
+  public async createDock(dto: CreateDockDTO): Promise<Dock> {
+    const dock = this.repo.create(dto);
+    return await this.repo.save(dock);
   }
 
-  getDockById(id: number): Promise<Dock> {
-    throw new Error('Method not implemented.');
+  public async getDockById(id: number): Promise<DockDTO> {
+    return DockDTO.fromEntity(await this.repo.findOne({ where: { id: id } }));
   }
 
-  getAllDocks(): Promise<Array<Dock>> {
-    throw new Error('Method not implemented.');
+  public async getAllDocks(): Promise<Array<DockDTO>> {
+    return await this.repo.find().then((docks: Array<Dock>) => docks.map(d => DockDTO.fromEntity(d)));
   }
 
-  updateDockById(id: number, dto: UpdateDockDTO): Promise<Dock> {
-    throw new Error('Method not implemented.');
+  public async updateDockById(id: number, updateDock: CreateDockDTO): Promise<UpdateResult> {
+    return await this.repo.update(id, updateDock)
   }
 
-  deleteDockById(id: number): Promise<DeleteResult> {
-    throw new Error('Method not implemented.');
+  public async deleteDockById(id: number): Promise<DeleteResult> {
+    return await this.repo.delete(id)
   }
 }

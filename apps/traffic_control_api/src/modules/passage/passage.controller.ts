@@ -1,34 +1,35 @@
-import { Controller, Get, Param, Post, Body, Delete, Patch } from '@nestjs/common';
-import { IPassageService } from '../../interfaces/IPassage.service';
-import { Passage } from './passage.entity';
-import { DeleteResult } from 'typeorm';
+import { Controller, Post, Get, Param, Put, Body, Delete } from "@nestjs/common";
+import { UpdateResult, DeleteResult } from "typeorm";
+import { IPassageService } from "../../interfaces/IPassage.service";
+import { CreatePassageDTO } from "./dto/create-passage.dto";
+import { Passage } from "./entities/passage.entity";
 
-@Controller('passage')
+@Controller('passages')
 export class PassageController {
-  constructor(private PassageService: IPassageService) { }
+  constructor(private readonly passageService: IPassageService) { }
 
   @Post()
-  async createPassage(@Body() Passage: Passage) {
-    return await this.PassageService.createPassage(Passage);
+  public async createPassage(@Body() createPassageDTO: CreatePassageDTO): Promise<Passage> {
+    return await this.passageService.createPassage(createPassageDTO);
+  }
+
+  @Get(':passageId')
+  public async getPassageById(@Param() param: { passageId: number }): Promise<Passage> {
+    return await this.passageService.getPassageById(Number(param.passageId));
   }
 
   @Get()
-  async getPassageById(@Param() param: { PassageId: number }) {
-    return await this.PassageService.getPassageById(param.PassageId);
+  public async getAllPassages(): Promise<Array<Passage>> {
+    return await this.passageService.getAllPassages();
   }
 
-  @Get()
-  async getAllPassages() {
-    return await this.PassageService.getAllPassages();
+  @Put(':passageId/update')
+  public async updatePassageById(@Param() param: { passageId: number }, @Body() updateDock: CreatePassageDTO): Promise<UpdateResult> {
+    return await this.passageService.updatePassageById(Number(param.passageId), updateDock);
   }
 
-  @Patch()
-  async updatePassageById(@Param() param: { PassageId: number }, @Body() updatePassage: Passage) {
-    return await this.PassageService.updatePassageById(param.PassageId, updatePassage);
-  }
-
-  @Delete()
-  async deletePassage(@Param() param: { PassageId: number }) {
-    return await this.PassageService.deletePassageById(param.PassageId);
+  @Delete(':passageId/delete')
+  public async deletePassageById(@Param() param: { passageId: number }): Promise<DeleteResult> {
+    return await this.passageService.deletePassageById(Number(param.passageId));
   }
 }
