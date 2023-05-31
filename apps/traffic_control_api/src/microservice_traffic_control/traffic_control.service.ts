@@ -100,14 +100,42 @@ export class TrafficControlService {
   //EP-T-08	LeaseHasExpired	Update internal dock state to no longer allow ships from company.
   async unassignDock(dock: any){
     console.log("Traffic Control - Dock has been unassigned!");
-    //TODO: ja verbinden met die db om die Dock up te daten
-    //^Returns updated Dock
+    let uuid;
+      
+
+
+    // const photoRepository = AppDataSource.getRepository(Photo)
+    // const photoToUpdate = await photoRepository.findOneBy({
+    //     id: 1,
+    // })
+    // photoToUpdate.name = "Me, my friends and polar bears"
+    // await photoRepository.save(photoToUpdate)
+
+
+    await this.dockRepo.save(dock)
+    .then(dock => {uuid = dock.stream_id});
+
+    this.addToEventStore(uuid,'dock-created', JSON.stringify(dock))
+
   }
 
   //EP-T-09	New dock has been created
   async createDock(dock: any){
-    //TODO: ja verbinden met die db om die Dock up te daten
-    //^Returns updated Dock
+    let uuid;
+      
+    await this.dockRepo.save(dock)
+    .then(dock => {uuid = dock.stream_id});
+
+    this.addToEventStore(uuid,'dock-created', JSON.stringify(dock))
+  }
+
+  async addToEventStore(stream_id: string, type: string, body: string) {
+    let ghEvent = new GHEvent;
+    ghEvent.stream_id = stream_id;
+    ghEvent.type = type;
+    ghEvent.body = body;
+
+    await this.eventRepo.save(ghEvent);
   }
 
   //Event emitter functions
