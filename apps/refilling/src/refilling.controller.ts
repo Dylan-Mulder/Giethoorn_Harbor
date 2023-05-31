@@ -15,9 +15,9 @@ export class RefillingController {
   ): Promise<void> {
     try {
       const jsonData = JSON.parse(content);
-      const shipData = jsonData.data.shipData;
+      const shipData = jsonData.data.ship;
       const trafficPlanningData = jsonData.data.trafficPlanning
-      const refillServiceData = jsonData.data.refillServiceData;
+      const refillServiceData = jsonData.data.refillService;
       await this.refillingService.createShip(shipData, refillServiceData, trafficPlanningData);
       context.getChannelRef().ack(context.getMessage()); // Acknowledge the message
     } catch (error) {
@@ -34,8 +34,8 @@ export class RefillingController {
     try {
       
       const jsonData = JSON.parse(content);
-      const shipData = jsonData.data.shipData;
-      const refillServiceData = jsonData.data.refillServiceData;
+      const shipData = jsonData.data.ship;
+      const refillServiceData = jsonData.data.refillService;
       
       await this.refillingService.notifyShipHasDocked(shipData, refillServiceData);
       context.getChannelRef().ack(context.getMessage());
@@ -52,7 +52,7 @@ export class RefillingController {
   ): Promise<void> {
     try {
       const jsonData = JSON.parse(content);
-      const trafficPlanningData = jsonData.data.trafficPlanningData;
+      const trafficPlanningData = jsonData.data.trafficPlanning;
       await this.refillingService.updatePlanning(trafficPlanningData);
       context.getChannelRef().ack(context.getMessage());
     } catch (error) {
@@ -68,9 +68,9 @@ export class RefillingController {
   ): Promise<void> {
     try {
       const jsonData = JSON.parse(content);
-      const shipData = jsonData.data.shipData;
-      const refillServiceData = jsonData.data.refillServiceData;
-      await this.refillingService.updateShip(shipData, refillServiceData);
+      const shipData = jsonData.data.ship;
+      const refillServiceData = jsonData.data.refillService;
+      await this.refillingService.updateService(shipData, refillServiceData);
       //Update internal systems and planning
 
       context.getChannelRef().ack(context.getMessage()); // Acknowledge the message
@@ -87,9 +87,9 @@ export class RefillingController {
   ): Promise<void> {
     try {
       const jsonData = JSON.parse(content);
-      const shipData = jsonData.data.shipData;
-      const refillServiceData = jsonData.data.refillServiceData;
-      await this.refillingService.updateShip(shipData, refillServiceData);
+      const shipData = jsonData.data.ship;
+      const refillServiceData = jsonData.data.refillService;
+      await this.refillingService.updateService(shipData, refillServiceData);
       //Update internal systems and planning
       context.getChannelRef().ack(context.getMessage()); // Acknowledge the message
     } catch (error) {

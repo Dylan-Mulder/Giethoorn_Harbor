@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ITugboatService } from '../../interfaces/ITugboat.service';
-import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { Repository } from 'typeorm';
 import { Tugboat } from './entities/tugboat.entity';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateTugboatDTO } from './dto/create-tugboat.dto';

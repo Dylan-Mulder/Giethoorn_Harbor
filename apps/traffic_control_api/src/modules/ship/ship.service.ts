@@ -1,13 +1,12 @@
 import { Injectable } from '@nestjs/common';
 import { Ship } from './entities/ship.entity';
 import { IShipService } from '../../interfaces/IShip.service';
-import { DeleteResult, Repository, UpdateResult } from 'typeorm';
 import { InjectRepository } from '@nestjs/typeorm';
 import { CreateShipDTO } from './dto/create-ship.dto';
 import { ShipDTO } from './dto/ship.dto';
 import { ConfigService } from '@nestjs/config';
+import { Repository } from 'typeorm';
 import * as amqp from 'amqplib';
-import axios from 'axios';
 
 @Injectable()
 export class ShipService implements IShipService {
@@ -45,9 +44,15 @@ export class ShipService implements IShipService {
     return obj;
   }
 
+  public async dockShip(id: number): Promise<Ship> {
+    const ship = await this.getShipById(id);
+    await this.sendToQueue('ship-has-docked', 'event.ship-has-docked', JSON.stringify(ship));
+    return ship
+  }
+
   async sendToQueue(exchangeName: string, routingKey: string, message: string) {
-    const connection = amqp.connect(`amqp://${this.USER}:${this.PASSWORD}@${this.HOST}`);
-    const channel = connection.createChannel();
+    const connection = await amqp.connect(`amqp://${this.USER}:${this.PASSWORD}@${this.HOST}`);
+    const channel = await connection.createChannel();
     await channel.assertExchange(exchangeName, 'topic', { durable: false });
     await channel.publish(exchangeName, routingKey, Buffer.from(message));
   };

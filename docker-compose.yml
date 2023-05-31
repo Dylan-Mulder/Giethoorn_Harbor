@@ -79,7 +79,7 @@ services:
       network:
         ipv4_address: 10.5.0.34
 
-  # # DOCK RENTAL API
+  # DOCK RENTAL API
   dock_rental_api:
     container_name: Dock-Rental-API
     build:
@@ -120,7 +120,7 @@ services:
       - /usr/src/app/node_modules
     networks:
       network:
-        ipv4_address: 10.5.0.7
+        ipv4_address: 10.5.0.11
     command: npm run start:dev traffic_control_api
 
   ecosystem:
@@ -131,7 +131,7 @@ services:
     env_file:
       - .env
     depends_on:
-      # - rabbitmq
+      - rabbitmq
       - relational_database
       - event_store
     volumes:
@@ -142,7 +142,6 @@ services:
         ipv4_address: 10.5.0.9
     command: npm run start:dev ecosystem
 
-
   refilling:
     container_name: Refilling
     build:
@@ -152,7 +151,7 @@ services:
       - .env
     depends_on:
       - rabbitmq
-      #- traffic_control_api
+      - traffic_control_api
       - relational_database
       - event_store
     volumes:
@@ -160,8 +159,8 @@ services:
       - /usr/src/app/node_modules
     networks:
       network:
-        ipv4_address: 10.5.0.6
-    command: npm run start:dev traffic_control_api
+        ipv4_address: 10.5.0.8
+    command: npm run start:dev refilling
 
 # CUSTOM DOCKER NETWORK
 networks:
@@ -177,25 +176,6 @@ volumes:
   relational_database:
   event_store:
   cqrs_database:
-
-    # ecosystem:
-    #   container_name: Ecosystem
-    #   build:
-    #     context: ./
-    #     dockerfile: ./apps/ecosystem/Dockerfile
-    #   env_file:
-    #     - .env
-    #   depends_on:
-    #     # - rabbitmq
-    #     - relational_database
-    #     - event_store
-    #   volumes:
-    #     - .:/usr/src/app
-    #     - /usr/src/app/node_modules
-    #   networks:
-    #     network:
-    #       ipv4_address: 10.5.0.9
-    #   command: npm run start:dev ecosystem
 
     # security:
     #   container_name: Security

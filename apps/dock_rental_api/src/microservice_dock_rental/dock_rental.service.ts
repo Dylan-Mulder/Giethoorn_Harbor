@@ -1,10 +1,8 @@
 import { Injectable } from '@nestjs/common';
-import { ConfigService } from '@nestjs/config';
 import { Dock } from '../modules/dock/entities/dock.entity';
 import { LeaseAgreement } from '../modules/lease-agreement/entities/lease-agreement.entity';
 import { ShippingCompany } from '../modules/shipping-company/entity/shipping-company.entity';
 import { Repository } from 'typeorm';
-import { GHEvent } from '../config/datasources/gh-event';
 import { getCQRSDataSource } from '../config/datasources/cqrs_datasource';
 
 @Injectable()
@@ -31,36 +29,36 @@ export class DockRentalService {
   // CREATE 
 
   //EP-DR-01 Dock has been created
-  async createDock(dockData:any): Promise<void>{
+  async createDock(dockData: any): Promise<void> {
     const dock = new Dock();
-    dock.name = dockData[0].name;
+    dock.name = dockData.name;
     await this.dockRepo.save(dock);
     console.log("Dock created at read database.");
   }
   //EP-DR-02 Lease Agreement has been created
-  async createLeaseAgreement(leaseAgreementData: any): Promise<void>{
+  async createLeaseAgreement(leaseAgreementData: any): Promise<void> {
     const leaseAgreement = new LeaseAgreement();
-    leaseAgreement.dock_id= leaseAgreementData[0].dock_id;
-    leaseAgreement.shipping_company_id= leaseAgreementData[0].shipping_company_id;
-    leaseAgreement.price=leaseAgreementData[0].price;
-    leaseAgreement.reference=leaseAgreementData[0].reference;
-    leaseAgreement.sign_date=new Date(leaseAgreementData[0].sign_date);
-    leaseAgreement.valid_until=new Date(leaseAgreementData[0].valid_until);
+    leaseAgreement.dock_id = leaseAgreementData.dock_id;
+    leaseAgreement.shipping_company_id = leaseAgreementData.shipping_company_id;
+    leaseAgreement.price = leaseAgreementData.price;
+    leaseAgreement.reference = leaseAgreementData.reference;
+    leaseAgreement.sign_date = new Date(leaseAgreementData.sign_date);
+    leaseAgreement.valid_until = new Date(leaseAgreementData.valid_until);
 
     await this.leaseAgreementRepo.save(leaseAgreement);
     console.log("Lease Agreement created at read database.");
   }
 
   //EP-DR-02 Shipping Company has been created
-  async createShippingCompany(shippingCompanyData: any): Promise<void>{
+  async createShippingCompany(shippingCompanyData: any): Promise<void> {
     const shippingCompany = new ShippingCompany();
-    shippingCompany.country=shippingCompanyData[0].country;
-    shippingCompany.name=shippingCompanyData[0].name;
-    shippingCompany.reference=shippingCompanyData[0].reference;
+    shippingCompany.country = shippingCompanyData.country;
+    shippingCompany.name = shippingCompanyData.name;
+    shippingCompany.reference = shippingCompanyData.reference;
 
     await this.shippingCompanyRepo.save(shippingCompany);
     console.log("Shipping company created at read database.");
-}
+  }
   // READ ALL
 
   //EP-DR-04 All Docks have been found

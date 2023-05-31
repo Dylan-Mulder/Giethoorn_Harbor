@@ -1,6 +1,6 @@
 import { Injectable } from '@nestjs/common';
 import { ITrafficPlanningService } from '../../interfaces/ITrafficPlanning.service';
-import { DeleteResult, Repository, UpdateResult } from 'typeorm';
+import { Repository } from 'typeorm';
 import { TrafficPlanning } from './entities/traffic-planning.entity';
 import { CreateTrafficPlanningDTO } from './dto/create-traffic-planning.dto';
 import { InjectRepository } from '@nestjs/typeorm';
