@@ -98,14 +98,14 @@ async function bootstrapTC() {
     console.log("Consumer listening on: " + exchange);
     await channel.consume(
       "tc-c-" + exchange,
-      (message) => {
+      async (message) => {
         if (message !== null) {
           const content = message.content.toString();
           console.log(JSON.stringify(message.content));
           console.log('Consumer received event');
           // Process the event:
           const rmqContext = new RmqContext([message, channel, null]);
-          methodToCall.call(trafficControlController, content, rmqContext);
+          await methodToCall.call(trafficControlController, content, rmqContext);
         }
       },
     );
