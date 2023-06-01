@@ -68,12 +68,12 @@ async function bootstrapDockRental() {
     const connection = await amqp.connect(`amqp://${USER}:${PASSWORD}@${HOST}`);
     const channel = await connection.createChannel();
     await channel.assertExchange(exchange, 'topic', { durable: false });
-    await channel.assertQueue("rf-c-" + exchange, { durable: true });
-    await channel.bindQueue("rf-c-" + exchange, exchange, routingKeyPattern);
+    await channel.assertQueue("dr-c-" + exchange, { durable: true });
+    await channel.bindQueue("dr-c-" + exchange, exchange, routingKeyPattern);
 
     console.log("Consumer listening on: " + exchange);
     await channel.consume(
-      "rf-c-" + exchange,
+      "dr-c-" + exchange,
       async (message) => {
         if (message !== null) {
           const content = message.content.toString();

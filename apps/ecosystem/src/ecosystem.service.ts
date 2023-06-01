@@ -183,8 +183,6 @@ export class EcosystemService {
         
       await this.marineLifeReportRepo.save(waterQualityReport)
       .then(marineLifeReport => {uuid = marineLifeReport.stream_id});
-
-      //sdhasudhasda
       this.addToEventStore(uuid,'marinelife-inspected', JSON.stringify(waterQualityReport))
 
     } catch (error) {
@@ -210,7 +208,7 @@ export class EcosystemService {
         await this.marineLifeReportRepo.save(marineLifeReport)
         .then(marineLifeReport => {uuid = marineLifeReport.stream_id});
 
-        //sdhasudhasda
+
         this.addToEventStore(uuid,'waterquality-inspected', JSON.stringify(marineLifeReport))
 
       }

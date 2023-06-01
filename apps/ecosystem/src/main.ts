@@ -98,6 +98,7 @@ async function addWaterQualityReportToExchange(
   channel: amqp.Channel
 ) {
   const reportData = JSON.stringify(report);
+  console.log(reportData);
   await channel.publish(exchangeName, routingKey, Buffer.from(reportData));
 }
 
@@ -108,5 +109,6 @@ async function addMarineQualityReportToExchange(
   channel: amqp.Channel
 ) {
   const reportData = JSON.stringify(report);
+  console.log(reportData);
   await channel.publish(exchangeName, routingKey, Buffer.from(reportData));
 }
